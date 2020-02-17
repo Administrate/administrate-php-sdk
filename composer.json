@@ -1,0 +1,22 @@
+{
+    "name": "administrate/php-sdk",
+    "description": "A GraphQL client written in PHP which provides very simple, yet powerful, query generator classes that make the process of interacting with a GraphQL server a very simple one.",
+    "type": "library",
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "require": {
+        "administrate/php-sdk": "dev-master",
+        "gmostafa/php-graphql-client": "^1.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Administrate\\PhpSdk\\": "src/"
+        }
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/jadkhateradmin/php-sdk"
+        }
+    ]
+}

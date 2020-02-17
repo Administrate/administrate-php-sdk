@@ -1,0 +1,8 @@
+{
+  "name": "administrate/php-sdk",
+  "repositories": [
+    {"type": "composer", "url": "https://repo.packagist.com/jck/"},
+    {"packagist.org": false}
+  ],
+  "require-all": true
+}
