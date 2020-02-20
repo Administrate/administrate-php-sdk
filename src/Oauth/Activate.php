@@ -53,11 +53,11 @@ if (!class_exists('Activate')) {
         }
 
         /**
-         * Checks APP Environment and sets Params
+         * Method to set APP Environment Params
+         * @param array $params configuration array
          *
          * @return void
-         *
-         * */
+         */
         protected static function setParams($params)
         {
             // Check for Passed params
@@ -104,14 +104,15 @@ if (!class_exists('Activate')) {
 
         /**
          * Function to handle authorize callback.
-         *
          * Checks for received authorization code,
          * And Sends the code using Post to  authorization server.
          *
          * If success set variables and return true to controller.
-         * If Fails return null.
+         * If Fails return empty array.
          *
-         * */
+         * @param  array  $params URL Params ($_GET)
+         * @return array          Response array
+         */
         public function handleAuthorizeCallback($params = array())
         {
             // If the callback is the result of an authorization call to
@@ -123,14 +124,14 @@ if (!class_exists('Activate')) {
                 if (self::STATUS_SUCCESS === $responce['status']) {
                     return $responce;
                 }
-                return true;
-            } else {
-                return false;
             }
+            return array();
         }
 
-        /**
+       /**
         * Function To Check if the existing access token has expired.
+        * @param  timestamp   $expiresOnDate date timeStamp
+        * @return bool                       true / false
         */
         public function accessTokenExpired($expiresOnDate)
         {
@@ -207,8 +208,12 @@ if (!class_exists('Activate')) {
         }
 
         /**
-        * Function to get a Save Access Token.
-        */
+         * Method to process guzzle client Response
+         * and return results to be saved.
+         *
+         * @param  object $response Guzzle Response Object.
+         * @return array            Response array
+         */
         protected function proccessResponse($response)
         {
             $code = $response->getStatusCode();

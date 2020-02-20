@@ -5,7 +5,7 @@ Facilitate authorization to the APIs and Provides ways to use the available APIs
 
 ## Usage
 
-Authorization of your app:
+### Authorization:
 You can use this DSK to authorize your app to connect to the APIs.
 
 ```
@@ -24,7 +24,7 @@ $activate = new Administrate\PhpSdk\Oauth\Activate($activationParams);
 $activate->getAuthorizeUrl();
 
 // Handle Callback Code:
-$activate->handleAuthorizeCallback($params); //$params with code.
+$activate->handleAuthorizeCallback($params); // $params with code.
 or
 $activate->fetchAccessTokens($code);
 
