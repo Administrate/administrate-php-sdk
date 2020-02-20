@@ -4,8 +4,9 @@ include 'vendor/autoload.php';
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-require_once 'vendor/autoload.php';
-require_once 'config.php';
+require_once '../config.php';
+require_once '../vendor/autoload.php';
+
 
 use GraphQL\QueryBuilder\QueryBuilder as QueryBuilder;
 use GraphQL\RawObject;
