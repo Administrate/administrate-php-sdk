@@ -1,19 +1,42 @@
-# PHP GraphQL Client
+# ADMINISTRATE PHP SDK
 
-A GraphQL client written in PHP which provides very simple, yet powerful, query
-generator classes that make the process of interacting with a GraphQL server a
-very simple one.
+PHP SDK which provides a simple way to interact with administrate platform.
+Facilitate authorization to the APIs and Provides ways to use the available APIs.
 
-# Usage
+## Usage
 
-There are 3 primary ways to use this package to generate your GraphQL queries:
+Authorization of your app:
+You can use this DSK to authorize your app to connect to the APIs.
 
-1. Query Class: Simple class that maps to GraphQL queries. It's designed to
-   manipulate queries with ease and speed.
-2. QueryBuilder Class: Builder class that can be used to generate `Query`
-   objects dynamically. It's design to be used in cases where a query is being
-   build in a dynamic fashion.
-3. PHP GraphQL-OQM: An extension to this package. It Eliminates the need to
-   write any GraphQL queries or refer to the API documentation or syntax. It
-   generates query objects from the API schema, declaration exposed through
-   GraphQL's introspection, which can then be simply interacted with.
+```
+$activationParams = array(
+  'clientId' => '', // Application ID
+  'clientSecret' => '', // Application Secret
+  'instance' => '', // Administrate Instance to connect to
+  'aouthServer' => '', // Administrate Authorization endpoint
+  'redirectUri' => '', // You App redirect uri to handle callbacks from api
+);
+
+// Create Activate Class instance
+$activate = new Administrate\PhpSdk\Oauth\Activate($activationParams);
+
+// Get Authorization Code:
+$activate->getAuthorizeUrl();
+
+// Handle Callback Code:
+$activate->handleAuthorizeCallback($params); //$params with code.
+or
+$activate->fetchAccessTokens($code);
+
+// Response Format (array):
+{
+  "status" => "success",
+  "body" => {
+    "access_token" => "sWNRpcf.....106vqR4",
+    "expires_in"=> 3600,
+    "token_type" => "Bearer",
+    "scope" => "instance",
+    "refresh_token" => "StEqsly.....V5nUhQd1i"
+  }
+}
+```
