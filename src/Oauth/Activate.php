@@ -1,4 +1,5 @@
 <?php
+
 namespace Administrate\PhpSdk\Oauth;
 
 use GuzzleHttp\Client;
@@ -16,9 +17,11 @@ if (!class_exists('Activate')) {
     class Activate
     {
         protected static $instance;
-        static $redirectUri;
-        static $oauthServer;
-        static $lmsInstance;
+        protected static $params;
+
+        const SUCCESS_CODE = 200;
+        const STATUS_SUCCESS = 'success';
+        const STATUS_ERROR = 'error';
 
         /**
          * Default constructor.
@@ -27,11 +30,9 @@ if (!class_exists('Activate')) {
          * @return void
          *
          */
-        protected function __construct()
+        public function __construct($params = array())
         {
-            self::setRedirectUri();
-            self::setOauthServer();
-            self::setLmsInstance();
+            self::setParams($params);
         }
 
         /**
@@ -46,9 +47,29 @@ if (!class_exists('Activate')) {
         {
             if (!isset(self::$instance)) {
                 $className = __CLASS__;
-                self::$instance = new $className;
+                self::$instance = new $className();
             }
             return self::$instance;
+        }
+
+        /**
+         * Checks APP Environment and sets Params
+         *
+         * @return void
+         *
+         * */
+        protected static function setParams($params)
+        {
+            // Check for Passed params
+            // If empty fallback to config file defined params
+            // based on SDK env.
+            if (empty($params)) {
+                global $APP_ENVIRONMENT_VARS;
+                if (defined('PHP_SDK_ENV')) {
+                    $params = $APP_ENVIRONMENT_VARS[PHP_SDK_ENV];
+                }
+            }
+            self::$params = $params;
         }
 
         /**
@@ -60,21 +81,23 @@ if (!class_exists('Activate')) {
          * */
         public function getAuthorizeUrl()
         {
-            $redirectUri = self::$redirectUri ?: self::setRedirectUri();
-            $oauthServer = self::$oauthServer ?: self::setOauthServer();
-            $lmsInstance = self::$lmsInstance ?: self::setLmsInstance();
-
-            $appId = OAUTH2_CLIENT_ID;
-
-            if (empty($appId)) {
-                return;
-            }
+            $clientId = self::$params['clientId'];
+            $oauthServer = self::$params['aouthServer'];
 
             $requestUrl  = $oauthServer;
             $requestUrl .= "/authorize?response_type=code";
-            $requestUrl .= "&client_id=" . $appId;
-            $requestUrl .= "&instance=" . $lmsInstance;
-            $requestUrl .= "&redirect_uri=" . $redirectUri;
+            $requestUrl .= "&client_id=" . $clientId;
+
+            if (isset(self::$params['instance']) &&
+                !empty(self::$params['instance'])) {
+                $requestUrl .= "&instance=" . self::$params['instance'];
+            }
+
+            $redirectUri = '';
+            if (isset(self::$params['redirectUri']) &&
+                !empty(self::$params['redirectUri'])) {
+                $requestUrl .= "&redirect_uri=" . self::$params['redirectUri'];
+            }
 
             return $requestUrl;
         }
@@ -89,61 +112,18 @@ if (!class_exists('Activate')) {
          * If Fails return null.
          *
          * */
-        public function handleAuthorizeCallback($params=array())
+        public function handleAuthorizeCallback($params = array())
         {
             // If the callback is the result of an authorization call to
             // the oAuth server:
             //      - Ask for the access token
             //      - Save the access token and all other info
-            if (!empty($_GET['code'])) {
-
-                $code = $_GET['code'];
-
-                if ( ! $this->fetchAccessToken($code) ) { return false; }
-
+            if (isset($params['code']) && !empty($params['code'])) {
+                $responce = $this->fetchAccessTokens($params['code']);
+                if (self::STATUS_SUCCESS === $responce['status']) {
+                    return $responce;
+                }
                 return true;
-
-            } else {
-                return false;
-            }
-        }
-
-        /**
-         * Function to make secure oAuth Call.
-         *
-         * Check if the access token is expired before making a call
-         * to the oAuth server.
-         * If the access token is expired, fetch another one.
-         * To fetch a new access token, we must send the authorize API
-         * on the server the refresh token and get a new access token
-         * and refresh token to use.
-         *
-         * For more information:
-         * https://github.com/applicake/doorkeeper/wiki/Enable-Refresh-Token-Credentials
-         *
-         * */
-        protected function makeSecureOauthCall($requestUri)
-        {
-            $oauthServer = self::$oauthServer ?: self::setOauthServer();
-            $url = $oauthServer . $requestUri;
-
-            if ($this->accessTokenExpired()) {
-                $this->refreshToken();
-            }
-
-            $accessToken = ''; // GET access token from save value;
-
-            $postBody = array(
-                'access_token' => $accessToken
-            );
-
-            //TODO: Send Call to OauthServer
-            $response = array();
-            // If the response gave us an error, return.
-            //if ( is_wp_error( $response ) ) { return false; }
-
-            if ($response['response']['code'] === 200) {
-                return json_decode($response['body']);
             } else {
                 return false;
             }
@@ -152,9 +132,8 @@ if (!class_exists('Activate')) {
         /**
         * Function To Check if the existing access token has expired.
         */
-        protected function accessTokenExpired()
+        public function accessTokenExpired($expiresOnDate)
         {
-            $expiresOnDate = // GET Refresh token from saved value
             $utcTimezone = new \DateTimeZone('UTC');
             $expirationDate = new \DateTime($expiresOnDate, $utcTimezone);
             $now = new \DateTime(strtotime(DATE_FORMAT), $utcTimezone);
@@ -163,43 +142,51 @@ if (!class_exists('Activate')) {
         }
 
         /**
-        * Function to get a Refresh token.
-        */
-        protected function refreshToken()
+         * Function to get a new set of token tokens
+         * from an previous refresh token
+         * @param  string $refreshToken saved refresh token
+         * @return object               response
+         */
+        public function refreshTokens($refreshToken)
         {
-            $refreshToken = ''; // GET Refresh token from saved value
-            $oauthServer = self::$oauthServer ?: self::setOauthServer();
+            if (empty($refreshToken)) {
+                return;
+            }
 
-            $appId     = OAUTH2_CLIENT_ID;
-            $appSecret = OAUTH2_CLIENT_SECRET;
+            $clientId = self::$params['clientId'];
+            $clientSecret = self::$params['clientSecret'];
+            $oauthServer = self::$params['aouthServer'];
+            $instance = self::$params['instance'];
 
             $grantType = 'refresh_token';
 
             //Request Token
             $url = $oauthServer . "/token";
-            $postBody = array(
+            $requestArgs['form_params'] = array(
                 'refresh_token' => $refreshToken,
                 'grant_type' => $grantType,
-                'client_id' => $appId,
-                'client_secret' => $appSecret,
+                'client_id' => $clientId,
+                'client_secret' => $clientSecret,
             );
 
-            //TODO: Send Call to OauthServer
-            $response = array();
+            $guzzleClient = new Client();
+            $response = $guzzleClient->request('POST', $url, $requestArgs);
 
-            return $this->saveAccessToken($response);
+            return $this->proccessResponse($response);
         }
 
         /**
-        * Function to get a Access token.
-        */
-        protected function fetchAccessToken($code)
+         * Function to get a new set of token tokens
+         * @param  string $refreshToken saved refresh token
+         * @return object               response
+         */
+        public function fetchAccessTokens($code)
         {
-            $redirectUri = self::$redirectUri ?: self::setRedirectUri();
-            $oauthServer = self::$oauthServer ?: self::setOauthServer();
-
-            $appId     = OAUTH2_CLIENT_ID;
-            $appSecret = OAUTH2_CLIENT_SECRET;
+            $clientId = self::$params['clientId'];
+            $clientSecret = self::$params['clientSecret'];
+            $oauthServer = self::$params['aouthServer'];
+            $lmsInstance = self::$params['instance'];
+            $redirectUri = self::$params['redirectUri'];
 
             $grantType = 'authorization_code';
 
@@ -208,109 +195,36 @@ if (!class_exists('Activate')) {
             $requestArgs['form_params'] = array(
                 'grant_type' =>     $grantType,
                 'code' =>           $code,
-                'client_id' =>      $appId,
-                'client_secret' =>  $appSecret,
+                'client_id' =>      $clientId,
+                'client_secret' =>  $clientSecret,
                 'redirect_uri' =>   $redirectUri,
             );
 
-            echo "<pre>";
-            var_dump($url);
-            var_dump($requestArgs);
-            echo "</pre>";
-
             $guzzleClient = new Client();
-
             $response = $guzzleClient->request('POST', $url, $requestArgs);
 
-            $code = $response->getStatusCode(); // 200
-            $reason = $response->getReasonPhrase(); // OK
-            $body = $response->getBody();
-            var_dump($code);
-            var_dump($reason);
-
-            echo "<pre>";
-            print_r(json_decode($body));
-            echo "</pre>";
-
-            die();
-
-            //TODO: Send Call to OauthServer
-            $response = array();
-
-            return $this->saveAccessToken($response);
+            return $this->proccessResponse($response);
         }
 
         /**
         * Function to get a Save Access Token.
         */
-        protected function saveAccessToken($response)
+        protected function proccessResponse($response)
         {
-            // If the response gave us an error, return.
-            //TODO:
-            //if ( error ) { return false; }
-
-            if ($response['response']['code'] === 200) {
-
-                $result = json_decode($response['body']);
-
-                var_dump($result);
-
-                $accessToken = $result->access_token;
-                $expiresIn = $result->expires_in;
-                $tokenType = $result->token_type;
-                $scope = $result->scope;
-                $refreshToken = $result->refresh_token;
-
-                $accessExpiresIn = date(DATE_FORMAT, time() + (int) $expiresIn);
-
-                //TODO: Save the returned values
-
-                return true;
-
-            } else { return false; }
-        }
-
-        /**
-         * Sets the Redirect URI.
-         *
-         * @return void
-         *
-         * */
-        protected static function setRedirectUri()
-        {
-            global $APP_ENVIRONMENT_VARS;
-            if (!empty($APP_ENV)){
-                self::$redirectUri = $APP_ENVIRONMENT_VARS[$env]['redirectUri'];
+            $code = $response->getStatusCode();
+            $result = array();
+            if (self::SUCCESS_CODE === $response->getStatusCode()) {
+                $body = $response->getBody();
+                $result['status'] = self::STATUS_SUCCESS;
+                $result['body'] = json_decode($body);
             } else {
-                self::$redirectUri = $APP_ENVIRONMENT_VARS['dev']['redirectUri'];
+                $result['status'] = self::STATUS_ERROR;
+                $result['error'] = array(
+                    'code' => $code,
+                    'message' => $response->getReasonPhrase()
+                );
             }
-            //self::$redirectUri = APP_URL_ROUTES .'?_uri=oauth/callback';
-        }
-
-        /**
-         * Checks APP Environment and sets the oAuth server path accordingly.
-         *
-         * @return void
-         *
-         * */
-        protected static function setOauthServer()
-        {
-            global $APP_ENVIRONMENT_VARS;
-            if (!empty($APP_ENV)){
-                self::$oauthServer = $APP_ENVIRONMENT_VARS[$env]['aouthServer'];
-            } else {
-                self::$oauthServer = $APP_ENVIRONMENT_VARS['dev']['aouthServer'];
-            }
-        }
-
-        protected static function setLmsInstance()
-        {
-            global $APP_ENVIRONMENT_VARS;
-            if (!empty($APP_ENV)){
-                self::$lmsInstance = $APP_ENVIRONMENT_VARS[$env]['instance'];
-            } else {
-                self::$lmsInstance = $APP_ENVIRONMENT_VARS['dev']['instance'];
-            }
+            return $result;
         }
     }
 }
