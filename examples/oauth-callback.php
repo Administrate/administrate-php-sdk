@@ -10,8 +10,6 @@ use Administrate\PhpSdk\Oauth\Activate;
 $activate = new Activate();
 //$activate = new Activate($activationParams);
 
-echo "<a href='" . $activate->getAuthorizeUrl() . "'>Activate SDK<a/><br>";
-
 $response = $activate->handleAuthorizeCallback($_GET);
 if ($response) {
   echo "<pre>";
