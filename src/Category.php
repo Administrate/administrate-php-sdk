@@ -171,6 +171,12 @@ class Category {
             ->setArgument('first', $first)
             ->setArgument('offset', $offset)
             ->selectField(
+                (new QueryBuilder('pageInfo'))
+                ->selectField('startCursor')
+                ->selectField('endCursor')
+                ->selectField('totalRecords')
+            )
+            ->selectField(
                 (new QueryBuilder('edges'))
                     ->selectField($node)
             );
@@ -179,7 +185,6 @@ class Category {
 
         $authorizationHeaders = ClientHelper::setHeaders(self::$accessToken, self::$weblinkParams);
         $httpOptions = ClientHelper::setArgs();
-
 
         $client = new Client(self::$weblinkParams['uri'], $authorizationHeaders);
         $results = $client->runQuery($gqlQuery, true);
