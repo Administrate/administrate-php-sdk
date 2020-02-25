@@ -142,16 +142,48 @@ class Category {
     }
 
     /**
-     * Method to get a set of events by IDs
-     *
-     * @param  integer $page    The page number
-     * @param  integer $perPage The number of items / page
-     *
-     * @return String       JSON Object Array Of LMS Events
+     * Method to get all Categories
+     * @return String JSON Object Array Of Categories
      */
-    public static function loadAll($page = 1, $perPage = 10) {
+    public static function loadAll($page = 1, $perPage = 5, $fields = array()) {
+        if (!$fields) {
+            $fields = self::$defaultFields;
+        }
 
+        $node = (new QueryBuilder('node'));
+        foreach ($fields as $fieldKey) {
+            if ('parent' === $fieldKey) {
+                $node->selectField(
+                    (new QueryBuilder($fieldKey))
+                    ->selectField('id'));
+            } else {
+                $node->selectField($fieldKey);
+            }
+        }
+
+        $first = $perPage;
+        if ($page <= 0) {
+            $page = 1;
+        }
+        $offset = ($page - 1) * $perPage;
+
+        $builder = (new QueryBuilder('categories'))
+            ->setArgument('first', $first)
+            ->setArgument('offset', $offset)
+            ->selectField(
+                (new QueryBuilder('edges'))
+                    ->selectField($node)
+            );
+
+        $gqlQuery = $builder->getQuery();
+
+        $authorizationHeaders = ClientHelper::setHeaders(self::$accessToken, self::$weblinkParams);
+        $httpOptions = ClientHelper::setArgs();
+
+
+        $client = new Client(self::$weblinkParams['uri'], $authorizationHeaders);
+        $results = $client->runQuery($gqlQuery, true);
+
+        return $results->getData();
     }
-
-
 }
