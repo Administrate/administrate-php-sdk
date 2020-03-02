@@ -15,7 +15,7 @@
             "homepage": "https://www.getadministrate.com/"
         }
     ],
-    "minimum-stability": "dev",
+    "minimum-stability": "1.0.0",
     "require": {
         "gmostafa/php-graphql-client": "^1.4"
     },
