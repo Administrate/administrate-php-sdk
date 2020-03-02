@@ -13,6 +13,10 @@ $APP_ENVIRONMENT_VARS = array(
         'aouthServer' => '',
         'apiUri' => '',
         'redirectUri' => '',
+        'weblink2' => array(
+            'uri' => '',
+            'portal' => '',
+        )
     ),
     'stag' => array(
         'clientId' => '',
@@ -21,6 +25,10 @@ $APP_ENVIRONMENT_VARS = array(
         'aouthServer' => '',
         'apiUri' => '',
         'redirectUri' => '',
+        'weblink2' => array(
+            'uri' => '',
+            'portal' => '',
+        )
     ),
     'dev' => array(
         'clientId' => '',
@@ -29,6 +37,10 @@ $APP_ENVIRONMENT_VARS = array(
         'aouthServer' => '',
         'apiUri' => '',
         'redirectUri' => '',
+        'weblink2' => array(
+            'uri' => '',
+            'portal' => '',
+        )
     )
 );
 

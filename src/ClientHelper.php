@@ -6,10 +6,17 @@ class ClientHelper {
     * Function to build the API call headers
     * @return $headers, array API Call Header configuration.
     */
-    public static function setHeaders($accessToken) {
+    public static function setHeaders($accessToken, $params = array()) {
         $headers = array(
-            'Authorization' => 'Bearer ' . $accessToken
+            'Authorization' => 'Bearer ' . $accessToken,
         );
+
+        foreach ($params as $key => $value) {
+            if ('portal' === $key) {
+                $headers['weblink-portal'] = $value;
+            }
+        }
+
         return $headers;
     }
 
