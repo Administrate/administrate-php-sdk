@@ -1,32 +1,42 @@
-# ADMINISTRATE PHP SDK
+# Administrate PHP SDK
 
 PHP SDK which provides a simple way to interact with administrate platform.
 Facilitate authorization to the APIs and Provides ways to use the available APIs.
 
+## Installation
+
+Using [composer](https://getcomposer.org/)
+
+```composer
+composer require administrate/phpsdk:1.0.0
+```
+
 ## Usage
 
-### Authorization:
-You can use this DSK to authorize your app to connect to the APIs.
+### Authorization
+```php
+require_once 'vendor/autoload.php';
 
-```
-$activationParams = array(
-  'clientId' => '', // Application ID
-  'clientSecret' => '', // Application Secret
-  'instance' => '', // Administrate Instance to connect to
-  'aouthServer' => '', // Administrate Authorization endpoint
-  'redirectUri' => '', // You App redirect uri to handle callbacks from api
-);
+use Administrate\PhpSdk\Oauth\Activate;
+
+$activationParams = [
+  'clientId' => '',     // Application ID
+  'clientSecret' => '', // Application secret
+  'instance' => '',     // Administrate instance to connect to
+  'aouthServer' => '',  // Administrate authorization endpoint
+  'redirectUri' => '',  // Your app redirect URI to handle callbacks from api
+];
 
 // Create Activate Class instance
-$activate = new Administrate\PhpSdk\Oauth\Activate($activationParams);
+$activationObj = new Administrate\PhpSdk\Oauth\Activate($activationParams);
 
 // Get Authorization Code:
-$activate->getAuthorizeUrl();
+$activationObj->getAuthorizeUrl();
 
 // Handle Callback Code:
-$activate->handleAuthorizeCallback($params); // $params with code.
+$activationObj->handleAuthorizeCallback($params); // $params with code.
 or
-$activate->fetchAccessTokens($code);
+$activationObj->fetchAccessTokens($code);
 
 // Response Format (array):
 {
@@ -40,3 +50,68 @@ $activate->fetchAccessTokens($code);
   }
 }
 ```
+
+### Categories Management
+```php
+require_once '/vendor/autoload.php';
+
+use Administrate\PhpSdk\Category;
+
+$categoryObj = new Category();
+
+$defaultFields = [
+    'id', 
+    'name', 
+    'shortDescription', 
+    'parent'
+];
+
+$categoryId = "TGVh....YeTox";
+
+//Get Single Category
+$category = $categoryObj->load($categoryId, $defaultFields);
+
+//Get all categories
+$page = 1;
+$perPage = 5;
+$categories = $categoryObj->loadAll($page, $perPage, $defaultFields);
+
+#The parameter "defaultFields" is optional only pass it if you want to change the fields
+```
+
+### Courses Management
+```php
+require_once '/vendor/autoload.php';
+
+use Administrate\PhpSdk\Course;
+
+$CourseObj = new Course();
+
+$defaultFields = [
+    'id', 
+    'name', 
+    'description', 
+    'category', 
+    'imageUrl'
+];
+$courseId = "TGVh......eTox";
+
+//Get single course
+$course = $CourseObj->load($courseId, $defaultFields);
+
+//get Courses with filters
+$page = 1; //optional
+$perPage = 6; //optional
+$categoryId = "TGVh......eTox"; //optional
+$searchKeyword = "test_keyword_here"; //optional
+$categories = $courseObj->loadAll($page, $perPage, $categoryId, $searchkeyword, $defaultFields);
+
+```
+
+## Contributing
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
+
+## License
+[MIT](https://choosealicense.com/licenses/mit/)

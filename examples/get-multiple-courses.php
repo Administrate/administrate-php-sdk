@@ -9,7 +9,7 @@ require_once '../vendor/autoload.php';
 
 $id = "Q291cnNlVGVtcGxhdGU6MTE2OTk0MQ==";
 $courseClass = new Course();
-$courses = $courseClass->loadAll();
+$courses = $courseClass->loadAll(1, 5, "TGVhcm5pbmdDYXRlZ29yeTox", "safe");
 
 echo "<pre>";
 print_r($courses);

@@ -8,9 +8,9 @@ use Administrate\PhpSdk\ClientHelper;
 /**
  * Category
  *
- * @package    Administrate\PhpSdk
+ * @package Administrate\PhpSdk
  * @author Ali Habib <ahh@administrate.co>
- * @author     Jad Khater <jck@administrate.co>
+ * @author Jad Khater <jck@administrate.co>
  */
 
 class Course {
@@ -30,7 +30,7 @@ class Course {
     public function __construct($params = array())
     {
         self::setWeblinkParams($params);
-        self::$accessToken = "Ec57fGwztP5MWZWL-5GqiXPUyECUIXOucSgEFWfQV7A";
+        self::$accessToken = "VBRIsqDjWgmJThK4H7p_KWuTkSsRHUtz2a0PgGrKtWg";
     }
 
     /**
@@ -140,7 +140,7 @@ class Course {
      * Method to get all Categories
      * @return String JSON Object Array Of Categories
      */
-    public static function loadAll($page = 1, $perPage = 5, $fields = array()) {
+    public static function loadAll($page = 1, $perPage = 5, $categoryId = "", $keyword = "", $fields = array()) {
 
         if (!$fields) {
             $fields = self::$defaultFields;
@@ -158,49 +158,45 @@ class Course {
 
         $offset = ($page - 1) * $perPage;
 
-        $builder = (new QueryBuilder('courses'))
-            ->setArgument('first', $first)
-            ->setArgument('offset', $offset)
-            ->selectField(
+		$builder = (new QueryBuilder('courses'))
+	    ->setVariable('filters', '[CourseFieldFilter]', true)
+        ->setArgument('filters', '$filters')
+        ->selectField(
                 (new QueryBuilder('pageInfo'))
                 ->selectField('startCursor')
                 ->selectField('endCursor')
                 ->selectField('totalRecords')
             )
-            ->selectField(
-                (new QueryBuilder('edges'))
-                    ->selectField($node)
-            );
-
-
-
-        //starts
-		$builder = (new QueryBuilder('courses'))
-	    ->setVariable('filters', '[CourseFieldFilter]', true)
-        ->setArgument('filters', '$filters')
         ->selectField(
             (new QueryBuilder('edges'))
                 ->selectField($node)
         );
-        //end
 
         $gqlQuery = $builder->getQuery();
-        //print_r($gqlQuery);
 
         $authorizationHeaders = ClientHelper::setHeaders(self::$accessToken, self::$weblinkParams);
         $httpOptions = ClientHelper::setArgs();
         $variablesArray = array(
-            "filters" => array(
-                0 => array(
-                    "field" => "categoryId",
-                    "operation" => "eq",
-                    "value" => "TGVhcm5pbmdDYXRlZ29yeTox",
-                )
-            )
+            "filters" => array()
         );
+        if ($categoryId !="") {
+            array_push($variablesArray['filters'], array(
+                "field" => "categoryId",
+                "operation" => "eq",
+                "value" => $categoryId
+            ));
+        }
+        if ($keyword!="") {
+            array_push($variablesArray['filters'], array(
+                "field" => "name",
+                "operation" => "like",
+                "value" => "%$keyword%"
+            ));
+        }
+
         $client = new Client(self::$weblinkParams['uri'], $authorizationHeaders);
         $results = $client->runQuery($gqlQuery, true, $variablesArray);
-
-        return $results->getData();
+        $results->reformatResults(true);
+        return json_encode($results->getData());
     }
 }
