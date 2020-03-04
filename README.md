@@ -3,6 +3,11 @@
 PHP SDK which provides a simple way to interact with administrate platform.
 Facilitate authorization to the APIs and Provides ways to use the available APIs.
 
+
+## Note
+
+In order to use this library, please contact [Administrate](https://www.getadministrate.com/) to provide you with the needed credentials (clientId, clientSecret, instance url and oauthServer).
+
 ## Installation
 
 Using [composer](https://getcomposer.org/)
