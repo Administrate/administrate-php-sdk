@@ -17,6 +17,7 @@ $APP_ENVIRONMENT_VARS = array(
         'weblink2' => array(
             'uri' => '',
             'portal' => '',
+            'accessToken' => ''
         )
     ),
     'stag' => array(
@@ -29,6 +30,7 @@ $APP_ENVIRONMENT_VARS = array(
         'weblink2' => array(
             'uri' => '',
             'portal' => '',
+            'accessToken' => ''
         )
     ),
     'dev' => array(
@@ -41,6 +43,7 @@ $APP_ENVIRONMENT_VARS = array(
         'weblink2' => array(
             'uri' => '',
             'portal' => '',
+            'accessToken' => ''
         )
     )
 );
@@ -48,7 +51,6 @@ $APP_ENVIRONMENT_VARS = array(
 // USED In Examples (can be removed if not used)
 $categoriesIds = array();
 $learnerId = '';
-$accessToken = '';
 $activationParams = array(
     'clientId' => '',
     'clientSecret' => '',
@@ -59,6 +61,7 @@ $activationParams = array(
     'weblink2' => array(
         'uri' => '',
         'portal' => '',
+        'accessToken' => ''
     )
 );
 

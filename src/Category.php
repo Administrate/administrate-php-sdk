@@ -13,7 +13,7 @@ use Administrate\PhpSdk\ClientHelper;
  */
 class Category {
 
-    protected static $weblinkParams;
+    public static $weblinkParams;
     protected static $accessToken;
 
     static $defaultFields = array('id', 'name', 'shortDescription', 'parent');
@@ -28,7 +28,6 @@ class Category {
     public function __construct($params = array())
     {
         self::setWeblinkParams($params);
-        self::$accessToken = "7sLTghhFzautJjZ7IcFB92z_6OT1Ta3E3SEM5SnXAZs";
     }
 
     /**
@@ -110,8 +109,6 @@ class Category {
 
         $gqlQuery = $builder->getQuery();
 
-        $authorizationHeaders = ClientHelper::setHeaders(self::$accessToken, self::$weblinkParams);
-        $httpOptions = ClientHelper::setArgs();
         $variablesArray = array(
             "filters" => array(
                 0 => array(
@@ -121,11 +118,8 @@ class Category {
                 )
             )
         );
-
-        $client = new Client(self::$weblinkParams['uri'], $authorizationHeaders);
-        $results = $client->runQuery($gqlQuery, true, $variablesArray);
-
-        return $results->getData();
+        $class = get_called_class();
+      return ClientHelper::sendSecureCallJson($class, $gqlQuery, $variablesArray);
     }
 
     /**
@@ -183,12 +177,7 @@ class Category {
 
         $gqlQuery = $builder->getQuery();
 
-        $authorizationHeaders = ClientHelper::setHeaders(self::$accessToken, self::$weblinkParams);
-        $httpOptions = ClientHelper::setArgs();
-
-        $client = new Client(self::$weblinkParams['uri'], $authorizationHeaders);
-        $results = $client->runQuery($gqlQuery, true);
-
-        return $results->getData();
+        $class = get_called_class();
+        return ClientHelper::sendSecureCallJson($class, $gqlQuery);
     }
 }
