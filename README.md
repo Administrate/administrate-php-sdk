@@ -1,4 +1,3 @@
-    )
 # Administrate PHP SDK
 
 PHP SDK which provides a simple way to interact with administrate platform.
@@ -26,11 +25,16 @@ require_once 'vendor/autoload.php';
 use Administrate\PhpSdk\Oauth\Activate;
 
 $activationParams = [
-  'clientId' => '',     // Application ID
-  'clientSecret' => '', // Application secret
-  'instance' => '',     // Administrate instance to connect to
-  'aouthServer' => '',  // Administrate authorization endpoint
-  'redirectUri' => '',  // Your app redirect URI to handle callbacks from api
+    'clientId' => '',     // Application ID
+    'clientSecret' => '', // Application secret
+    'instance' => '',     // Administrate instance to connect to
+    'aouthServer' => '',  // Administrate authorization endpoint
+    'redirectUri' => '',  // Your app redirect URI to handle callbacks from api,
+    'weblink2' => [
+        'uri' => '',
+        'portal' => '',
+        'accessToken' => ''
+    ]
 ];
 
 // Create Activate Class instance
@@ -46,14 +50,14 @@ $activationObj->fetchAccessTokens($code);
 
 // Response Format (array):
 {
-  "status" => "success",
-  "body" => {
-    "access_token" => "sWNRpcf.....106vqR4",
-    "expires_in"=> 3600,
-    "token_type" => "Bearer",
-    "scope" => "instance",
-    "refresh_token" => "StEqsly.....V5nUhQd1i"
-  }
+    "status" => "success",
+    "body" => {
+        "access_token" => "sWNRpcf.....106vqR4",
+        "expires_in"=> 3600,
+        "token_type" => "Bearer",
+        "scope" => "instance",
+        "refresh_token" => "StEqsly.....V5nUhQd1i"
+    }
 }
 ```
 
