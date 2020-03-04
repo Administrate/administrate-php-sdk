@@ -13,7 +13,7 @@ In order to use this library, please contact [Administrate](https://www.getadmin
 Using [composer](https://getcomposer.org/)
 
 ```composer
-composer require administrate/phpsdk:1.0.0
+composer require administrate/phpsdk
 ```
 
 ## Usage
@@ -38,7 +38,7 @@ $activationParams = [
 ];
 
 // Create Activate Class instance
-$activationObj = new Administrate\PhpSdk\Oauth\Activate($activationParams);
+$activationObj = new Activate($activationParams);
 
 // Get Authorization Code:
 $activationObj->getAuthorizeUrl();
