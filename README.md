@@ -1,3 +1,4 @@
+    )
 # Administrate PHP SDK
 
 PHP SDK which provides a simple way to interact with administrate platform.
