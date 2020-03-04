@@ -28,7 +28,7 @@ class Category {
     public function __construct($params = array())
     {
         self::setWeblinkParams($params);
-        self::$accessToken = "CHKGBIRRJAVc01aj4078ilWuvm99CCqOhaLBlw0HPGY";
+        self::$accessToken = "7sLTghhFzautJjZ7IcFB92z_6OT1Ta3E3SEM5SnXAZs";
     }
 
     /**
