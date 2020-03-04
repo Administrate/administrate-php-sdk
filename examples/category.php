@@ -10,7 +10,7 @@ use Administrate\PhpSdk\Category;
 
 echo "<pre>";
 
-$categoriesIds = array("TGVhcm5pbmdDYXRlZ29yeTox", "TGVhcm5pbmdDYXRlZ29yeToxMA==");
+//$categoriesIds Set this value in config.php
 
 $categoryClass = new Category();
 $category = $categoryClass->load($categoriesIds[0]);

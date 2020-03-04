@@ -13,6 +13,8 @@ use GraphQL\RawObject;
 use GraphQL\Client;
 use Administrate\PhpSdk\ClientHelper;
 
+global $APP_ENVIRONMENT_VARS;
+
 $contactFields = array( 'firstName','lastName','emailAddress');
 
 $contact = (new QueryBuilder('contact'));
@@ -30,12 +32,12 @@ $builder = (new QueryBuilder('node'))
 
 $gqlQuery = $builder->getQuery();
 
-$endpointUrl = "https://api.getadministrate.com/graphql";
-$accessToken = '21zAoFvqgVg997nHsH9rI2kykHbvwN';
+$endpointUrl = $APP_ENVIRONMENT_VARS[PHP_SDK_ENV]['apiUri'];
+// $accessToken shoudl be set in config.php
 $authorizationHeaders = ClientHelper::setHeaders($accessToken);
 $httpOptions = ClientHelper::setArgs();
 $variablesArray = array(
-    'learnerId' => 'bGVhcm5lcjox'
+    'learnerId' => $learnerId // Set this value in config.php
 );
 
 $client = new Client($endpointUrl, $authorizationHeaders);
