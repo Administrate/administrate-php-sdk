@@ -18,7 +18,7 @@ foreach ($contactFields as $field) {
 }
 
 $onLearner = (new QueryBuilder('... on Learner'))
-        ->selectField($contact);
+    ->selectField($contact);
 
 $builder = (new QueryBuilder('node'))
     ->setVariable('learnerId', 'ID', true)
@@ -28,12 +28,16 @@ $builder = (new QueryBuilder('node'))
 $gqlQuery = $builder->getQuery();
 
 if ($_SESSION['access_token']) {
-  $accessToken = $_SESSION['access_token'];
+    $accessToken = $_SESSION['access_token'];
 }
 
 $endpointUrl = $APP_ENVIRONMENT_VARS[PHP_SDK_ENV]['apiUri'];
 // $accessToken is set in config.php
-$authorizationHeaders = ClientHelper::setHeaders(array('accessToken' => $accessToken));
+$authorizationHeaders = ClientHelper::setHeaders(
+    array(
+        'accessToken' => $accessToken
+    )
+);
 $httpOptions = ClientHelper::setArgs();
 $variablesArray = array(
     'learnerId' => $learnerId // Set this value in config.php

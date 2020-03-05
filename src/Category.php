@@ -14,7 +14,6 @@ use Administrate\PhpSdk\ClientHelper;
 class Category {
 
     public static $weblinkParams;
-    protected static $accessToken;
 
     static $defaultFields = array('id', 'name', 'shortDescription', 'parent');
 
@@ -46,34 +45,8 @@ class Category {
             if (defined('PHP_SDK_ENV')) {
                 self::$weblinkParams = $APP_ENVIRONMENT_VARS[PHP_SDK_ENV]['weblink2'];
             }
-        } else {
-            if (isset($params['weblink2'])) {
-                self::$weblinkParams = $params['weblink2'];
-            }
         }
-    }
-
-    /**
-     * Method to set APP Environment Params
-     * @param array $params configuration array
-     *
-     * @return void
-     */
-    protected static function setWeblinkUri($params)
-    {
-        // Check for Passed params
-        // If empty fallback to config file defined params
-        // based on SDK env.
-        if (empty($params)) {
-            global $APP_ENVIRONMENT_VARS;
-            if (defined('PHP_SDK_ENV')) {
-                self::$weblinkUri = $APP_ENVIRONMENT_VARS[PHP_SDK_ENV]['weblinkUri'];
-            }
-        } else {
-            if (isset($params['weblinkUri'])) {
-                self::$weblinkUri = $params['weblinkUri'];
-            }
-        }
+        self::$weblinkParams = $params;
     }
 
     /**
