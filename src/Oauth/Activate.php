@@ -4,6 +4,7 @@ namespace Administrate\PhpSdk\Oauth;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
 
 if (!class_exists('Activate')) {
 
@@ -200,6 +201,35 @@ if (!class_exists('Activate')) {
                 'client_secret' =>  $clientSecret,
                 'redirect_uri' =>   $redirectUri,
             );
+
+            $guzzleClient = new Client();
+            $response = $guzzleClient->request('POST', $url, $requestArgs);
+
+            return $this->proccessResponse($response);
+        }
+
+        /**
+         * Function to get a new weblink access token
+         * @return object response
+         */
+        public function getWeblinkCode($filePath)
+        {
+            if (!file_exists($filePath)) {
+                return;
+            }
+
+            $oauthServer = self::$params['oauthServer'];
+            $portal = self::$params['portal'];
+
+            //Request Token
+            $url = $oauthServer . "/portal/guest";
+
+            $requestArgs['headers'] =  array(
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json, text/plain, */*'
+            );
+
+            $requestArgs['body'] = fopen($filePath, 'r');
 
             $guzzleClient = new Client();
             $response = $guzzleClient->request('POST', $url, $requestArgs);

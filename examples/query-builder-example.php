@@ -1,19 +1,14 @@
 <?php
-include 'vendor/autoload.php';
 
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
+header('Content-Type: application/json');
 
-require_once '../config.php';
+require_once 'config.php';
 require_once '../vendor/autoload.php';
-
 
 use GraphQL\QueryBuilder\QueryBuilder as QueryBuilder;
 use GraphQL\RawObject;
 use GraphQL\Client;
 use Administrate\PhpSdk\ClientHelper;
-
-global $APP_ENVIRONMENT_VARS;
 
 $contactFields = array( 'firstName','lastName','emailAddress');
 
@@ -23,7 +18,7 @@ foreach ($contactFields as $field) {
 }
 
 $onLearner = (new QueryBuilder('... on Learner'))
-        ->selectField($contact);
+    ->selectField($contact);
 
 $builder = (new QueryBuilder('node'))
     ->setVariable('learnerId', 'ID', true)
@@ -32,9 +27,17 @@ $builder = (new QueryBuilder('node'))
 
 $gqlQuery = $builder->getQuery();
 
+if ($_SESSION['access_token']) {
+    $accessToken = $_SESSION['access_token'];
+}
+
 $endpointUrl = $APP_ENVIRONMENT_VARS[PHP_SDK_ENV]['apiUri'];
-// $accessToken shoudl be set in config.php
-$authorizationHeaders = ClientHelper::setHeaders($accessToken);
+// $accessToken is set in config.php
+$authorizationHeaders = ClientHelper::setHeaders(
+    array(
+        'accessToken' => $accessToken
+    )
+);
 $httpOptions = ClientHelper::setArgs();
 $variablesArray = array(
     'learnerId' => $learnerId // Set this value in config.php
@@ -43,6 +46,4 @@ $variablesArray = array(
 $client = new Client($endpointUrl, $authorizationHeaders);
 $results = $client->runQuery($gqlQuery, true, $variablesArray);
 
-echo "<pre>";
-var_dump($results->getData());
-echo "<pre>";
+echo json_encode($results->getData());

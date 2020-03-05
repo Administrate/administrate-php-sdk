@@ -1,16 +1,22 @@
 <?php
 
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
+header('Content-Type: application/json');
+
+require_once 'config.php';
+require_once '../vendor/autoload.php';
 
 use Administrate\PhpSdk\Course;
 
-require_once '../config.php';
-require_once '../vendor/autoload.php';
+// $courseId defined in config.php
+// $categoriesIds Set this value in config.php
+// $activationParams Set this value in config.php
 
-echo "<pre>";
-$id = "Q291cnNlVGVtcGxhdGU6MTE2OTk0MQ==";
-$courseClass = new Course();
-$course = $courseClass->load($id);
-print_r($course);
-echo "</pre>";
+$activationParams = $activationParams['weblink2'];
+
+if ($_SESSION['portal_token']) {
+    $activationParams['accessToken'] = $_SESSION['portal_token'];
+}
+
+$courseClass = new Course($activationParams);
+$course = $courseClass->load($courseId);
+echo $course;

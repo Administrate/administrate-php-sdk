@@ -1,8 +1,6 @@
 <?php
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
 
-require_once '../config.php' ;
+require_once 'config.php';
 require_once '../vendor/autoload.php';
 
 use Administrate\PhpSdk\Oauth\Activate;
@@ -11,17 +9,23 @@ $activate = new Activate();
 //$activate = new Activate($activationParams);
 
 $response = $activate->handleAuthorizeCallback($_GET);
+
 if ($response) {
-  echo "<pre>";
-  var_dump($response);
-  echo "</pre>";
-  $refreshToken = $response['body']->refresh_token;
-  echo "<a href='/graphql-client/examples/oauth-refreshToken.php?token=$refreshToken' target='_blank'>Refresh token<a/>";
+    $accessToken = $response['body']->access_token;
+    $refreshToken = $response['body']->refresh_token;
+
+    // Save access_token & refresh_token in session
+    $_SESSION = array(
+        'access_token' => $accessToken,
+        'refresh_token' => $refreshToken
+    );
+
+    echo "<pre>";
+    print_r($_SESSION);
+    echo "</pre>";
+
+    $refreshLink =  "/graphql-client/examples/oauth-refreshToken.php";
+    $refreshLink .= "?token=$refreshToken";
+
+    echo "<a href='$refreshLink' target='_blank'>Refresh token<a/>";
 }
-
-
-
-
-
-
-

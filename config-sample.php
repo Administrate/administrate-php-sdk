@@ -15,9 +15,10 @@ $APP_ENVIRONMENT_VARS = array(
         'apiUri' => '',
         'redirectUri' => '',
         'weblink2' => array(
+            'oauthServer' => '',
             'uri' => '',
             'portal' => '',
-            'accessToken' => ''
+            'accessToken' => '',
         )
     ),
     'stag' => array(
@@ -28,9 +29,10 @@ $APP_ENVIRONMENT_VARS = array(
         'apiUri' => '',
         'redirectUri' => '',
         'weblink2' => array(
+            'oauthServer' => '',
             'uri' => '',
             'portal' => '',
-            'accessToken' => ''
+            'accessToken' => '',
         )
     ),
     'dev' => array(
@@ -41,9 +43,10 @@ $APP_ENVIRONMENT_VARS = array(
         'apiUri' => '',
         'redirectUri' => '',
         'weblink2' => array(
+            'oauthServer' => '',
             'uri' => '',
             'portal' => '',
-            'accessToken' => ''
+            'accessToken' => '',
         )
     )
 );
@@ -51,6 +54,7 @@ $APP_ENVIRONMENT_VARS = array(
 // USED In Examples (can be removed if not used)
 $categoriesIds = array();
 $learnerId = '';
+$courseId = '';
 $activationParams = array(
     'clientId' => '',
     'clientSecret' => '',
@@ -59,6 +63,7 @@ $activationParams = array(
     'apiUri' => '',
     'redirectUri' => '',
     'weblink2' => array(
+        'oauthServer' => '',
         'uri' => '',
         'portal' => '',
         'accessToken' => ''
