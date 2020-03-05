@@ -209,6 +209,35 @@ if (!class_exists('Activate')) {
         }
 
         /**
+         * Function to get a new weblink access token
+         * @return object response
+         */
+        public function getWeblinkCode($filePath)
+        {
+            if (!file_exists($filePath)) {
+                return;
+            }
+
+            $oauthServer = self::$params['oauthServer'];
+            $portal = self::$params['portal'];
+
+            //Request Token
+            $url = $oauthServer . "/portal/guest";
+
+            $requestArgs['headers'] =  array(
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json, text/plain, */*'
+            );
+
+            $requestArgs['body'] = fopen($filePath, 'r');
+
+            $guzzleClient = new Client();
+            $response = $guzzleClient->request('POST', $url, $requestArgs);
+
+            return $this->proccessResponse($response);
+        }
+
+        /**
          * Method to process guzzle client Response
          * and return results to be saved.
          *
