@@ -51,6 +51,7 @@ $APP_ENVIRONMENT_VARS = array(
 // USED In Examples (can be removed if not used)
 $categoriesIds = array();
 $learnerId = '';
+$courseId = '';
 $activationParams = array(
     'clientId' => '',
     'clientSecret' => '',

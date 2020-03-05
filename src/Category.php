@@ -119,7 +119,10 @@ class Category {
             )
         );
         $class = get_called_class();
-      return ClientHelper::sendSecureCallJson($class, $gqlQuery, $variablesArray);
+        $result = ClientHelper::sendSecureCall($class, $gqlQuery, $variablesArray);
+        if (isset($result['categories']['edges'][0]['node']) && !empty($result['categories']['edges'][0]['node'])) {
+            return json_encode($result['categories']['edges'][0]['node']);
+        }
     }
 
     /**
