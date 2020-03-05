@@ -14,7 +14,6 @@ use Administrate\PhpSdk\ClientHelper;
 class Category {
 
     public static $weblinkParams;
-    protected static $accessToken;
 
     static $defaultFields = array('id', 'name', 'shortDescription', 'parent');
 

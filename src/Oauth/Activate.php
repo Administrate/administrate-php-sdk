@@ -4,6 +4,7 @@ namespace Administrate\PhpSdk\Oauth;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
 
 if (!class_exists('Activate')) {
 
