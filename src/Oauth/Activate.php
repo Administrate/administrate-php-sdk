@@ -82,7 +82,7 @@ if (!class_exists('Activate')) {
         public function getAuthorizeUrl()
         {
             $clientId = self::$params['clientId'];
-            $oauthServer = self::$params['aouthServer'];
+            $oauthServer = self::$params['oauthServer'];
 
             $requestUrl  = $oauthServer;
             $requestUrl .= "/authorize?response_type=code";
@@ -156,7 +156,7 @@ if (!class_exists('Activate')) {
 
             $clientId = self::$params['clientId'];
             $clientSecret = self::$params['clientSecret'];
-            $oauthServer = self::$params['aouthServer'];
+            $oauthServer = self::$params['oauthServer'];
             $instance = self::$params['instance'];
 
             $grantType = 'refresh_token';
@@ -185,7 +185,7 @@ if (!class_exists('Activate')) {
         {
             $clientId = self::$params['clientId'];
             $clientSecret = self::$params['clientSecret'];
-            $oauthServer = self::$params['aouthServer'];
+            $oauthServer = self::$params['oauthServer'];
             $lmsInstance = self::$params['instance'];
             $redirectUri = self::$params['redirectUri'];
 
