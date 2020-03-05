@@ -3,12 +3,17 @@
 PHP SDK which provides a simple way to interact with administrate platform.
 Facilitate authorization to the APIs and Provides ways to use the available APIs.
 
+
+## Note
+
+In order to use this library, please contact [Administrate](https://www.getadministrate.com/) to provide you with the needed credentials (clientId, clientSecret, instance url and oauthServer).
+
 ## Installation
 
 Using [composer](https://getcomposer.org/)
 
 ```composer
-composer require administrate/phpsdk:1.0.0
+composer require administrate/phpsdk
 ```
 
 ## Usage
@@ -20,15 +25,20 @@ require_once 'vendor/autoload.php';
 use Administrate\PhpSdk\Oauth\Activate;
 
 $activationParams = [
-  'clientId' => '',     // Application ID
-  'clientSecret' => '', // Application secret
-  'instance' => '',     // Administrate instance to connect to
-  'aouthServer' => '',  // Administrate authorization endpoint
-  'redirectUri' => '',  // Your app redirect URI to handle callbacks from api
+    'clientId' => '',     // Application ID
+    'clientSecret' => '', // Application secret
+    'instance' => '',     // Administrate instance to connect to
+    'oauthServer' => '',  // Administrate authorization endpoint
+    'redirectUri' => '',  // Your app redirect URI to handle callbacks from api,
+    'weblink2' => [
+        'uri' => '',
+        'portal' => '',
+        'accessToken' => ''
+    ]
 ];
 
 // Create Activate Class instance
-$activationObj = new Administrate\PhpSdk\Oauth\Activate($activationParams);
+$activationObj = new Activate($activationParams);
 
 // Get Authorization Code:
 $activationObj->getAuthorizeUrl();
@@ -40,14 +50,14 @@ $activationObj->fetchAccessTokens($code);
 
 // Response Format (array):
 {
-  "status" => "success",
-  "body" => {
-    "access_token" => "sWNRpcf.....106vqR4",
-    "expires_in"=> 3600,
-    "token_type" => "Bearer",
-    "scope" => "instance",
-    "refresh_token" => "StEqsly.....V5nUhQd1i"
-  }
+    "status" => "success",
+    "body" => {
+        "access_token" => "sWNRpcf.....106vqR4",
+        "expires_in"=> 3600,
+        "token_type" => "Bearer",
+        "scope" => "instance",
+        "refresh_token" => "StEqsly.....V5nUhQd1i"
+    }
 }
 ```
 

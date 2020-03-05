@@ -11,36 +11,39 @@ $APP_ENVIRONMENT_VARS = array(
         'clientId' => '',
         'clientSecret' => '',
         'instance' => '',
-        'aouthServer' => '',
+        'oauthServer' => '',
         'apiUri' => '',
         'redirectUri' => '',
         'weblink2' => array(
             'uri' => '',
             'portal' => '',
+            'accessToken' => ''
         )
     ),
     'stag' => array(
         'clientId' => '',
         'clientSecret' => '',
         'instance' => '',
-        'aouthServer' => '',
+        'oauthServer' => '',
         'apiUri' => '',
         'redirectUri' => '',
         'weblink2' => array(
             'uri' => '',
             'portal' => '',
+            'accessToken' => ''
         )
     ),
     'dev' => array(
         'clientId' => '',
         'clientSecret' => '',
         'instance' => '',
-        'aouthServer' => '',
+        'oauthServer' => '',
         'apiUri' => '',
         'redirectUri' => '',
         'weblink2' => array(
             'uri' => '',
             'portal' => '',
+            'accessToken' => ''
         )
     )
 );
@@ -48,17 +51,17 @@ $APP_ENVIRONMENT_VARS = array(
 // USED In Examples (can be removed if not used)
 $categoriesIds = array();
 $learnerId = '';
-$accessToken = '';
 $activationParams = array(
     'clientId' => '',
     'clientSecret' => '',
     'instance' => '',
-    'aouthServer' => '',
+    'oauthServer' => '',
     'apiUri' => '',
     'redirectUri' => '',
     'weblink2' => array(
         'uri' => '',
         'portal' => '',
+        'accessToken' => ''
     )
 );
 

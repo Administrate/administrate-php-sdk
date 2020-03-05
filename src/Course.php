@@ -15,8 +15,7 @@ use Administrate\PhpSdk\ClientHelper;
 
 class Course {
 
-    protected static $weblinkParams;
-    protected static $accessToken;
+    public static $weblinkParams;
 
     static $defaultFields = array('id', 'name', 'description', 'category', 'imageUrl');
 
@@ -30,7 +29,6 @@ class Course {
     public function __construct($params = array())
     {
         self::setWeblinkParams($params);
-        self::$accessToken = "VBRIsqDjWgmJThK4H7p_KWuTkSsRHUtz2a0PgGrKtWg";
     }
 
     /**
@@ -107,8 +105,6 @@ class Course {
 
         $gqlQuery = $builder->getQuery();
 
-        $authorizationHeaders = ClientHelper::setHeaders(self::$accessToken, self::$weblinkParams);
-        $httpOptions = ClientHelper::setArgs();
         $variablesArray = array(
             "filters" => array(
                 0 => array(
@@ -119,10 +115,9 @@ class Course {
             )
         );
 
-        $client = new Client(self::$weblinkParams['uri'], $authorizationHeaders);
-        $results = $client->runQuery($gqlQuery, true, $variablesArray);
+         $class = get_called_class();
+         return ClientHelper::sendSecureCallJson($class, $gqlQuery, $variablesArray);
 
-        return $results->getData();
     }
 
     /**
@@ -174,11 +169,10 @@ class Course {
 
         $gqlQuery = $builder->getQuery();
 
-        $authorizationHeaders = ClientHelper::setHeaders(self::$accessToken, self::$weblinkParams);
-        $httpOptions = ClientHelper::setArgs();
         $variablesArray = array(
             "filters" => array()
         );
+
         if ($categoryId !="") {
             array_push($variablesArray['filters'], array(
                 "field" => "categoryId",
@@ -194,9 +188,7 @@ class Course {
             ));
         }
 
-        $client = new Client(self::$weblinkParams['uri'], $authorizationHeaders);
-        $results = $client->runQuery($gqlQuery, true, $variablesArray);
-        $results->reformatResults(true);
-        return json_encode($results->getData());
+        $class = get_called_class();
+        return ClientHelper::sendSecureCallJson($class, $gqlQuery, $variablesArray);
     }
 }
