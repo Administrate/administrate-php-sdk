@@ -1,16 +1,13 @@
 <?php
 
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-
 use Administrate\PhpSdk\Course;
 
-require_once '../config.php';
+require_once 'config.php';
 require_once '../vendor/autoload.php';
 
 echo "<pre>";
-$id = "Q291cnNlVGVtcGxhdGU6MTE2OTk0MQ==";
+// $courseId defined in config.php
 $courseClass = new Course();
-$course = $courseClass->load($id);
+$course = $courseClass->load($courseId);
 print_r($course);
 echo "</pre>";

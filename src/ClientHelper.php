@@ -10,6 +10,8 @@ class ClientHelper {
     */
     public static function setHeaders($params = array()) {
 
+        $headers = array();
+
         if (isset($params['accessToken']) && !empty($params['accessToken'])) {
             $headers = array(
                 'Authorization' => 'Bearer ' . $params['accessToken'],
@@ -43,6 +45,7 @@ class ClientHelper {
         return $args;
     }
 
+
     public static function sendSecureCall($class, $query, $variables=[]){
         $authorizationHeaders = self::setHeaders($class::$weblinkParams);
         $httpOptions = self::setArgs();
@@ -50,6 +53,7 @@ class ClientHelper {
         $results = $client->runQuery($query, true, $variables);
         return $results->getData();
     }
+
 
     public static function sendSecureCallJson($class, $query, $variables=[]){
         return json_encode(
