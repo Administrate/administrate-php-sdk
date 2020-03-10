@@ -1,14 +1,11 @@
 <?php
-
 header('Content-Type: application/json');
 
 require_once 'config.php';
 require_once '../vendor/autoload.php';
 
-use GraphQL\QueryBuilder\QueryBuilder as QueryBuilder;
-use GraphQL\RawObject;
-use GraphQL\Client;
-use Administrate\PhpSdk\ClientHelper;
+use Administrate\PhpSdk\GraphQL\QueryBuilder as QueryBuilder;
+use Administrate\PhpSdk\GraphQL\Client;
 
 $contactFields = array( 'firstName','lastName','emailAddress');
 
@@ -33,12 +30,12 @@ if ($_SESSION['access_token']) {
 
 $endpointUrl = $APP_ENVIRONMENT_VARS[PHP_SDK_ENV]['apiUri'];
 // $accessToken is set in config.php
-$authorizationHeaders = ClientHelper::setHeaders(
+$authorizationHeaders = Client::setHeaders(
     array(
         'accessToken' => $accessToken
     )
 );
-$httpOptions = ClientHelper::setArgs();
+$httpOptions = Client::setArgs();
 $variablesArray = array(
     'learnerId' => $learnerId // Set this value in config.php
 );

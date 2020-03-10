@@ -4,10 +4,12 @@ namespace Administrate\PhpSdk;
 /**
  * Event
  *
- * @package    Administrate\PhpSdk
- * @author     Jad Khater <jck@administrate.co>
+ * @package Administrate\PhpSdk
+ * @author Ali Habib
+ * @author Jad Khater <jck@administrate.co>
  */
-class Event {
+class Event
+{
 
     /**
      * Method to Get a single event Info from ID.
@@ -16,8 +18,9 @@ class Event {
      *
      * @return String       JSON Object
      */
-    public static function load($id) {
-
+    public static function load($id)
+    {
+        //To do
     }
 
     /**
@@ -27,8 +30,9 @@ class Event {
      *
      * @return String       JSON Object Array Of LMS Events
      */
-    public static function loadMultiple($ids) {
-
+    public static function loadMultiple($ids)
+    {
+        //To do
     }
 
     /**
@@ -40,8 +44,9 @@ class Event {
      *
      * @return String           JSON Object Array Of LMS Events
      */
-    public static function loadByCategoryId($cid, $page = 1, $perPage = 10) {
-
+    public static function loadByCategoryId($cid, $page = 1, $perPage = 10)
+    {
+        //To do
     }
 
     /**
@@ -49,8 +54,9 @@ class Event {
      * @param  array $args  Search Arguments Array
      * @return array        Search Filters array
      */
-    public static function searchFilters($args) {
-
+    public static function searchFilters($args)
+    {
+        //To do
     }
 
     /**
@@ -58,7 +64,8 @@ class Event {
      * @param  array $args Search Arguments Array
      * @return String      JSON Response String of List of events / Search Facets
      */
-    public static function search($args) {
-        $filters = self::searchFilters($args);
+    public static function search($args)
+    {
+        //To do
     }
 }

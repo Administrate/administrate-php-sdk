@@ -4,6 +4,8 @@
 // Default: 'dev'
 define('PHP_SDK_ENV', 'dev');
 
+define('BASE_URL', '');
+
 // Global Environment Variables used by the SDK
 global $APP_ENVIRONMENT_VARS;
 $APP_ENVIRONMENT_VARS = array(
@@ -69,5 +71,3 @@ $activationParams = array(
         'accessToken' => ''
     )
 );
-
-

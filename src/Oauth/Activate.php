@@ -212,7 +212,7 @@ if (!class_exists('Activate')) {
          * Function to get a new weblink access token
          * @return object response
          */
-        public function getWeblinkCode($filePath)
+        public function getWeblinkCode()
         {
             if (!file_exists($filePath)) {
                 return;
@@ -229,7 +229,13 @@ if (!class_exists('Activate')) {
                 'Accept' => 'application/json, text/plain, */*'
             );
 
-            $requestArgs['body'] = fopen($filePath, 'r');
+            $tempFile = tmpfile();
+            fwrite($tempFile, '{"domain":"' . $portal . '"}');
+            fseek($tempFile, 0);
+            $fileContent = fread($tempFile, 1024);
+            fclose($tempFile);
+
+            $requestArgs['body'] = $fileContent;
 
             $guzzleClient = new Client();
             $response = $guzzleClient->request('POST', $url, $requestArgs);
