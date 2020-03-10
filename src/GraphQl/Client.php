@@ -1,14 +1,17 @@
 <?php
-namespace Administrate\PhpSdk;
 
-use GraphQL\Client;
+namespace Administrate\PhpSdk\GraphQL;
 
-class ClientHelper {
+use GraphQL\Client as GqlClient;
+
+class Client extends GqlClient
+{
     /**
     * Function to build the API call headers
     * @return $headers, array API Call Header configuration.
     */
-    public static function setHeaders($params = array()) {
+    public static function setHeaders($params = array())
+    {
 
         $headers = array();
 
@@ -31,7 +34,8 @@ class ClientHelper {
     * Function to build the API call args
     * @return $args, array API Call args configuration.
     */
-    public static function setArgs() {
+    public static function setArgs()
+    {
         $args = array(
             'allow_redirects' => array(
                 'max'             => 5,         // allow at most 10 redirects.
@@ -46,7 +50,8 @@ class ClientHelper {
     }
 
 
-    public static function sendSecureCall($class, $query, $variables=[]){
+    public static function sendSecureCall($class, $query, $variables = [])
+    {
         $authorizationHeaders = self::setHeaders($class::$weblinkParams);
         $httpOptions = self::setArgs();
         $client = new Client($class::$weblinkParams['uri'], $authorizationHeaders);
@@ -55,7 +60,8 @@ class ClientHelper {
     }
 
 
-    public static function sendSecureCallJson($class, $query, $variables=[]){
+    public static function sendSecureCallJson($class, $query, $variables = [])
+    {
         return json_encode(
             self::sendSecureCall($class, $query, $variables)
         );

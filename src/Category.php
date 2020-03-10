@@ -1,9 +1,8 @@
 <?php
 namespace Administrate\PhpSdk;
 
-use GraphQL\QueryBuilder\QueryBuilder as QueryBuilder;
-use GraphQL\Client;
-use Administrate\PhpSdk\ClientHelper;
+use Administrate\PhpSdk\GraphQl\QueryBuilder as QueryBuilder;
+use Administrate\PhpSdk\GraphQL\Client;
 
 /**
  * Category
@@ -11,7 +10,8 @@ use Administrate\PhpSdk\ClientHelper;
  * @package    Administrate\PhpSdk
  * @author     Jad Khater <jck@administrate.co>
  */
-class Category {
+class Category
+{
 
     public static $weblinkParams;
 
@@ -56,7 +56,8 @@ class Category {
      *
      * @return String       JSON Object
      */
-    public static function load($id, $fields = array()) {
+    public static function load($id, $fields = array())
+    {
         if (!$fields) {
             $fields = self::$defaultFields;
         }
@@ -66,7 +67,8 @@ class Category {
             if ('parent' === $fieldKey) {
                 $node->selectField(
                     (new QueryBuilder($fieldKey))
-                    ->selectField('id'));
+                    ->selectField('id')
+                );
             } else {
                 $node->selectField($fieldKey);
             }
@@ -92,7 +94,7 @@ class Category {
             )
         );
         $class = get_called_class();
-        $result = ClientHelper::sendSecureCall($class, $gqlQuery, $variablesArray);
+        $result = Client::sendSecureCall($class, $gqlQuery, $variablesArray);
         if (isset($result['categories']['edges'][0]['node']) && !empty($result['categories']['edges'][0]['node'])) {
             return json_encode($result['categories']['edges'][0]['node']);
         }
@@ -105,7 +107,8 @@ class Category {
      *
      * @return String       JSON Object Array Of LMS Events
      */
-    public static function loadMultiple($ids, $fields = array()) {
+    public static function loadMultiple($ids, $fields = array())
+    {
         if (!$fields) {
             $fields = self::$defaultFields;
         }
@@ -115,7 +118,8 @@ class Category {
      * Method to get all Categories
      * @return String JSON Object Array Of Categories
      */
-    public static function loadAll($page = 1, $perPage = 5, $fields = array()) {
+    public static function loadAll($page = 1, $perPage = 5, $fields = array())
+    {
         if (!$fields) {
             $fields = self::$defaultFields;
         }
@@ -125,7 +129,8 @@ class Category {
             if ('parent' === $fieldKey) {
                 $node->selectField(
                     (new QueryBuilder($fieldKey))
-                    ->selectField('id'));
+                    ->selectField('id')
+                );
             } else {
                 $node->selectField($fieldKey);
             }
@@ -154,6 +159,6 @@ class Category {
         $gqlQuery = $builder->getQuery();
 
         $class = get_called_class();
-        return ClientHelper::sendSecureCallJson($class, $gqlQuery);
+        return Client::sendSecureCallJson($class, $gqlQuery);
     }
 }
