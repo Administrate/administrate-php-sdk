@@ -41,7 +41,7 @@ $urlToGoTo = $activationObj->getAuthorizeUrl();
 ```
 
 ##### Example URL output:
-*https://auth.getadministrate.com/oauth/authorize?response_type=code&client_id=9juZ...Ig7U&instance=https://YourInstanse.administrateapp.com/&redirect_uri=https://YourAppDomain/graphql-client/examples/oauth-callback.php*
+*https://auth.getadministrate.com/oauth/authorize?response_type=code&client_id=9juZ...Ig7U&instance=https://YourInstanse.administrateapp.com/&redirect_uri=https://YourAppDomain/callback.php*
 
 The Previous code will create a link for you to go to.\
 This link will redirect you to the login screen of your instance mentioned in the params with a redirect to link setup for the URL of your choice.\
