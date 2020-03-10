@@ -94,7 +94,8 @@ $response = $activationObj->fetchAccessTokens($code);
 ```
 *Check [oauth-callback.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/oauth-callback.php) in examples folder*
 
-You should save the **access_token** to be used with your calls to the API  You should save the **expires_in** to calculate when the **access_token** expires and request a new one.
+You should save the **access_token** to be used with your calls to the API.\
+You should save the **expires_in** to calculate when the **access_token** expires and request a new one.\
 You should save the **refresh_token** to be used later to get a new **access_token** once it expires.
 
 ### Authorization with Core API - Refresh Token
