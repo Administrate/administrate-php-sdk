@@ -1,9 +1,8 @@
 <?php
 namespace Administrate\PhpSdk;
 
-use GraphQL\QueryBuilder\QueryBuilder as QueryBuilder;
-use GraphQL\Client;
-use Administrate\PhpSdk\ClientHelper;
+use Administrate\PhpSdk\GraphQl\QueryBuilder as QueryBuilder;
+use Administrate\PhpSdk\GraphQL\Client;
 
 /**
  * Category
@@ -12,13 +11,10 @@ use Administrate\PhpSdk\ClientHelper;
  * @author Ali Habib <ahh@administrate.co>
  * @author Jad Khater <jck@administrate.co>
  */
-
-class Course {
-
+class Course
+{
     public static $weblinkParams;
-
     static $defaultFields = array('id', 'name', 'description', 'category', 'imageUrl');
-
     /**
      * Default constructor.
      * Set the static variables.
@@ -58,7 +54,8 @@ class Course {
      *
      * @return String       JSON Object
      */
-    public static function load($id, $fields = array()) {
+    public static function load($id, $fields = array())
+    {
 
         if (!$fields) {
             $fields = self::$defaultFields;
@@ -70,7 +67,7 @@ class Course {
         }
 
         $builder = (new QueryBuilder('courses'))
-		    ->setVariable('filters', '[CourseFieldFilter]', true)
+            ->setVariable('filters', '[CourseFieldFilter]', true)
             ->setArgument('filters', '$filters')
             ->selectField(
                 (new QueryBuilder('edges'))
@@ -90,7 +87,7 @@ class Course {
         );
 
         $class = get_called_class();
-        $result = ClientHelper::sendSecureCall($class, $gqlQuery, $variablesArray);
+        $result = Client::sendSecureCall($class, $gqlQuery, $variablesArray);
         if (isset($result['courses']['edges'][0]['node']) && !empty($result['courses']['edges'][0]['node'])) {
             return json_encode($result['courses']['edges'][0]['node']);
         }
@@ -103,7 +100,8 @@ class Course {
      *
      * @return String       JSON Object Array Of LMS Events
      */
-    public static function loadMultiple($ids, $fields = array()) {
+    public static function loadMultiple($ids, $fields = array())
+    {
         //To Do
     }
 
@@ -111,7 +109,8 @@ class Course {
      * Method to get all Categories
      * @return String JSON Object Array Of Categories
      */
-    public static function loadAll($page = 1, $perPage = 5, $categoryId = "", $keyword = "", $fields = array()) {
+    public static function loadAll($page = 1, $perPage = 5, $categoryId = "", $keyword = "", $fields = array())
+    {
 
         if (!$fields) {
             $fields = self::$defaultFields;
@@ -129,15 +128,15 @@ class Course {
 
         $offset = ($page - 1) * $perPage;
 
-		$builder = (new QueryBuilder('courses'))
-	    ->setVariable('filters', '[CourseFieldFilter]', true)
+        $builder = (new QueryBuilder('courses'))
+        ->setVariable('filters', '[CourseFieldFilter]', true)
         ->setArgument('filters', '$filters')
         ->selectField(
-                (new QueryBuilder('pageInfo'))
+            (new QueryBuilder('pageInfo'))
                 ->selectField('startCursor')
                 ->selectField('endCursor')
                 ->selectField('totalRecords')
-            )
+        )
         ->selectField(
             (new QueryBuilder('edges'))
                 ->selectField($node)
@@ -165,6 +164,6 @@ class Course {
         }
 
         $class = get_called_class();
-        return ClientHelper::sendSecureCallJson($class, $gqlQuery, $variablesArray);
+        return Client::sendSecureCallJson($class, $gqlQuery, $variablesArray);
     }
 }
