@@ -6,7 +6,9 @@ Facilitate authorization to the APIs and Provides ways to use the available APIs
 
 ## Note
 
-In order to use this library, please contact [Administrate](https://www.getadministrate.com/) to provide you with the needed credentials (clientId, clientSecret, instance url and oauthServer).
+In order to use this library, please contact <support@getadministrate.com> to provide you with the needed credentials (clientId, clientSecret, instance url and portal).\
+Or\
+You can create an account on administrate [developers](https://developer.getadministrate.com/) environment and test your integration.
 
 ## Installation
 
