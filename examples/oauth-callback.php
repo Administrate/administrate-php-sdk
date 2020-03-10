@@ -23,7 +23,7 @@ if ($response) {
     print_r($_SESSION);
     echo "</pre>";
 
-    $refreshLink =  BASE_URL."/examples/oauth-refreshToken.php";
+    $refreshLink =  BASE_URL . "/examples/oauth-refreshToken.php";
     $refreshLink .= "?token=$refreshToken";
 
     echo "<a href='$refreshLink' target='_blank'>Refresh token<a/>";
