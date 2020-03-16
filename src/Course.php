@@ -14,7 +14,7 @@ use Administrate\PhpSdk\GraphQL\Client;
 class Course
 {
     public static $weblinkParams;
-    static $defaultFields = array('id', 'name', 'description', 'category', 'imageUrl');
+    static $defaultFields = array('id', 'code', 'name', 'description', 'category', 'imageUrl');
     /**
      * Default constructor.
      * Set the static variables.
@@ -129,6 +129,8 @@ class Course
         $offset = ($page - 1) * $perPage;
 
         $builder = (new QueryBuilder('courses'))
+        ->setArgument('first', $first)
+        ->setArgument('offset', $offset)
         ->setVariable('filters', '[CourseFieldFilter]', true)
         ->setArgument('filters', '$filters')
         ->selectField(
