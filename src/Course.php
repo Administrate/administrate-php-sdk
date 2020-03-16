@@ -1,4 +1,5 @@
 <?php
+
 namespace Administrate\PhpSdk;
 
 use Administrate\PhpSdk\GraphQl\QueryBuilder as QueryBuilder;
@@ -14,7 +15,8 @@ use Administrate\PhpSdk\GraphQL\Client;
 class Course
 {
     public static $weblinkParams;
-    static $defaultFields = array('id', 'code', 'name', 'description', 'category', 'imageUrl');
+    private static $defaultFields = array('id', 'code', 'name', 'description', 'category', 'imageUrl');
+
     /**
      * Default constructor.
      * Set the static variables.
@@ -56,7 +58,6 @@ class Course
      */
     public static function load($id, $fields = array())
     {
-
         if (!$fields) {
             $fields = self::$defaultFields;
         }
@@ -111,7 +112,6 @@ class Course
      */
     public static function loadAll($page = 1, $perPage = 5, $categoryId = "", $keyword = "", $fields = array())
     {
-
         if (!$fields) {
             $fields = self::$defaultFields;
         }
@@ -150,14 +150,14 @@ class Course
             "filters" => array()
         );
 
-        if ($categoryId !="") {
+        if ($categoryId != "") {
             array_push($variablesArray['filters'], array(
                 "field" => "categoryId",
                 "operation" => "eq",
                 "value" => $categoryId
             ));
         }
-        if ($keyword!="") {
+        if ($keyword != "") {
             array_push($variablesArray['filters'], array(
                 "field" => "name",
                 "operation" => "like",
