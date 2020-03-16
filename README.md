@@ -193,7 +193,6 @@ and\
 [get-multiple-categories.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/get-multiple-categories.php) in examples folder*
 
 ### Courses Management
-
 ### List Courses
 ```php
 require_once '/vendor/autoload.php';
@@ -229,10 +228,51 @@ $searchKeyword = "test_keyword_here"; //optional
 $categories = $courseObj->loadAll($page, $perPage, $categoryId, $searchkeyword, $defaultFields);
 
 ```
-*Check [get-single-course.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/get-single-course.php)\
-and\
+*Check [get-single-course.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/get-single-course.php) 
+and 
 [get-multiple-courses.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/get-multiple-courses.php) in examples folder*
 
+### Events Management
+### List Events
+```php
+require_once '/vendor/autoload.php';
+
+use Administrate\PhpSdk\Event;
+
+$params = [
+    'oauthServer' => 'https://portal-auth.administratehq.com', // Administrate weblink authorization endpoint
+    'uri' => 'https://weblink-api.administratehq.com/graphql',
+    'portal' => 'APPNAME.administrateweblink.com',
+    'accessToken' => 'Tcdg...DIY9o',
+];
+
+$EventObj = new Event($params);
+
+$defaultFields = [
+    'id',
+    'name',
+    'start',
+    'end',
+    'location' => [
+        'name'
+    ]
+];
+$eventId = "TGVh......eTox";
+$courseCode = "Tls6....c99na";
+
+//Get single event
+$event = $eventObj->load($eventId, $defaultFields);
+
+//get all events
+$page = 1; //optional
+$perPage = 6; //optional
+$events = $eventObj->loadAll($page, $perPage, $defaultFields);
+
+//get all events for a single course
+$page = 1; //optional
+$perPage = 6; //optional
+$events = $eventObj->loadByCourseCode($page, $perPage, $courseCode);
+```
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
