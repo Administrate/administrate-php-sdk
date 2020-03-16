@@ -9,6 +9,7 @@ use Administrate\PhpSdk\GraphQL\Client;
  *
  * @package Administrate\PhpSdk
  * @author Ali Habib <ahh@administrate.co>
+ * @author Jad Khater <jck@administrate.co>
  */
 class Event
 {
