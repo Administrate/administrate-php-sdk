@@ -214,9 +214,6 @@ if (!class_exists('Activate')) {
          */
         public function getWeblinkCode()
         {
-            if (!file_exists($filePath)) {
-                return;
-            }
 
             $oauthServer = self::$params['oauthServer'];
             $portal = self::$params['portal'];
