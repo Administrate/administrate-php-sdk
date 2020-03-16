@@ -7,7 +7,6 @@ require_once '../vendor/autoload.php';
 
 use Administrate\PhpSdk\Event;
 
-// $categoriesIds Set this value in config.php
 // $activationParams Set this value in config.php
 
 $activationParams = $activationParams['weblink2'];

@@ -7,7 +7,7 @@ require_once '../vendor/autoload.php';
 
 use Administrate\PhpSdk\Event;
 
-// $categoriesIds Set this value in config.php
+// $eventId Set this value in config.php
 // $activationParams Set this value in config.php
 
 $activationParams = $activationParams['weblink2'];
@@ -17,5 +17,5 @@ if ($_SESSION['portal_token']) {
 }
 
 $eventObj = new Event($activationParams);
-$event = $eventObj->load("Q291cnNlOjExNzAzMTE=");
+$event = $eventObj->load($eventId);
 print_r($event);
