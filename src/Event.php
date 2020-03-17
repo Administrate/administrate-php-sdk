@@ -1,4 +1,5 @@
 <?php
+
 namespace Administrate\PhpSdk;
 
 use Administrate\PhpSdk\GraphQl\QueryBuilder as QueryBuilder;
@@ -14,7 +15,8 @@ use Administrate\PhpSdk\GraphQL\Client;
 class Event
 {
     public static $weblinkParams;
-    static $defaultFields = array('id', 'name', 'start', 'end', 'location' => array('name'));
+    private static $defaultFields = array('id', 'name', 'start', 'end', 'location' => array('name'));
+
     /**
      * Default constructor.
      * Set the static variables.
@@ -55,7 +57,6 @@ class Event
      */
     public static function load($id, $fields = array())
     {
-
         if (!$fields) {
             $fields = self::$defaultFields;
         }
@@ -63,7 +64,7 @@ class Event
         $node = (new QueryBuilder('node'));
         foreach ($fields as $fieldKey => $fieldVal) {
             if (is_array($fieldVal)) {
-                $subNode = (new QueryBuilder(''.$fieldKey.''));
+                $subNode = (new QueryBuilder('' . $fieldKey . ''));
                 foreach ($fieldVal as $subFieldKey) {
                     $subNode->selectField($subFieldKey);
                 }
@@ -118,7 +119,6 @@ class Event
      */
     public static function loadAll($page = 1, $perPage = 5, $fields = array())
     {
-
         if (!$fields) {
             $fields = self::$defaultFields;
         }
@@ -126,7 +126,7 @@ class Event
         $node = (new QueryBuilder('node'));
         foreach ($fields as $fieldKey => $fieldVal) {
             if (is_array($fieldVal)) {
-                $subNode = (new QueryBuilder(''.$fieldKey.''));
+                $subNode = (new QueryBuilder('' . $fieldKey . ''));
                 foreach ($fieldVal as $subFieldKey) {
                     $subNode->selectField($subFieldKey);
                 }
@@ -177,7 +177,6 @@ class Event
      */
     public static function loadByCourseCode($page = 1, $perPage = 20, $courseCode = "", $fields = array())
     {
-
         if (!$fields) {
             $fields = self::$defaultFields;
         }
@@ -185,7 +184,7 @@ class Event
         $node = (new QueryBuilder('node'));
         foreach ($fields as $fieldKey => $fieldVal) {
             if (is_array($fieldVal)) {
-                $subNode = (new QueryBuilder(''.$fieldKey.''));
+                $subNode = (new QueryBuilder('' . $fieldKey . ''));
                 foreach ($fieldVal as $subFieldKey) {
                     $subNode->selectField($subFieldKey);
                 }
@@ -219,14 +218,12 @@ class Event
         );
 
         $gqlQuery = $builder->getQuery();
-        //print_r(json_encode($gqlQuery));
-        //die('ssss');
 
         $variablesArray = array(
             "filters" => array()
         );
 
-        if ($courseCode !="") {
+        if ($courseCode != "") {
             array_push($variablesArray['filters'], array(
                 "field" => "courseCode",
                 "operation" => "eq",
