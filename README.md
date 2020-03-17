@@ -188,8 +188,8 @@ $categories = $categoryObj->loadAll($page, $perPage, $defaultFields);
 
 #The parameter "defaultFields" is optional only pass it if you want to change the fields
 ```
-*Check [get-single-category.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/get-single-category.php)\
-and\
+*Check [get-single-category.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/get-single-category.php)
+and
 [get-multiple-categories.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/get-multiple-categories.php) in examples folder*
 
 ### Courses Management
@@ -273,6 +273,7 @@ $page = 1; //optional
 $perPage = 6; //optional
 $events = $eventObj->loadByCourseCode($page, $perPage, $courseCode);
 ```
+*Check [get-single-event.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/get-single-event.php), [get-multiple-events.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/get-multiple-events.php) and [get-events-by-course.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/get-events-by-courset.php) in examples folder*
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
