@@ -1,4 +1,5 @@
 <?php
+
 namespace Administrate\PhpSdk;
 
 use Administrate\PhpSdk\GraphQl\QueryBuilder as QueryBuilder;
@@ -14,8 +15,7 @@ class Category
 {
 
     public static $weblinkParams;
-
-    static $defaultFields = array('id', 'name', 'shortDescription', 'parent');
+    private static $defaultFields = array('id', 'name', 'shortDescription', 'parent');
 
     /**
      * Default constructor.

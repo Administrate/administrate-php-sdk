@@ -20,9 +20,9 @@ if (!class_exists('Activate')) {
         protected static $instance;
         protected static $params;
 
-        const SUCCESS_CODE = 200;
-        const STATUS_SUCCESS = 'success';
-        const STATUS_ERROR = 'error';
+        private const SUCCESS_CODE = 200;
+        private const STATUS_SUCCESS = 'success';
+        private const STATUS_ERROR = 'error';
 
         /**
          * Default constructor.
@@ -89,14 +89,12 @@ if (!class_exists('Activate')) {
             $requestUrl .= "/authorize?response_type=code";
             $requestUrl .= "&client_id=" . $clientId;
 
-            if (isset(self::$params['instance']) &&
-                !empty(self::$params['instance'])) {
+            if (isset(self::$params['instance']) && !empty(self::$params['instance'])) {
                 $requestUrl .= "&instance=" . self::$params['instance'];
             }
 
             $redirectUri = '';
-            if (isset(self::$params['redirectUri']) &&
-                !empty(self::$params['redirectUri'])) {
+            if (isset(self::$params['redirectUri']) && !empty(self::$params['redirectUri'])) {
                 $requestUrl .= "&redirect_uri=" . self::$params['redirectUri'];
             }
 
@@ -214,9 +212,6 @@ if (!class_exists('Activate')) {
          */
         public function getWeblinkCode()
         {
-            if (!file_exists($filePath)) {
-                return;
-            }
 
             $oauthServer = self::$params['oauthServer'];
             $portal = self::$params['portal'];
