@@ -2,8 +2,8 @@
 
 header('Content-Type: application/json');
 
-require_once 'config.php';
-require_once '../vendor/autoload.php';
+require_once '../config.php';
+require_once '../../vendor/autoload.php';
 
 use Administrate\PhpSdk\Category;
 
@@ -17,5 +17,5 @@ if ($_SESSION['portal_token']) {
 }
 
 $categoryClass = new Category($activationParams);
-$allCategories = $categoryClass->loadAll(3);
-echo($allCategories);
+$category = $categoryClass->load($categoriesIds[0]);
+echo $category;
