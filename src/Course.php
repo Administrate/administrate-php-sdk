@@ -6,7 +6,7 @@ use Administrate\PhpSdk\GraphQl\QueryBuilder as QueryBuilder;
 use Administrate\PhpSdk\GraphQL\Client;
 
 /**
- * Category
+ * Course
  *
  * @package Administrate\PhpSdk
  * @author Ali Habib <ahh@administrate.co>
@@ -50,9 +50,9 @@ class Course
     }
 
     /**
-     * Method to Get a single category Info from ID.
+     * Method to Get a single course Info from ID.
      *
-     * @param  string $id   LMS Category ID
+     * @param  string $id   LMS Course ID
      *
      * @return String       JSON Object
      */
@@ -95,20 +95,8 @@ class Course
     }
 
     /**
-     * Method to get a set of events by IDs
-     *
-     * @param  array $ids   Array of LMS events Ids
-     *
-     * @return String       JSON Object Array Of LMS Events
-     */
-    public static function loadMultiple($ids, $fields = array())
-    {
-        //To Do
-    }
-
-    /**
-     * Method to get all Categories
-     * @return String JSON Object Array Of Categories
+     * Method to get all Courses
+     * @return String JSON Object Array Of Courses
      */
     public static function loadAll($page = 1, $perPage = 5, $categoryId = "", $keyword = "", $fields = array())
     {

@@ -101,20 +101,6 @@ class Category
     }
 
     /**
-     * Method to get a set of events by IDs
-     *
-     * @param  array $ids   Array of LMS events Ids
-     *
-     * @return String       JSON Object Array Of LMS Events
-     */
-    public static function loadMultiple($ids, $fields = array())
-    {
-        if (!$fields) {
-            $fields = self::$defaultFields;
-        }
-    }
-
-    /**
      * Method to get all Categories
      * @return String JSON Object Array Of Categories
      */
