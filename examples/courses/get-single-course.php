@@ -8,7 +8,7 @@ require_once '../../vendor/autoload.php';
 use Administrate\PhpSdk\Course;
 
 // $courseId defined in config.php
-// $categoriesIds Set this value in config.php
+// $categoryIds Set this value in config.php
 // $activationParams Set this value in config.php
 
 $activationParams = $activationParams['weblink2'];

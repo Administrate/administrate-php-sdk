@@ -7,7 +7,7 @@ require_once '../../vendor/autoload.php';
 
 use Administrate\PhpSdk\Course;
 
-// $categoriesIds Set this value in config.php
+// $categoryIds Set this value in config.php
 // $activationParams Set this value in config.php
 
 $activationParams = $activationParams['weblink2'];
@@ -17,5 +17,6 @@ if ($_SESSION['portal_token']) {
 }
 
 $courseClass = new Course($activationParams);
-$allCourses = $courseClass->loadAll(1, 5, $categoriesIds[0], "safe");
+$allCourses = $courseClass->loadAll(1, 5, $categoryIds[0], "safe");
+
 echo($allCourses);
