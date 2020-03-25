@@ -102,18 +102,6 @@ class Event
     }
 
     /**
-     * Method to get a set of events by IDs
-     *
-     * @param  array $ids   Array of LMS events Ids
-     *
-     * @return String       JSON Object Array Of LMS Events
-     */
-    public static function loadMultiple($ids, $fields = array())
-    {
-        //To Do
-    }
-
-    /**
      * Method to get all Events
      * @return String JSON Object Array Of Events
      */
