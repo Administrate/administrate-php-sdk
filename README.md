@@ -50,7 +50,7 @@ This link will redirect you to the login screen of your instance mentioned in th
 Once you login to the instance of administrate you will be promoted to authorize the APP.\
 Once done you will be redirected to the callback url.
 
-*Check [oauth-activate.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/oauth-activate.php) in examples folder*
+*Check [oauth-activate.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/authentication/oauth-activate.php) in examples folder*
 
 ### Authorization with Core API - Callback
 
@@ -92,7 +92,7 @@ $response = $activationObj->fetchAccessTokens($code);
     }
 }
 ```
-*Check [oauth-callback.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/oauth-callback.php) in examples folder*
+*Check [oauth-callback.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/authentication/oauth-callback.php) in examples folder*
 
 You should save the **access_token** to be used with your calls to the API.\
 You should save the **expires_in** to calculate when the **access_token** expires and request a new one.\
@@ -124,7 +124,7 @@ $response = $activate->refreshTokens($refresh_token);
     }
 }
 ```
-*Check [oauth-refreshToken.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/oauth-refreshToken.php) in examples folder*
+*Check [oauth-refreshToken.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/authentication/oauth-refreshToken.php) in examples folder*
 
 ### Authorization with Weblink API
 ```php
@@ -148,7 +148,7 @@ $response = $activationObj->getWeblinkCode();
     "portal_token": "Tcdg...DIY9o"
 }
 ```
-*Check [get-weblink-code.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/get-weblink-code.php) in examples folder*
+*Check [get-weblink-code.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/authentication/get-weblink-code.php) in examples folder*
 
 ### Categories Management
 
@@ -188,9 +188,9 @@ $categories = $categoryObj->loadAll($page, $perPage, $defaultFields);
 
 #The parameter "defaultFields" is optional only pass it if you want to change the fields
 ```
-*Check [get-single-category.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/get-single-category.php)
+*Check [get-single-category.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/categories/get-single-category.php)
 and
-[get-multiple-categories.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/get-multiple-categories.php) in examples folder*
+[get-multiple-categories.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/categories/get-multiple-categories.php) in examples folder*
 
 ### Courses Management
 ### List Courses
@@ -228,9 +228,9 @@ $searchKeyword = "test_keyword_here"; //optional
 $categories = $courseObj->loadAll($page, $perPage, $categoryId, $searchkeyword, $defaultFields);
 
 ```
-*Check [get-single-course.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/get-single-course.php) 
+*Check [get-single-course.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/courses/get-single-course.php) 
 and 
-[get-multiple-courses.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/get-multiple-courses.php) in examples folder*
+[get-multiple-courses.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/courses/get-multiple-courses.php) in examples folder*
 
 ### Events Management
 ### List Events
@@ -273,7 +273,7 @@ $page = 1; //optional
 $perPage = 6; //optional
 $events = $eventObj->loadByCourseCode($page, $perPage, $courseCode);
 ```
-*Check [get-single-event.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/get-single-event.php), [get-multiple-events.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/get-multiple-events.php) and [get-events-by-course.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/get-events-by-courset.php) in examples folder*
+*Check [get-single-event.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/events/get-single-event.php), [get-multiple-events.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/events/get-multiple-events.php) and [get-events-by-course.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/events/get-events-by-courset.php) in examples folder*
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
