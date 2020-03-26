@@ -224,13 +224,8 @@ if (!class_exists('Activate')) {
                 'Accept' => 'application/json, text/plain, */*'
             );
 
-            $tempFile = tmpfile();
-            fwrite($tempFile, '{"domain":"' . $portal . '"}');
-            fseek($tempFile, 0);
-            $fileContent = fread($tempFile, 1024);
-            fclose($tempFile);
-
-            $requestArgs['body'] = $fileContent;
+            $body = '{"domain":"' . $portal . '"}';
+            $requestArgs['body'] = $body;
 
             $guzzleClient = new Client();
             $response = $guzzleClient->request('POST', $url, $requestArgs);
