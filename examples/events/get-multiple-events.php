@@ -7,14 +7,14 @@ require_once '../../vendor/autoload.php';
 
 use Administrate\PhpSdk\Event;
 
-// $activationParams Set this value in config.php
-
-$activationParams = $activationParams['weblink2'];
+// $weblinkActivationParams Set this value in config.php
 
 if ($_SESSION['portal_token']) {
     $activationParams['accessToken'] = $_SESSION['portal_token'];
 }
 
-$eventObj = new Event($activationParams);
+$eventObj = new Event();
+$eventObj->setWeblinkParams($weblinkActivationParams);
 $events = $eventObj->loadAll();
-print_r($events);
+
+echo $events;

@@ -14,7 +14,7 @@ use Administrate\PhpSdk\GraphQL\Client;
  */
 class Course
 {
-    public static $weblinkParams;
+    public $weblinkParams;
     private static $defaultFields = array('id', 'code', 'name', 'description', 'category', 'imageUrl');
 
     /**
@@ -35,18 +35,9 @@ class Course
      *
      * @return void
      */
-    protected static function setWeblinkParams($params)
+    public function setWeblinkParams($params)
     {
-        // Check for Passed params
-        // If empty fallback to config file defined params
-        // based on SDK env.
-        if (empty($params)) {
-            global $APP_ENVIRONMENT_VARS;
-            if (defined('PHP_SDK_ENV')) {
-                self::$weblinkParams = $APP_ENVIRONMENT_VARS[PHP_SDK_ENV]['weblink2'];
-            }
-        }
-        self::$weblinkParams = $params;
+        $this->weblinkParams = $params;
     }
 
     /**
@@ -56,7 +47,7 @@ class Course
      *
      * @return String       JSON Object
      */
-    public static function load($id, $fields = array())
+    public function load($id, $fields = array())
     {
         if (!$fields) {
             $fields = self::$defaultFields;
@@ -87,8 +78,7 @@ class Course
             )
         );
 
-        $class = get_called_class();
-        $result = Client::sendSecureCall($class, $gqlQuery, $variablesArray);
+        $result = Client::sendSecureCall($this, $gqlQuery, $variablesArray);
         if (isset($result['courses']['edges'][0]['node']) && !empty($result['courses']['edges'][0]['node'])) {
             return json_encode($result['courses']['edges'][0]['node']);
         }
@@ -98,7 +88,7 @@ class Course
      * Method to get all Courses
      * @return String JSON Object Array Of Courses
      */
-    public static function loadAll($page = 1, $perPage = 5, $categoryId = "", $keyword = "", $fields = array())
+    public function loadAll($page = 1, $perPage = 5, $categoryId = "", $keyword = "", $fields = array())
     {
         if (!$fields) {
             $fields = self::$defaultFields;
@@ -152,8 +142,7 @@ class Course
                 "value" => "%$keyword%"
             ));
         }
-
-        $class = get_called_class();
-        return Client::sendSecureCallJson($class, $gqlQuery, $variablesArray);
+        $result = Client::sendSecureCallJson($this, $gqlQuery, $variablesArray);
+        return $result;
     }
 }

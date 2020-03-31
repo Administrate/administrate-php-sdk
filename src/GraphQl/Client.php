@@ -6,19 +6,31 @@ use GraphQL\Client as GqlClient;
 
 class Client extends GqlClient
 {
+    public static $CORE_API = 1;
+    public static $WEBLINK2_API = 2;
     /**
     * Function to build the API call headers
     * @return $headers, array API Call Header configuration.
     */
-    public static function setHeaders($params = array())
+    public static function setHeaders($params = array(), $API = 2)
     {
 
         $headers = array();
 
-        if (isset($params['accessToken']) && !empty($params['accessToken'])) {
-            $headers = array(
-                'Authorization' => 'Bearer ' . $params['accessToken'],
-            );
+        if ($API == self::$CORE_API) {
+            if (isset($params['accessToken']) && !empty($params['accessToken'])) {
+                $headers = array(
+                    'Authorization' => 'Bearer ' . $params['accessToken'],
+                );
+            }
+        }
+
+        if ($API == self::$WEBLINK2_API) {
+            if (isset($params['weblinkAccessToken']) && !empty($params['weblinkAccessToken'])) {
+                $headers = array(
+                    'Authorization' => 'Bearer ' . $params['weblinkAccessToken'],
+                );
+            }
         }
 
         foreach ($params as $key => $value) {
@@ -50,11 +62,11 @@ class Client extends GqlClient
     }
 
 
-    public static function sendSecureCall($class, $query, $variables = [])
+    public static function sendSecureCall($obj, $query, $variables = [])
     {
-        $authorizationHeaders = self::setHeaders($class::$weblinkParams);
+        $authorizationHeaders = self::setHeaders($obj->weblinkParams);
         $httpOptions = self::setArgs();
-        $client = new Client($class::$weblinkParams['uri'], $authorizationHeaders);
+        $client = new Client($obj->weblinkParams['uri'], $authorizationHeaders);
         $results = $client->runQuery($query, true, $variables);
         return $results->getData();
     }

@@ -5,7 +5,7 @@ require_once '../../vendor/autoload.php';
 use Administrate\PhpSdk\Oauth\Activate;
 
 $activate = new Activate();
-//$activate = new Activate($activationParams);
+$activate->setParams($coreApiActivationParams);
 
 $response = $activate->handleAuthorizeCallback($_GET);
 

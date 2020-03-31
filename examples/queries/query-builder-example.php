@@ -28,12 +28,13 @@ if ($_SESSION['access_token']) {
     $accessToken = $_SESSION['access_token'];
 }
 
-$endpointUrl = $APP_ENVIRONMENT_VARS[PHP_SDK_ENV]['apiUri'];
+$endpointUrl = $coreApiActivationParams['apiUri'];
 // $accessToken is set in config.php
 $authorizationHeaders = Client::setHeaders(
     array(
         'accessToken' => $accessToken
-    )
+    ),
+    Client::$CORE_API
 );
 $httpOptions = Client::setArgs();
 $variablesArray = array(
