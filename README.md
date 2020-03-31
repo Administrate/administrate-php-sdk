@@ -170,7 +170,7 @@ $params = [
     'oauthServer' => 'https://portal-auth.administratehq.com', // Administrate weblink authorization endpoint
     'uri' => 'https://weblink-api.administratehq.com/graphql', // Administrate Weblink endpoint
     'portal' => 'APPNAME.administrateweblink.com',
-    'accessToken' => 'Tcdg...DIY9o',
+    'weblinkAccessToken' => 'Tcdg...DIY9o',
 ];
 
 $categoryObj = new Category();
@@ -210,7 +210,7 @@ $params = [
     'oauthServer' => 'https://portal-auth.administratehq.com', // Administrate weblink authorization endpoint
     'uri' => 'https://weblink-api.administratehq.com/graphql',
     'portal' => 'APPNAME.administrateweblink.com',
-    'accessToken' => 'Tcdg...DIY9o',
+    'weblinkAccessToken' => 'Tcdg...DIY9o',
 ];
 
 $CourseObj = new Course();
@@ -251,7 +251,7 @@ $params = [
     'oauthServer' => 'https://portal-auth.administratehq.com', // Administrate weblink authorization endpoint
     'uri' => 'https://weblink-api.administratehq.com/graphql',
     'portal' => 'APPNAME.administrateweblink.com',
-    'accessToken' => 'Tcdg...DIY9o',
+    'weblinkAccessToken' => 'Tcdg...DIY9o',
 ];
 
 $EventObj = new Event($params);
