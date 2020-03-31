@@ -7,18 +7,12 @@ require_once '../../vendor/autoload.php';
 
 use Administrate\PhpSdk\Oauth\Activate;
 
-$activationParams = $activationParams['weblink2'];
+// $weblinkActivationParams Set this value in config.php
 
-$activate = new Activate($activationParams);
+$activate = new Activate();
+$activate->setParams($weblinkActivationParams);
 
-//$activate = new Activate($activationParams);
-//$activationParams is set in config.php
-
-$filePath = realpath('domain.bin');
-// Add this file to the examples folder should
-// contain "{"domain":"[instance domain]"}"
-
-$response = $activate->getWeblinkCode($filePath);
+$response = $activate->getWeblinkCode();
 if ($response) {
     $portalToken = $response['body']->portal_token;
 
