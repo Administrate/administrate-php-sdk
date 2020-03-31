@@ -9,10 +9,6 @@ use Administrate\PhpSdk\Event;
 
 // $weblinkActivationParams Set this value in config.php
 
-if ($_SESSION['portal_token']) {
-    $activationParams['accessToken'] = $_SESSION['portal_token'];
-}
-
 $eventObj = new Event();
 $eventObj->setWeblinkParams($weblinkActivationParams);
 $events = $eventObj->loadAll();

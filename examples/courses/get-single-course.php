@@ -11,10 +11,6 @@ use Administrate\PhpSdk\Course;
 // $categoryIds Set this value in config.php
 // $weblinkActivationParams Set this value in config.php
 
-if ($_SESSION['portal_token']) {
-    $activationParams['accessToken'] = $_SESSION['portal_token'];
-}
-
 $courseClass = new Course();
 $courseClass->setWeblinkParams($weblinkActivationParams);
 $course = $courseClass->load($courseId);

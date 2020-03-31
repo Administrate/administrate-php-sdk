@@ -24,11 +24,8 @@ $builder = (new QueryBuilder('node'))
 
 $gqlQuery = $builder->getQuery();
 
-if ($_SESSION['access_token']) {
-    $accessToken = $_SESSION['access_token'];
-}
-
 $endpointUrl = $coreApiActivationParams['apiUri'];
+$accessToken = $coreApiActivationParams['accessToken'];
 // $accessToken is set in config.php
 $authorizationHeaders = Client::setHeaders(
     array(

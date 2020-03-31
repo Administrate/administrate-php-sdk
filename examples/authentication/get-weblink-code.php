@@ -11,15 +11,9 @@ use Administrate\PhpSdk\Oauth\Activate;
 
 $activate = new Activate();
 $activate->setParams($weblinkActivationParams);
-
 $response = $activate->getWeblinkCode();
+
 if ($response) {
     $portalToken = $response['body']->portal_token;
-
-    // Save portal_token in session
-    $_SESSION = array(
-        'portal_token' => $portalToken
-    );
-
-    echo json_encode($_SESSION);
+    echo json_encode(array('portal_token' => $portalToken));
 }
