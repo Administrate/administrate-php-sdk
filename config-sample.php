@@ -8,17 +8,23 @@ $learnerId = '';
 $courseId = '';
 $courseCode = "";
 $eventId = "";
-$activationParams = array(
+
+// Core API Params
+$coreApiActivationParams = array(
     'clientId' => '',
     'clientSecret' => '',
     'instance' => '',
     'oauthServer' => '',
     'apiUri' => '',
     'redirectUri' => '',
-    'weblink2' => array(
-        'oauthServer' => '',
-        'uri' => '',
-        'portal' => '',
-        'weblinkAccessToken' => ''
-    )
+    'accessToken' => '',
+    'refreshToken' => ''
+);
+
+//Weblink2 API Params
+$weblinkActivationParams = array(
+    'oauthServer' => '',
+    'uri' => '',
+    'portal' => '',
+    'weblinkAccessToken' => ''
 );
