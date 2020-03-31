@@ -33,6 +33,8 @@ $activationParams = [
     'oauthServer' => 'https://auth.getadministrate.com/oauth',  // Administrate authorization endpoint
     'apiUri' => 'https://api.administrateapp.com/graphql', // Administrate Core API endpoint
     'redirectUri' => 'https://YourAppDomain/callback.php',  // Your app redirect URI to handle callbacks from api
+    'accessToken' => 'ACCESS_TOKEN_HERE',
+    'refreshToken' => 'REFRESH_TOKEN_HERE'
 ];
 
 // Create Activate Class instance
