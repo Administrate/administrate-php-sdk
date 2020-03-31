@@ -36,7 +36,8 @@ $activationParams = [
 ];
 
 // Create Activate Class instance
-$activationObj = new Activate($activationParams);
+$activationObj = new Activate();
+$activationObj->setParams($activationParams);
 
 // Get Authorization Code:
 $urlToGoTo = $activationObj->getAuthorizeUrl();
@@ -63,7 +64,8 @@ require_once 'vendor/autoload.php';
 use Administrate\PhpSdk\Oauth\Activate;
 
 //same activationParams as before
-$activationObj = new Activate($activationParams);
+$activationObj = new Activate();
+$activationObj->setParams($activationParams);
 
 // Handle Callback.
 $response = $activationObj->handleAuthorizeCallback($_GET);
@@ -105,7 +107,8 @@ require_once 'vendor/autoload.php';
 use Administrate\PhpSdk\Oauth\Activate;
 
 //same activationParams as before
-$activationObj = new Activate($activationParams);
+$activationObj = new Activate();
+$activationObj->setParams($activationParams);
 
 //$refresh_token value previously saved
 
@@ -139,7 +142,8 @@ $activationParams = [
 ];
 
 // Create Activate Class instance
-$activationObj = new Activate($activationParams);
+$activationObj = new Activate();
+$activationObj->setParams($activationParams);
 
 $response = $activationObj->getWeblinkCode();
 
@@ -167,7 +171,8 @@ $params = [
     'accessToken' => 'Tcdg...DIY9o',
 ];
 
-$categoryObj = new Category($params);
+$categoryObj = new Category();
+$categoryObj->setWeblinkParams($params);
 
 $defaultFields = [
     'id',
@@ -206,7 +211,8 @@ $params = [
     'accessToken' => 'Tcdg...DIY9o',
 ];
 
-$CourseObj = new Course($params);
+$CourseObj = new Course();
+$CourseObj->setWeblinkParams($params);
 
 $defaultFields = [
     'id',
@@ -247,6 +253,7 @@ $params = [
 ];
 
 $EventObj = new Event($params);
+$EventObj->setWeblinkParams($params);
 
 $defaultFields = [
     'id',
