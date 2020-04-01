@@ -9,14 +9,9 @@ use Administrate\PhpSdk\Course;
 
 // $courseId defined in config.php
 // $categoryIds Set this value in config.php
-// $activationParams Set this value in config.php
+// $weblinkActivationParams Set this value in config.php
 
-$activationParams = $activationParams['weblink2'];
-
-if ($_SESSION['portal_token']) {
-    $activationParams['accessToken'] = $_SESSION['portal_token'];
-}
-
-$courseClass = new Course($activationParams);
+$courseClass = new Course($weblinkActivationParams);
 $course = $courseClass->load($courseId);
+
 echo $course;

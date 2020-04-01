@@ -14,7 +14,7 @@ use Administrate\PhpSdk\GraphQL\Client;
  */
 class Event
 {
-    public static $weblinkParams;
+    public $weblinkParams;
     private static $defaultFields = array('id', 'name', 'start', 'end', 'location' => array('name'));
 
     /**
@@ -26,7 +26,7 @@ class Event
      */
     public function __construct($params = array())
     {
-        self::setWeblinkParams($params);
+        $this->setWeblinkParams($params);
     }
 
     /**
@@ -35,18 +35,9 @@ class Event
      *
      * @return void
      */
-    protected static function setWeblinkParams($params)
+    public function setWeblinkParams($params)
     {
-        // Check for Passed params
-        // If empty fallback to config file defined params
-        // based on SDK env.
-        if (empty($params)) {
-            global $APP_ENVIRONMENT_VARS;
-            if (defined('PHP_SDK_ENV')) {
-                self::$weblinkParams = $APP_ENVIRONMENT_VARS[PHP_SDK_ENV]['weblink2'];
-            }
-        }
-        self::$weblinkParams = $params;
+        $this->weblinkParams = $params;
     }
 
     /**
@@ -55,7 +46,7 @@ class Event
      * @param  string $id   LMS Event ID
      * @return String       JSON Object
      */
-    public static function load($id, $fields = array())
+    public function load($id, $fields = array())
     {
         if (!$fields) {
             $fields = self::$defaultFields;
@@ -94,8 +85,7 @@ class Event
             )
         );
 
-        $class = get_called_class();
-        $result = Client::sendSecureCall($class, $gqlQuery, $variablesArray);
+        $result = Client::sendSecureCall($this, $gqlQuery, $variablesArray);
         if (isset($result['events']['edges'][0]['node']) && !empty($result['events']['edges'][0]['node'])) {
             return json_encode($result['events']['edges'][0]['node']);
         }
@@ -105,7 +95,7 @@ class Event
      * Method to get all Events
      * @return String JSON Object Array Of Events
      */
-    public static function loadAll($page = 1, $perPage = 5, $fields = array())
+    public function loadAll($page = 1, $perPage = 5, $fields = array())
     {
         if (!$fields) {
             $fields = self::$defaultFields;
@@ -153,8 +143,8 @@ class Event
             "filters" => array()
         );
 
-        $class = get_called_class();
-        return Client::sendSecureCallJson($class, $gqlQuery, $variablesArray);
+        $result = Client::sendSecureCallJson($this, $gqlQuery, $variablesArray);
+        return $result;
     }
 
 
@@ -163,7 +153,7 @@ class Event
      * @param String course Code, Array fields
      * @return String JSON Object Array Of Events
      */
-    public static function loadByCourseCode($page = 1, $perPage = 20, $courseCode = "", $fields = array())
+    public function loadByCourseCode($page = 1, $perPage = 20, $courseCode = "", $fields = array())
     {
         if (!$fields) {
             $fields = self::$defaultFields;
@@ -219,7 +209,7 @@ class Event
             ));
         }
 
-        $class = get_called_class();
-        return Client::sendSecureCallJson($class, $gqlQuery, $variablesArray);
+        $result = Client::sendSecureCallJson($this, $gqlQuery, $variablesArray);
+        return $result;
     }
 }

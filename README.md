@@ -33,10 +33,12 @@ $activationParams = [
     'oauthServer' => 'https://auth.getadministrate.com/oauth',  // Administrate authorization endpoint
     'apiUri' => 'https://api.administrateapp.com/graphql', // Administrate Core API endpoint
     'redirectUri' => 'https://YourAppDomain/callback.php',  // Your app redirect URI to handle callbacks from api
+    'accessToken' => 'ACCESS_TOKEN_HERE',
+    'refreshToken' => 'REFRESH_TOKEN_HERE'
 ];
 
 // Create Activate Class instance
-$activationObj = new Activate($activationParams);
+$activationObj = new Activate($activationParams));
 
 // Get Authorization Code:
 $urlToGoTo = $activationObj->getAuthorizeUrl();
@@ -63,7 +65,7 @@ require_once 'vendor/autoload.php';
 use Administrate\PhpSdk\Oauth\Activate;
 
 //same activationParams as before
-$activationObj = new Activate($activationParams);
+$activationObj = new Activate($activationParams));
 
 // Handle Callback.
 $response = $activationObj->handleAuthorizeCallback($_GET);
@@ -105,7 +107,7 @@ require_once 'vendor/autoload.php';
 use Administrate\PhpSdk\Oauth\Activate;
 
 //same activationParams as before
-$activationObj = new Activate($activationParams);
+$activationObj = new Activate($activationParams));
 
 //$refresh_token value previously saved
 
@@ -139,7 +141,7 @@ $activationParams = [
 ];
 
 // Create Activate Class instance
-$activationObj = new Activate($activationParams);
+$activationObj = new Activate($activationParams));
 
 $response = $activationObj->getWeblinkCode();
 
@@ -164,7 +166,7 @@ $params = [
     'oauthServer' => 'https://portal-auth.administratehq.com', // Administrate weblink authorization endpoint
     'uri' => 'https://weblink-api.administratehq.com/graphql', // Administrate Weblink endpoint
     'portal' => 'APPNAME.administrateweblink.com',
-    'accessToken' => 'Tcdg...DIY9o',
+    'weblinkAccessToken' => 'Tcdg...DIY9o',
 ];
 
 $categoryObj = new Category($params);
@@ -203,7 +205,7 @@ $params = [
     'oauthServer' => 'https://portal-auth.administratehq.com', // Administrate weblink authorization endpoint
     'uri' => 'https://weblink-api.administratehq.com/graphql',
     'portal' => 'APPNAME.administrateweblink.com',
-    'accessToken' => 'Tcdg...DIY9o',
+    'weblinkAccessToken' => 'Tcdg...DIY9o',
 ];
 
 $CourseObj = new Course($params);
@@ -243,7 +245,7 @@ $params = [
     'oauthServer' => 'https://portal-auth.administratehq.com', // Administrate weblink authorization endpoint
     'uri' => 'https://weblink-api.administratehq.com/graphql',
     'portal' => 'APPNAME.administrateweblink.com',
-    'accessToken' => 'Tcdg...DIY9o',
+    'weblinkAccessToken' => 'Tcdg...DIY9o',
 ];
 
 $EventObj = new Event($params);

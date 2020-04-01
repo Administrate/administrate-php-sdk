@@ -7,16 +7,9 @@ require_once '../../vendor/autoload.php';
 
 use Administrate\PhpSdk\Category;
 
-// $categoryIds Set this value in config.php
-// $activationParams Set this value in config.php
+// $weblinkActivationParams Set this value in config.php
 
-$activationParams = $activationParams['weblink2'];
-
-if ($_SESSION['portal_token']) {
-    $activationParams['accessToken'] = $_SESSION['portal_token'];
-}
-
-$categoryClass = new Category($activationParams);
+$categoryClass = new Category($weblinkActivationParams);
 $allCategories = $categoryClass->loadAll(3);
 
 echo($allCategories);

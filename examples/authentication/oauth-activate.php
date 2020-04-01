@@ -5,7 +5,8 @@ require_once '../../vendor/autoload.php';
 
 use Administrate\PhpSdk\Oauth\Activate;
 
-$activate = new Activate();
-//$activate = new Activate($activationParams); //$activationParams is set in config.php
+//$coreApiActivationParams is set in config.php
+
+$activate = new Activate($coreApiActivationParams);
 
 echo "<a href='" . $activate->getAuthorizeUrl() . "'>Activate SDK<a/><br>";
