@@ -26,7 +26,7 @@ class Event
      */
     public function __construct($params = array())
     {
-        self::setWeblinkParams($params);
+        $this->setWeblinkParams($params);
     }
 
     /**

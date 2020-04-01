@@ -11,8 +11,7 @@ use Administrate\PhpSdk\Course;
 // $categoryIds Set this value in config.php
 // $weblinkActivationParams Set this value in config.php
 
-$courseClass = new Course();
-$courseClass->setWeblinkParams($weblinkActivationParams);
+$courseClass = new Course($weblinkActivationParams);
 $course = $courseClass->load($courseId);
 
 echo $course;

@@ -10,8 +10,7 @@ use Administrate\PhpSdk\Course;
 // $categoryIds Set this value in config.php
 // $weblinkActivationParams Set this value in config.php
 
-$courseClass = new Course();
-$courseClass->setWeblinkParams($weblinkActivationParams);
+$courseClass = new Course($weblinkActivationParams);
 $allCourses = $courseClass->loadAll(1, 5, $categoryIds[0], "safe");
 
 echo $allCourses;

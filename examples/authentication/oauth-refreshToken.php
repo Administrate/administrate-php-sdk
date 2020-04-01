@@ -7,8 +7,7 @@ require_once '../../vendor/autoload.php';
 
 use Administrate\PhpSdk\Oauth\Activate;
 
-$activate = new Activate();
-$activate->setParams($coreApiActivationParams);
+$activate = new Activate($coreApiActivationParams);
 
 if (isset($_GET['token']) && !empty($_GET['token'])) {
     $response = $activate->refreshTokens($_GET['token']);

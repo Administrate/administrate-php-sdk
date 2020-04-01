@@ -33,7 +33,7 @@ if (!class_exists('Activate')) {
          */
         public function __construct($params = array())
         {
-            //self::setParams($params);
+            $this->setParams($params);
         }
 
         /**

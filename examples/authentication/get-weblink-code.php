@@ -9,8 +9,7 @@ use Administrate\PhpSdk\Oauth\Activate;
 
 // $weblinkActivationParams Set this value in config.php
 
-$activate = new Activate();
-$activate->setParams($weblinkActivationParams);
+$activate = new Activate($weblinkActivationParams);
 $response = $activate->getWeblinkCode();
 
 if ($response) {

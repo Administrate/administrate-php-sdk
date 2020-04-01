@@ -27,7 +27,7 @@ class Category
      */
     public function __construct($params = array())
     {
-        $this->weblinkParams = $params;
+        $this->setWeblinkParams($params);
     }
 
     /**

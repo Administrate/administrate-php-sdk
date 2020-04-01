@@ -9,8 +9,7 @@ use Administrate\PhpSdk\Event;
 
 // $weblinkActivationParams Set this value in config.php
 
-$eventObj = new Event();
-$eventObj->setWeblinkParams($weblinkActivationParams);
+$eventObj = new Event($weblinkActivationParams);
 $events = $eventObj->loadAll();
 
 echo $events;

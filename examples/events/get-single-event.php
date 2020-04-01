@@ -10,8 +10,7 @@ use Administrate\PhpSdk\Event;
 // $eventId Set this value in config.php
 // $weblinkActivationParams Set this value in config.php
 
-$eventObj = new Event();
-$eventObj->setWeblinkparams($weblinkActivationParams);
+$eventObj = new Event($weblinkActivationParams);
 $event = $eventObj->load($eventId);
 
 echo $event;
