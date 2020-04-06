@@ -105,11 +105,9 @@ if (!class_exists('Activate')) {
          */
         public function handleAuthorizeCallback($params = array())
         {
-            //sprint_r($params);
             // If the callback is the result of an authorization call to
             // the oAuth server:
             //      - Ask for the access token
-            //      - Save the access token and all other info
             if (isset($params['code']) && !empty($params['code'])) {
                 $response = $this->fetchAccessTokens($params['code']);
                 if (self::STATUS_SUCCESS === $response['status']) {
@@ -137,7 +135,7 @@ if (!class_exists('Activate')) {
          * Function to get a new set of token tokens
          * from an previous refresh token
          * @param  string $refreshToken saved refresh token
-         * @return object               response
+         * @return object response
          */
         public function refreshTokens($refreshToken)
         {
@@ -168,9 +166,9 @@ if (!class_exists('Activate')) {
         }
 
         /**
-         * Function to get a new set of token tokens
+         * Function to get a new set of tokens
          * @param  string $refreshToken saved refresh token
-         * @return object               response
+         * @return object response
          */
         public function fetchAccessTokens($code)
         {
@@ -199,10 +197,10 @@ if (!class_exists('Activate')) {
         }
 
         /**
-         * Function to get a new weblink access token
+         * Function to get a new weblink portal token
          * @return object response
          */
-        public function getWeblinkCode()
+        public function getWeblinkPortalToken()
         {
 
             $oauthServer = $this->params['oauthServer'];
@@ -230,7 +228,7 @@ if (!class_exists('Activate')) {
          * and return results to be saved.
          *
          * @param  object $response Guzzle Response Object.
-         * @return array            Response array
+         * @return array response
          */
         protected function proccessResponse($response)
         {

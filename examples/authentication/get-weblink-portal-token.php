@@ -10,7 +10,7 @@ use Administrate\PhpSdk\Oauth\Activate;
 // $weblinkActivationParams Set this value in config.php
 
 $activate = new Activate($weblinkActivationParams);
-$response = $activate->getWeblinkCode();
+$response = $activate->getWeblinkPortalToken();
 
 if ($response) {
     $portalToken = $response['body']->portal_token;
