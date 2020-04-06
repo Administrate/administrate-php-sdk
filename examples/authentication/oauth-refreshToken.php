@@ -15,11 +15,5 @@ if (isset($_GET['token']) && !empty($_GET['token'])) {
     $accessToken = $response['body']->access_token;
     $refreshToken = $response['body']->refresh_token;
 
-    // Save access_token & refresh_token in session
-    $_SESSION = array(
-        'access_token' => $accessToken,
-        'refresh_token' => $refreshToken
-    );
-
-    echo json_encode($_SESSION);
+    echo json_encode(array('access_token' => $accessToken, 'refresh_token' => $refreshToken));
 }
