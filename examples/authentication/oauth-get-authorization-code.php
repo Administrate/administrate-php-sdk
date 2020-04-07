@@ -9,4 +9,4 @@ use Administrate\PhpSdk\Oauth\Activate;
 
 $activate = new Activate($coreApiActivationParams);
 
-echo "<a href='" . $activate->getAuthorizeUrl() . "'>Activate SDK<a/><br>";
+echo "<a href='" . $activate->getAuthorizeUrl() . "'>GET Authorization Code<a/><br>";

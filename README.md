@@ -20,25 +20,31 @@ composer require administrate/phpsdk
 
 ## Usage
 
-### Authorization with Core API - Request Code
+This SDk is built to consume both core API and weblink API, each has a different way in authorization.
+
+The steps to authorize with core API are:\
+1 - request authorization code\
+2 - request access and refresh tokens using code from step 1\
+3 - refresh your tokens after access token is expired (only do this if needed, not a neccessary step in aythorization)
+### Authorization with Core API - Request Authorization Code
 ```php
 require_once 'vendor/autoload.php';
 
 use Administrate\PhpSdk\Oauth\Activate;
 
-$activationParams = [
+$coreApiActivationParams = [
     'clientId' => '9juZ...Ig7U',     // Application ID
     'clientSecret' => 'd1RN...qt2h', // Application secret
     'instance' => 'https://YourInstanse.administrateapp.com/',     // Administrate instance to connect to
     'oauthServer' => 'https://auth.getadministrate.com/oauth',  // Administrate authorization endpoint
     'apiUri' => 'https://api.administrateapp.com/graphql', // Administrate Core API endpoint
     'redirectUri' => 'https://YourAppDomain/callback.php',  // Your app redirect URI to handle callbacks from api
-    'accessToken' => 'ACCESS_TOKEN_HERE',
-    'refreshToken' => 'REFRESH_TOKEN_HERE'
+    'accessToken' => 'ACCESS_TOKEN_HERE',  //in this step we don't have it yet
+    'refreshToken' => 'REFRESH_TOKEN_HERE' //in this step we don't have it yet
 ];
 
 // Create Activate Class instance
-$activationObj = new Activate($activationParams));
+$activationObj = new Activate($coreApiActivationParams));
 
 // Get Authorization Code:
 $urlToGoTo = $activationObj->getAuthorizeUrl();
@@ -50,11 +56,14 @@ $urlToGoTo = $activationObj->getAuthorizeUrl();
 The Previous code will create a link for you to go to.\
 This link will redirect you to the login screen of your instance mentioned in the params with a redirect to link setup for the URL of your choice.\
 Once you login to the instance of administrate you will be promoted to authorize the APP.\
-Once done you will be redirected to the callback url.
+Once done you will be redirected to the callback url with the code in the url (ex: YOUR_CALLBACK_URL/?code=CODE_HERE).\
+\
+Add the code in your config file it will be used in the get tokens method.\
+Note that this is a one time use code.
 
-*Check [oauth-activate.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/authentication/oauth-activate.php) in examples folder*
+*Check [oauth-get-authorization-code.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/authentication/oauth-get-authorization-code.php) in examples folder*
 
-### Authorization with Core API - Callback
+### Authorization with Core API - Request access token and refresh token
 
 ##### Example Callback url:
 *https://YourAppDomain/callback.php?code=9juZ...Ig7U*
@@ -64,13 +73,15 @@ require_once 'vendor/autoload.php';
 
 use Administrate\PhpSdk\Oauth\Activate;
 
+//$authorizationCode is the code we got from previous step
+$authorizationCode = '';
+
 //same activationParams as before
-$activationObj = new Activate($activationParams));
+$activationObj = new Activate($coreApiActivationParams));
 
 // Handle Callback.
-$response = $activationObj->handleAuthorizeCallback($_GET);
-// This method will extract the code from the url
-// and trigger sending an access token request using
+$response = $activationObj->handleAuthorizeCallback( array( 'code' => $authorizationCode) );
+// This method will trigger sending an access token request using
 // "fetchAccessTokens".
 // The returned response is an multidimensional array
 // with a status and body.
@@ -80,7 +91,7 @@ $response = $activationObj->handleAuthorizeCallback($_GET);
 
 // Or you can get the code from the callback URL
 // and pass it as arg to the following method.
-$response = $activationObj->fetchAccessTokens($code);
+$response = $activationObj->fetchAccessTokens($authorizationCode);
 
 // Response Format (array):
 {
@@ -94,7 +105,7 @@ $response = $activationObj->fetchAccessTokens($code);
     }
 }
 ```
-*Check [oauth-callback.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/authentication/oauth-callback.php) in examples folder*
+*Check [oauth-get-tokens.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/authentication/oauth-get-tokens.php) in examples folder*
 
 You should save the **access_token** to be used with your calls to the API.\
 You should save the **expires_in** to calculate when the **access_token** expires and request a new one.\
@@ -126,7 +137,7 @@ $response = $activate->refreshTokens($refresh_token);
     }
 }
 ```
-*Check [oauth-refreshToken.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/authentication/oauth-refreshToken.php) in examples folder*
+*Check [oauth-refresh-tokens.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/authentication/oauth-refresh-tokens.php) in examples folder*
 
 ### Authorization with Weblink API
 ```php
@@ -154,7 +165,7 @@ $response = $activationObj->getWeblinkCode();
 
 ### Categories Management
 
-*You need a weblink token to be able to list categories*
+*You need a portal token to be able to list categories*
 
 #### List Categories
 ```php
