@@ -20,23 +20,31 @@ composer require administrate/phpsdk
 
 ## Usage
 
-### Authorization with Core API - Request Code
+This SDk is built to consume both core API and weblink API, each has a different way in authorization.
+
+The steps to authorize with core API are:\
+1 - request authorization code\
+2 - request access and refresh tokens using code from step 1\
+3 - refresh your tokens after access token is expired (only do this if needed, not a neccessary step in aythorization)
+### Authorization with Core API - Request Authorization Code
 ```php
 require_once 'vendor/autoload.php';
 
-use Administrate\PhpSdk\Oauth\Activate;
+use Administrate\PhpSdk\Oauth\Activator;
 
-$activationParams = [
+$coreApiActivationParams = [
     'clientId' => '9juZ...Ig7U',     // Application ID
     'clientSecret' => 'd1RN...qt2h', // Application secret
     'instance' => 'https://YourInstanse.administrateapp.com/',     // Administrate instance to connect to
     'oauthServer' => 'https://auth.getadministrate.com/oauth',  // Administrate authorization endpoint
     'apiUri' => 'https://api.administrateapp.com/graphql', // Administrate Core API endpoint
     'redirectUri' => 'https://YourAppDomain/callback.php',  // Your app redirect URI to handle callbacks from api
+    'accessToken' => 'ACCESS_TOKEN_HERE',  //in this step we don't have it yet
+    'refreshToken' => 'REFRESH_TOKEN_HERE' //in this step we don't have it yet
 ];
 
 // Create Activate Class instance
-$activationObj = new Activate($activationParams);
+$activationObj = new Activator($coreApiActivationParams));
 
 // Get Authorization Code:
 $urlToGoTo = $activationObj->getAuthorizeUrl();
@@ -48,11 +56,14 @@ $urlToGoTo = $activationObj->getAuthorizeUrl();
 The Previous code will create a link for you to go to.\
 This link will redirect you to the login screen of your instance mentioned in the params with a redirect to link setup for the URL of your choice.\
 Once you login to the instance of administrate you will be promoted to authorize the APP.\
-Once done you will be redirected to the callback url.
+Once done you will be redirected to the callback url with the code in the url (ex: YOUR_CALLBACK_URL/?code=CODE_HERE).\
+\
+Add the code in your config file it will be used in the get tokens method.\
+Note that this is a one time use code.
 
-*Check [oauth-activate.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/oauth-activate.php) in examples folder*
+*Check [oauth-get-authorization-code.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/authentication/oauth-get-authorization-code.php) in examples folder*
 
-### Authorization with Core API - Callback
+### Authorization with Core API - Request access token and refresh token
 
 ##### Example Callback url:
 *https://YourAppDomain/callback.php?code=9juZ...Ig7U*
@@ -60,15 +71,17 @@ Once done you will be redirected to the callback url.
 ```php
 require_once 'vendor/autoload.php';
 
-use Administrate\PhpSdk\Oauth\Activate;
+use Administrate\PhpSdk\Oauth\Activator;
+
+//$authorizationCode is the code we got from previous step
+$authorizationCode = '';
 
 //same activationParams as before
-$activationObj = new Activate($activationParams);
+$activationObj = new Activator($coreApiActivationParams));
 
 // Handle Callback.
-$response = $activationObj->handleAuthorizeCallback($_GET);
-// This method will extract the code from the url
-// and trigger sending an access token request using
+$response = $activationObj->handleAuthorizeCallback( array( 'code' => $authorizationCode) );
+// This method will trigger sending an access token request using
 // "fetchAccessTokens".
 // The returned response is an multidimensional array
 // with a status and body.
@@ -78,7 +91,7 @@ $response = $activationObj->handleAuthorizeCallback($_GET);
 
 // Or you can get the code from the callback URL
 // and pass it as arg to the following method.
-$response = $activationObj->fetchAccessTokens($code);
+$response = $activationObj->fetchAccessTokens($authorizationCode);
 
 // Response Format (array):
 {
@@ -92,7 +105,7 @@ $response = $activationObj->fetchAccessTokens($code);
     }
 }
 ```
-*Check [oauth-callback.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/oauth-callback.php) in examples folder*
+*Check [oauth-get-tokens.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/authentication/oauth-get-tokens.php) in examples folder*
 
 You should save the **access_token** to be used with your calls to the API.\
 You should save the **expires_in** to calculate when the **access_token** expires and request a new one.\
@@ -102,10 +115,10 @@ You should save the **refresh_token** to be used later to get a new **access_tok
 ```php
 require_once 'vendor/autoload.php';
 
-use Administrate\PhpSdk\Oauth\Activate;
+use Administrate\PhpSdk\Oauth\Activator;
 
 //same activationParams as before
-$activationObj = new Activate($activationParams);
+$activationObj = new Activator($activationParams));
 
 //$refresh_token value previously saved
 
@@ -124,13 +137,13 @@ $response = $activate->refreshTokens($refresh_token);
     }
 }
 ```
-*Check [oauth-refreshToken.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/oauth-refreshToken.php) in examples folder*
+*Check [oauth-refresh-tokens.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/authentication/oauth-refresh-tokens.php) in examples folder*
 
 ### Authorization with Weblink API
 ```php
 require_once 'vendor/autoload.php';
 
-use Administrate\PhpSdk\Oauth\Activate;
+use Administrate\PhpSdk\Oauth\Activator;
 
 $activationParams = [
     'oauthServer' => 'https://portal-auth.administratehq.com', // Administrate weblink authorization endpoint
@@ -139,7 +152,7 @@ $activationParams = [
 ];
 
 // Create Activate Class instance
-$activationObj = new Activate($activationParams);
+$activationObj = new Activator($activationParams));
 
 $response = $activationObj->getWeblinkCode();
 
@@ -148,11 +161,11 @@ $response = $activationObj->getWeblinkCode();
     "portal_token": "Tcdg...DIY9o"
 }
 ```
-*Check [get-weblink-code.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/get-weblink-code.php) in examples folder*
+*Check [get-weblink-code.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/authentication/get-weblink-code.php) in examples folder*
 
 ### Categories Management
 
-*You need a weblink token to be able to list categories*
+*You need a portal token to be able to list categories*
 
 #### List Categories
 ```php
@@ -164,7 +177,7 @@ $params = [
     'oauthServer' => 'https://portal-auth.administratehq.com', // Administrate weblink authorization endpoint
     'uri' => 'https://weblink-api.administratehq.com/graphql', // Administrate Weblink endpoint
     'portal' => 'APPNAME.administrateweblink.com',
-    'accessToken' => 'Tcdg...DIY9o',
+    'weblinkAccessToken' => 'Tcdg...DIY9o',
 ];
 
 $categoryObj = new Category($params);
@@ -188,9 +201,9 @@ $categories = $categoryObj->loadAll($page, $perPage, $defaultFields);
 
 #The parameter "defaultFields" is optional only pass it if you want to change the fields
 ```
-*Check [get-single-category.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/get-single-category.php)
+*Check [get-single-category.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/categories/get-single-category.php)
 and
-[get-multiple-categories.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/get-multiple-categories.php) in examples folder*
+[get-multiple-categories.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/categories/get-multiple-categories.php) in examples folder*
 
 ### Courses Management
 ### List Courses
@@ -203,7 +216,7 @@ $params = [
     'oauthServer' => 'https://portal-auth.administratehq.com', // Administrate weblink authorization endpoint
     'uri' => 'https://weblink-api.administratehq.com/graphql',
     'portal' => 'APPNAME.administrateweblink.com',
-    'accessToken' => 'Tcdg...DIY9o',
+    'weblinkAccessToken' => 'Tcdg...DIY9o',
 ];
 
 $CourseObj = new Course($params);
@@ -228,9 +241,9 @@ $searchKeyword = "test_keyword_here"; //optional
 $categories = $courseObj->loadAll($page, $perPage, $categoryId, $searchkeyword, $defaultFields);
 
 ```
-*Check [get-single-course.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/get-single-course.php) 
+*Check [get-single-course.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/courses/get-single-course.php) 
 and 
-[get-multiple-courses.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/get-multiple-courses.php) in examples folder*
+[get-multiple-courses.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/courses/get-multiple-courses.php) in examples folder*
 
 ### Events Management
 ### List Events
@@ -243,7 +256,7 @@ $params = [
     'oauthServer' => 'https://portal-auth.administratehq.com', // Administrate weblink authorization endpoint
     'uri' => 'https://weblink-api.administratehq.com/graphql',
     'portal' => 'APPNAME.administrateweblink.com',
-    'accessToken' => 'Tcdg...DIY9o',
+    'weblinkAccessToken' => 'Tcdg...DIY9o',
 ];
 
 $EventObj = new Event($params);
@@ -273,7 +286,7 @@ $page = 1; //optional
 $perPage = 6; //optional
 $events = $eventObj->loadByCourseCode($page, $perPage, $courseCode);
 ```
-*Check [get-single-event.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/get-single-event.php), [get-multiple-events.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/get-multiple-events.php) and [get-events-by-course.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/get-events-by-courset.php) in examples folder*
+*Check [get-single-event.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/events/get-single-event.php), [get-multiple-events.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/events/get-multiple-events.php) and [get-events-by-course.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/events/get-events-by-courset.php) in examples folder*
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 

@@ -6,7 +6,7 @@ use Administrate\PhpSdk\GraphQl\QueryBuilder as QueryBuilder;
 use Administrate\PhpSdk\GraphQL\Client;
 
 /**
- * Category
+ * Course
  *
  * @package Administrate\PhpSdk
  * @author Ali Habib <ahh@administrate.co>
@@ -14,7 +14,7 @@ use Administrate\PhpSdk\GraphQL\Client;
  */
 class Course
 {
-    public static $weblinkParams;
+    public $weblinkParams;
     private static $defaultFields = array('id', 'code', 'name', 'description', 'category', 'imageUrl');
 
     /**
@@ -26,7 +26,7 @@ class Course
      */
     public function __construct($params = array())
     {
-        self::setWeblinkParams($params);
+        $this->setWeblinkParams($params);
     }
 
     /**
@@ -35,28 +35,19 @@ class Course
      *
      * @return void
      */
-    protected static function setWeblinkParams($params)
+    public function setWeblinkParams($params)
     {
-        // Check for Passed params
-        // If empty fallback to config file defined params
-        // based on SDK env.
-        if (empty($params)) {
-            global $APP_ENVIRONMENT_VARS;
-            if (defined('PHP_SDK_ENV')) {
-                self::$weblinkParams = $APP_ENVIRONMENT_VARS[PHP_SDK_ENV]['weblink2'];
-            }
-        }
-        self::$weblinkParams = $params;
+        $this->weblinkParams = $params;
     }
 
     /**
-     * Method to Get a single category Info from ID.
+     * Method to Get a single course Info from ID.
      *
-     * @param  string $id   LMS Category ID
+     * @param  string $id   LMS Course ID
      *
      * @return String       JSON Object
      */
-    public static function load($id, $fields = array())
+    public function load($id, $fields = array())
     {
         if (!$fields) {
             $fields = self::$defaultFields;
@@ -87,30 +78,17 @@ class Course
             )
         );
 
-        $class = get_called_class();
-        $result = Client::sendSecureCall($class, $gqlQuery, $variablesArray);
+        $result = Client::sendSecureCall($this, $gqlQuery, $variablesArray);
         if (isset($result['courses']['edges'][0]['node']) && !empty($result['courses']['edges'][0]['node'])) {
             return json_encode($result['courses']['edges'][0]['node']);
         }
     }
 
     /**
-     * Method to get a set of events by IDs
-     *
-     * @param  array $ids   Array of LMS events Ids
-     *
-     * @return String       JSON Object Array Of LMS Events
+     * Method to get all Courses
+     * @return String JSON Object Array Of Courses
      */
-    public static function loadMultiple($ids, $fields = array())
-    {
-        //To Do
-    }
-
-    /**
-     * Method to get all Categories
-     * @return String JSON Object Array Of Categories
-     */
-    public static function loadAll($page = 1, $perPage = 5, $categoryId = "", $keyword = "", $fields = array())
+    public function loadAll($page = 1, $perPage = 5, $categoryId = "", $keyword = "", $fields = array())
     {
         if (!$fields) {
             $fields = self::$defaultFields;
@@ -164,8 +142,7 @@ class Course
                 "value" => "%$keyword%"
             ));
         }
-
-        $class = get_called_class();
-        return Client::sendSecureCallJson($class, $gqlQuery, $variablesArray);
+        $result = Client::sendSecureCallJson($this, $gqlQuery, $variablesArray);
+        return $result;
     }
 }

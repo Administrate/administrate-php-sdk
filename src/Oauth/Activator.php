@@ -6,7 +6,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 
-if (!class_exists('Activate')) {
+if (!class_exists('Activator')) {
 
     /**
      * This class is responsible for activating the plugin through oAuth
@@ -15,10 +15,10 @@ if (!class_exists('Activate')) {
      * @package default
      *
      */
-    class Activate
+    class Activator
     {
         protected static $instance;
-        protected static $params;
+        public $params;
 
         private const SUCCESS_CODE = 200;
         private const STATUS_SUCCESS = 'success';
@@ -33,7 +33,7 @@ if (!class_exists('Activate')) {
          */
         public function __construct($params = array())
         {
-            self::setParams($params);
+            $this->setParams($params);
         }
 
         /**
@@ -41,7 +41,7 @@ if (!class_exists('Activate')) {
          * Return an instance of the current class if it exists
          * Construct a new one otherwise
          *
-         * @return Activate object
+         * @return Activator object
          *
          */
         public static function instance()
@@ -59,18 +59,9 @@ if (!class_exists('Activate')) {
          *
          * @return void
          */
-        protected static function setParams($params)
+        public function setParams($params)
         {
-            // Check for Passed params
-            // If empty fallback to config file defined params
-            // based on SDK env.
-            if (empty($params)) {
-                global $APP_ENVIRONMENT_VARS;
-                if (defined('PHP_SDK_ENV')) {
-                    $params = $APP_ENVIRONMENT_VARS[PHP_SDK_ENV];
-                }
-            }
-            self::$params = $params;
+            $this->params = $params;
         }
 
         /**
@@ -82,20 +73,20 @@ if (!class_exists('Activate')) {
          * */
         public function getAuthorizeUrl()
         {
-            $clientId = self::$params['clientId'];
-            $oauthServer = self::$params['oauthServer'];
+            $clientId = $this->params['clientId'];
+            $oauthServer = $this->params['oauthServer'];
 
             $requestUrl  = $oauthServer;
             $requestUrl .= "/authorize?response_type=code";
             $requestUrl .= "&client_id=" . $clientId;
 
-            if (isset(self::$params['instance']) && !empty(self::$params['instance'])) {
-                $requestUrl .= "&instance=" . self::$params['instance'];
+            if (isset($this->params['instance']) && !empty($this->params['instance'])) {
+                $requestUrl .= "&instance=" . $this->params['instance'];
             }
 
             $redirectUri = '';
-            if (isset(self::$params['redirectUri']) && !empty(self::$params['redirectUri'])) {
-                $requestUrl .= "&redirect_uri=" . self::$params['redirectUri'];
+            if (isset($this->params['redirectUri']) && !empty($this->params['redirectUri'])) {
+                $requestUrl .= "&redirect_uri=" . $this->params['redirectUri'];
             }
 
             return $requestUrl;
@@ -117,11 +108,10 @@ if (!class_exists('Activate')) {
             // If the callback is the result of an authorization call to
             // the oAuth server:
             //      - Ask for the access token
-            //      - Save the access token and all other info
             if (isset($params['code']) && !empty($params['code'])) {
-                $responce = $this->fetchAccessTokens($params['code']);
-                if (self::STATUS_SUCCESS === $responce['status']) {
-                    return $responce;
+                $response = $this->fetchAccessTokens($params['code']);
+                if (self::STATUS_SUCCESS === $response['status']) {
+                    return $response;
                 }
             }
             return array();
@@ -145,7 +135,7 @@ if (!class_exists('Activate')) {
          * Function to get a new set of token tokens
          * from an previous refresh token
          * @param  string $refreshToken saved refresh token
-         * @return object               response
+         * @return object response
          */
         public function refreshTokens($refreshToken)
         {
@@ -153,10 +143,10 @@ if (!class_exists('Activate')) {
                 return;
             }
 
-            $clientId = self::$params['clientId'];
-            $clientSecret = self::$params['clientSecret'];
-            $oauthServer = self::$params['oauthServer'];
-            $instance = self::$params['instance'];
+            $clientId = $this->params['clientId'];
+            $clientSecret = $this->params['clientSecret'];
+            $oauthServer = $this->params['oauthServer'];
+            $instance = $this->params['instance'];
 
             $grantType = 'refresh_token';
 
@@ -176,17 +166,17 @@ if (!class_exists('Activate')) {
         }
 
         /**
-         * Function to get a new set of token tokens
+         * Function to get a new set of tokens
          * @param  string $refreshToken saved refresh token
-         * @return object               response
+         * @return object response
          */
         public function fetchAccessTokens($code)
         {
-            $clientId = self::$params['clientId'];
-            $clientSecret = self::$params['clientSecret'];
-            $oauthServer = self::$params['oauthServer'];
-            $lmsInstance = self::$params['instance'];
-            $redirectUri = self::$params['redirectUri'];
+            $clientId = $this->params['clientId'];
+            $clientSecret = $this->params['clientSecret'];
+            $oauthServer = $this->params['oauthServer'];
+            $lmsInstance = $this->params['instance'];
+            $redirectUri = $this->params['redirectUri'];
 
             $grantType = 'authorization_code';
 
@@ -207,14 +197,14 @@ if (!class_exists('Activate')) {
         }
 
         /**
-         * Function to get a new weblink access token
+         * Function to get a new weblink portal token
          * @return object response
          */
-        public function getWeblinkCode()
+        public function getWeblinkPortalToken()
         {
 
-            $oauthServer = self::$params['oauthServer'];
-            $portal = self::$params['portal'];
+            $oauthServer = $this->params['oauthServer'];
+            $portal = $this->params['portal'];
 
             //Request Token
             $url = $oauthServer . "/portal/guest";
@@ -224,13 +214,8 @@ if (!class_exists('Activate')) {
                 'Accept' => 'application/json, text/plain, */*'
             );
 
-            $tempFile = tmpfile();
-            fwrite($tempFile, '{"domain":"' . $portal . '"}');
-            fseek($tempFile, 0);
-            $fileContent = fread($tempFile, 1024);
-            fclose($tempFile);
-
-            $requestArgs['body'] = $fileContent;
+            $body = '{"domain":"' . $portal . '"}';
+            $requestArgs['body'] = $body;
 
             $guzzleClient = new Client();
             $response = $guzzleClient->request('POST', $url, $requestArgs);
@@ -243,7 +228,7 @@ if (!class_exists('Activate')) {
          * and return results to be saved.
          *
          * @param  object $response Guzzle Response Object.
-         * @return array            Response array
+         * @return array response
          */
         protected function proccessResponse($response)
         {

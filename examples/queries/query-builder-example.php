@@ -1,8 +1,8 @@
 <?php
 header('Content-Type: application/json');
 
-require_once 'config.php';
-require_once '../vendor/autoload.php';
+require_once '../config.php';
+require_once '../../vendor/autoload.php';
 
 use Administrate\PhpSdk\GraphQL\QueryBuilder as QueryBuilder;
 use Administrate\PhpSdk\GraphQL\Client;
@@ -24,16 +24,14 @@ $builder = (new QueryBuilder('node'))
 
 $gqlQuery = $builder->getQuery();
 
-if ($_SESSION['access_token']) {
-    $accessToken = $_SESSION['access_token'];
-}
-
-$endpointUrl = $APP_ENVIRONMENT_VARS[PHP_SDK_ENV]['apiUri'];
+$endpointUrl = $coreApiActivationParams['apiUri'];
+$accessToken = $coreApiActivationParams['accessToken'];
 // $accessToken is set in config.php
 $authorizationHeaders = Client::setHeaders(
     array(
         'accessToken' => $accessToken
-    )
+    ),
+    Client::$CORE_API
 );
 $httpOptions = Client::setArgs();
 $variablesArray = array(

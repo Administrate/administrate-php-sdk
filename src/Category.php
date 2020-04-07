@@ -8,13 +8,14 @@ use Administrate\PhpSdk\GraphQL\Client;
 /**
  * Category
  *
- * @package    Administrate\PhpSdk
- * @author     Jad Khater <jck@administrate.co>
+ * @package Administrate\PhpSdk
+ * @author Jad Khater <jck@administrate.co>
+ * @author Ali Habib <ahh@administrate.co>
  */
 class Category
 {
 
-    public static $weblinkParams;
+    public $weblinkParams;
     private static $defaultFields = array('id', 'name', 'shortDescription', 'parent');
 
     /**
@@ -26,7 +27,7 @@ class Category
      */
     public function __construct($params = array())
     {
-        self::setWeblinkParams($params);
+        $this->setWeblinkParams($params);
     }
 
     /**
@@ -35,28 +36,19 @@ class Category
      *
      * @return void
      */
-    protected static function setWeblinkParams($params)
+    public function setWeblinkParams($params)
     {
-        // Check for Passed params
-        // If empty fallback to config file defined params
-        // based on SDK env.
-        if (empty($params)) {
-            global $APP_ENVIRONMENT_VARS;
-            if (defined('PHP_SDK_ENV')) {
-                self::$weblinkParams = $APP_ENVIRONMENT_VARS[PHP_SDK_ENV]['weblink2'];
-            }
-        }
-        self::$weblinkParams = $params;
+        $this->weblinkParams = $params;
     }
 
     /**
      * Method to Get a single category Info from ID.
      *
-     * @param  string $id   LMS Category ID
+     * @param  string $id LMS Category ID
      *
-     * @return String       JSON Object
+     * @return String JSON Object
      */
-    public static function load($id, $fields = array())
+    public function load($id, $fields = array())
     {
         if (!$fields) {
             $fields = self::$defaultFields;
@@ -93,24 +85,10 @@ class Category
                 )
             )
         );
-        $class = get_called_class();
-        $result = Client::sendSecureCall($class, $gqlQuery, $variablesArray);
+
+        $result = Client::sendSecureCall($this, $gqlQuery, $variablesArray);
         if (isset($result['categories']['edges'][0]['node']) && !empty($result['categories']['edges'][0]['node'])) {
             return json_encode($result['categories']['edges'][0]['node']);
-        }
-    }
-
-    /**
-     * Method to get a set of events by IDs
-     *
-     * @param  array $ids   Array of LMS events Ids
-     *
-     * @return String       JSON Object Array Of LMS Events
-     */
-    public static function loadMultiple($ids, $fields = array())
-    {
-        if (!$fields) {
-            $fields = self::$defaultFields;
         }
     }
 
@@ -118,7 +96,7 @@ class Category
      * Method to get all Categories
      * @return String JSON Object Array Of Categories
      */
-    public static function loadAll($page = 1, $perPage = 5, $fields = array())
+    public function loadAll($page = 1, $perPage = 5, $fields = array())
     {
         if (!$fields) {
             $fields = self::$defaultFields;
@@ -158,7 +136,7 @@ class Category
 
         $gqlQuery = $builder->getQuery();
 
-        $class = get_called_class();
-        return Client::sendSecureCallJson($class, $gqlQuery);
+        $result = Client::sendSecureCallJson($this, $gqlQuery);
+        return $result;
     }
 }
