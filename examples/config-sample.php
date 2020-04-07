@@ -9,6 +9,10 @@ $courseId = '';
 $courseCode = "";
 $eventId = "";
 
+
+//Authorzation code
+$authorizationCode = '';
+
 // Core API Params
 $coreApiActivationParams = array(
     'clientId' => '',
