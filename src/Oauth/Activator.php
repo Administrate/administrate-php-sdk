@@ -6,7 +6,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 
-if (!class_exists('Activate')) {
+if (!class_exists('Activator')) {
 
     /**
      * This class is responsible for activating the plugin through oAuth
@@ -15,7 +15,7 @@ if (!class_exists('Activate')) {
      * @package default
      *
      */
-    class Activate
+    class Activator
     {
         protected static $instance;
         public $params;
@@ -41,7 +41,7 @@ if (!class_exists('Activate')) {
          * Return an instance of the current class if it exists
          * Construct a new one otherwise
          *
-         * @return Activate object
+         * @return Activator object
          *
          */
         public static function instance()

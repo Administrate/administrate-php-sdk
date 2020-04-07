@@ -11,7 +11,7 @@ $eventId = "";
 
 
 //Authorzation code
-$authorizationCode = 'oL7AMqZLOPZVZFoBGnvp1dkvHwGE9w';
+$authorizationCode = '';
 
 // Core API Params
 $coreApiActivationParams = array(

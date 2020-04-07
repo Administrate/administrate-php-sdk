@@ -2,11 +2,11 @@
 require_once '../config.php';
 require_once '../../vendor/autoload.php';
 
-use Administrate\PhpSdk\Oauth\Activate;
+use Administrate\PhpSdk\Oauth\Activator;
 
 //$coreActivationParams defined in config.php
 
-$activate = new Activate($coreApiActivationParams);
+$activate = new Activator($coreApiActivationParams);
 //$response = $activate->handleAuthorizeCallback($_GET);
 echo "Add this code in config file in order to get access_token and refesh_token";
 echo "<pre>";

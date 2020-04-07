@@ -26,9 +26,9 @@ class Client extends GqlClient
         }
 
         if ($API == self::$WEBLINK2_API) {
-            if (isset($params['weblinkAccessToken']) && !empty($params['weblinkAccessToken'])) {
+            if (isset($params['weblinkPortalToken']) && !empty($params['weblinkPortalToken'])) {
                 $headers = array(
-                    'Authorization' => 'Bearer ' . $params['weblinkAccessToken'],
+                    'Authorization' => 'Bearer ' . $params['weblinkPortalToken'],
                 );
             }
         }

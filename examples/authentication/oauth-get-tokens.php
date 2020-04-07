@@ -2,13 +2,13 @@
 require_once '../config.php';
 require_once '../../vendor/autoload.php';
 
-use Administrate\PhpSdk\Oauth\Activate;
+use Administrate\PhpSdk\Oauth\Activator;
 
 //$coreActivationParams defined in config.php
 //$authorizationCode defined in config.php
 
-$activate = new Activate($coreApiActivationParams);
-$response = $activate->handleAuthorizeCallback(array( 'code' => $authorizationCode ));
+$activationObj = new Activator($coreApiActivationParams);
+$response = $activationObj->handleAuthorizeCallback(array( 'code' => $authorizationCode ));
 
 if ($response) {
     $accessToken = $response['body']->access_token;
