@@ -30,7 +30,7 @@ The steps to authorize with core API are:\
 ```php
 require_once 'vendor/autoload.php';
 
-use Administrate\PhpSdk\Oauth\Activate;
+use Administrate\PhpSdk\Oauth\Activator;
 
 $coreApiActivationParams = [
     'clientId' => '9juZ...Ig7U',     // Application ID
@@ -44,7 +44,7 @@ $coreApiActivationParams = [
 ];
 
 // Create Activate Class instance
-$activationObj = new Activate($coreApiActivationParams));
+$activationObj = new Activator($coreApiActivationParams));
 
 // Get Authorization Code:
 $urlToGoTo = $activationObj->getAuthorizeUrl();
@@ -71,13 +71,13 @@ Note that this is a one time use code.
 ```php
 require_once 'vendor/autoload.php';
 
-use Administrate\PhpSdk\Oauth\Activate;
+use Administrate\PhpSdk\Oauth\Activator;
 
 //$authorizationCode is the code we got from previous step
 $authorizationCode = '';
 
 //same activationParams as before
-$activationObj = new Activate($coreApiActivationParams));
+$activationObj = new Activator($coreApiActivationParams));
 
 // Handle Callback.
 $response = $activationObj->handleAuthorizeCallback( array( 'code' => $authorizationCode) );
@@ -115,10 +115,10 @@ You should save the **refresh_token** to be used later to get a new **access_tok
 ```php
 require_once 'vendor/autoload.php';
 
-use Administrate\PhpSdk\Oauth\Activate;
+use Administrate\PhpSdk\Oauth\Activator;
 
 //same activationParams as before
-$activationObj = new Activate($activationParams));
+$activationObj = new Activator($activationParams));
 
 //$refresh_token value previously saved
 
@@ -143,7 +143,7 @@ $response = $activate->refreshTokens($refresh_token);
 ```php
 require_once 'vendor/autoload.php';
 
-use Administrate\PhpSdk\Oauth\Activate;
+use Administrate\PhpSdk\Oauth\Activator;
 
 $activationParams = [
     'oauthServer' => 'https://portal-auth.administratehq.com', // Administrate weblink authorization endpoint
@@ -152,7 +152,7 @@ $activationParams = [
 ];
 
 // Create Activate Class instance
-$activationObj = new Activate($activationParams));
+$activationObj = new Activator($activationParams));
 
 $response = $activationObj->getWeblinkCode();
 
