@@ -147,7 +147,7 @@ use Administrate\PhpSdk\Oauth\Activator;
 
 $activationParams = [
     'oauthServer' => 'https://portal-auth.administratehq.com', // Administrate weblink authorization endpoint
-    'uri' => 'https://weblink-api.administratehq.com/graphql', // Administrate Weblink endpoint
+    'apiUri' => 'https://weblink-api.administratehq.com/graphql', // Administrate Weblink endpoint
     'portal' => 'APPNAME.administrateweblink.com',
 ];
 
