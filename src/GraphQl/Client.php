@@ -7,9 +7,9 @@ use GraphQL\Client as GqlClient;
 class Client extends GqlClient
 {
     //Response Types
-    public const RESPONSE_PHP_ARRAY = 1;
-    public const RESPONSE_OBJECT = 2;
-    public const RESPOPNSE_JSON = 3;
+    public const RESPONSE_PHP_ARRAY = 'array';
+    public const RESPONSE_OBJECT = 'obj';
+    public const RESPOPNSE_JSON = 'json';
 
     /**
     * Function to build the API call headers
@@ -81,7 +81,7 @@ class Client extends GqlClient
         if ($type == self::RESPONSE_PHP_ARRAY) {
             return $res;
         } elseif ($type == self::RESPONSE_OBJECT) {
-            return self::ToObject($res);
+            return self::toObject($res);
         } elseif ($type == self::RESPOPNSE_JSON) {
             return json_encode($res);
         }
@@ -91,7 +91,7 @@ class Client extends GqlClient
     * @param array
     * @return stdClass Object
     */
-    public static function ToObject($Array)
+    public static function toObject($Array)
     {
         // Create new stdClass object
         $object = new class{

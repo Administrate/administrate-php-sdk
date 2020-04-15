@@ -97,8 +97,6 @@ class Course
      */
     public function loadAll($filters = [], $paging = [], $sorting = [], $fields = [], $returnType = 1)
     {
-        //print_r($filters);
-        //die();
         //set paging variables
         if (empty($paging)) {
             $paging = self::$paging;

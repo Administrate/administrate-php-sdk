@@ -9,10 +9,10 @@ use Administrate\PhpSdk\Event;
 
 // $courseCode Set this value in config.php
 // $weblinkActivationParams Set this value in config.php
+// $return type defined in client Class 'array' -> PHP array, 'obj' -> PHP Object and 'json' -> JSON
 
-// $weblinkActivationParams Set this value in config.php
 $fields = [];
-$returnType = 3; //1 for default PHP Array, 2 for PHP statndard object, 3 for JSON
+$returnType = 'json'; //1 for default PHP Array, 2 for PHP statndard object, 3 for JSON
 $paging = ['page' => 1, 'perPage' => 25];
 $sorting = ['field' => 'title', 'direction' => 'asc'];
 $filters = ['courseCode' => $courseCode];

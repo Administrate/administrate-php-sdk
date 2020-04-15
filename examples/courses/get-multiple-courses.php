@@ -9,12 +9,13 @@ use Administrate\PhpSdk\Course;
 
 // $categoryIds Set this value in config.php
 // $weblinkActivationParams Set this value in config.php
+// $return type defined in client Class 'array' -> PHP array, 'obj' -> PHP Object and 'json' -> JSON
 
 $courseClass = new Course($weblinkActivationParams);
 
 $keyword = "safe";
 $fields = [];
-$returnType = 3; //1 for default PHP Array, 2 for PHP statndard object, 3 for JSON
+$returnType = 'array'; //1 for default PHP Array, 2 for PHP statndard object, 3 for JSON
 $paging = ['page' => 1, 'perPage' => 25];
 $sorting = ['field' => 'name', 'direction' => 'asc'];
 $filters = ['categoryId' => $categoryIds[0], 'keyword' => $keyword];
