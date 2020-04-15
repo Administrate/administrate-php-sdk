@@ -56,7 +56,7 @@ class Client extends GqlClient
 
     public static function sendSecureCall($obj, $query, $variables = [])
     {
-        $authorizationHeaders = self::setHeaders($obj->weblinkParams);
+        $authorizationHeaders = self::setHeaders($obj->params);
         $httpOptions = self::setArgs();
         $client = new Client($obj->weblinkParams['uri'], $authorizationHeaders);
         $results = $client->runQuery($query, true, $variables);
