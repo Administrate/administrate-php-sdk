@@ -175,7 +175,7 @@ use Administrate\PhpSdk\Category;
 
 $params = [
     'oauthServer' => 'https://portal-auth.administratehq.com', // Administrate weblink authorization endpoint
-    'uri' => 'https://weblink-api.administratehq.com/graphql', // Administrate Weblink endpoint
+    'apiUri' => 'https://weblink-api.administratehq.com/graphql', // Administrate Weblink endpoint
     'portal' => 'APPNAME.administrateweblink.com',
     'portalToken' => 'Tcdg...DIY9o',
 ];
@@ -214,7 +214,7 @@ use Administrate\PhpSdk\Course;
 
 $params = [
     'oauthServer' => 'https://portal-auth.administratehq.com', // Administrate weblink authorization endpoint
-    'uri' => 'https://weblink-api.administratehq.com/graphql',
+    'apiUri' => 'https://weblink-api.administratehq.com/graphql',
     'portal' => 'APPNAME.administrateweblink.com',
     'portalToken' => 'Tcdg...DIY9o',
 ];
@@ -254,7 +254,7 @@ use Administrate\PhpSdk\Event;
 
 $params = [
     'oauthServer' => 'https://portal-auth.administratehq.com', // Administrate weblink authorization endpoint
-    'uri' => 'https://weblink-api.administratehq.com/graphql',
+    'apiUri' => 'https://weblink-api.administratehq.com/graphql',
     'portal' => 'APPNAME.administrateweblink.com',
     'portalToken' => 'Tcdg...DIY9o',
 ];
