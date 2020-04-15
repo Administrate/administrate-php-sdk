@@ -177,7 +177,7 @@ $params = [
     'oauthServer' => 'https://portal-auth.administratehq.com', // Administrate weblink authorization endpoint
     'uri' => 'https://weblink-api.administratehq.com/graphql', // Administrate Weblink endpoint
     'portal' => 'APPNAME.administrateweblink.com',
-    'weblinkAccessToken' => 'Tcdg...DIY9o',
+    'portalToken' => 'Tcdg...DIY9o',
 ];
 
 $categoryObj = new Category($params);
@@ -216,7 +216,7 @@ $params = [
     'oauthServer' => 'https://portal-auth.administratehq.com', // Administrate weblink authorization endpoint
     'uri' => 'https://weblink-api.administratehq.com/graphql',
     'portal' => 'APPNAME.administrateweblink.com',
-    'weblinkAccessToken' => 'Tcdg...DIY9o',
+    'portalToken' => 'Tcdg...DIY9o',
 ];
 
 $CourseObj = new Course($params);
@@ -241,8 +241,8 @@ $searchKeyword = "test_keyword_here"; //optional
 $categories = $courseObj->loadAll($page, $perPage, $categoryId, $searchkeyword, $defaultFields);
 
 ```
-*Check [get-single-course.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/courses/get-single-course.php) 
-and 
+*Check [get-single-course.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/courses/get-single-course.php)
+and
 [get-multiple-courses.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/courses/get-multiple-courses.php) in examples folder*
 
 ### Events Management
@@ -256,7 +256,7 @@ $params = [
     'oauthServer' => 'https://portal-auth.administratehq.com', // Administrate weblink authorization endpoint
     'uri' => 'https://weblink-api.administratehq.com/graphql',
     'portal' => 'APPNAME.administrateweblink.com',
-    'weblinkAccessToken' => 'Tcdg...DIY9o',
+    'portalToken' => 'Tcdg...DIY9o',
 ];
 
 $EventObj = new Event($params);

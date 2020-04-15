@@ -6,37 +6,29 @@ use GraphQL\Client as GqlClient;
 
 class Client extends GqlClient
 {
-    public static $CORE_API = 1;
-    public static $WEBLINK2_API = 2;
     /**
     * Function to build the API call headers
     * @return $headers, array API Call Header configuration.
     */
-    public static function setHeaders($params = array(), $API = 2)
+    public static function setHeaders($params = array())
     {
 
         $headers = array();
 
-        if ($API == self::$CORE_API) {
-            if (isset($params['accessToken']) && !empty($params['accessToken'])) {
-                $headers = array(
-                    'Authorization' => 'Bearer ' . $params['accessToken'],
-                );
-            }
+        if (isset($params['accessToken']) && !empty($params['accessToken'])) {
+            $headers = array(
+                'Authorization' => 'Bearer ' . $params['accessToken'],
+            );
         }
 
-        if ($API == self::$WEBLINK2_API) {
-            if (isset($params['weblinkPortalToken']) && !empty($params['weblinkPortalToken'])) {
-                $headers = array(
-                    'Authorization' => 'Bearer ' . $params['weblinkPortalToken'],
-                );
-            }
+        if (isset($params['portalToken']) && !empty($params['portalToken'])) {
+            $headers = array(
+                'Authorization' => 'Bearer ' . $params['portalToken'],
+            );
         }
 
-        foreach ($params as $key => $value) {
-            if ('portal' === $key) {
-                $headers['weblink-portal'] = $value;
-            }
+        if (isset($params['portal']) && !empty($params['portal'])) {
+            $headers['weblink-portal'] = $params['portal'];
         }
 
         return $headers;

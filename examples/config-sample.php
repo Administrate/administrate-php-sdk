@@ -30,5 +30,5 @@ $weblinkActivationParams = array(
     'oauthServer' => '',
     'uri' => '',
     'portal' => '',
-    'weblinkAccessToken' => ''
+    'portalToken' => ''
 );
