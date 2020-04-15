@@ -16,6 +16,8 @@ class Course
 {
     public $params;
     private static $defaultFields = array('id', 'code', 'name', 'description', 'category', 'imageUrl');
+    private static $paging = array('page' => 1, 'perPage' => 25);
+    private static $sorting = array('field' => 'name', 'direction' => 'ASC');
 
     /**
      * Default constructor.
@@ -47,7 +49,7 @@ class Course
      *
      * @return String       JSON Object
      */
-    public function load($id, $fields = array())
+    public function load($filters = [], $fields = [], $returnType = 1)
     {
         if (!$fields) {
             $fields = self::$defaultFields;
@@ -70,17 +72,22 @@ class Course
 
         $variablesArray = array(
             "filters" => array(
-                0 => array(
-                    "field" => "id",
-                    "operation" => "eq",
-                    "value" => $id,
-                )
             )
         );
 
+        foreach ($filters as $key => $value) {
+            $filter = array(
+                "field" => $key,
+                "operation" => "eq",
+                "value" => $value
+            );
+            array_push($variablesArray['filters'], $filter);
+        };
+
         $result = Client::sendSecureCall($this, $gqlQuery, $variablesArray);
+
         if (isset($result['courses']['edges'][0]['node']) && !empty($result['courses']['edges'][0]['node'])) {
-            return json_encode($result['courses']['edges'][0]['node']);
+            return Client::toType($returnType, $result['courses']['edges'][0]['node']);
         }
     }
 
@@ -88,8 +95,25 @@ class Course
      * Method to get all Courses
      * @return String JSON Object Array Of Courses
      */
-    public function loadAll($page = 1, $perPage = 5, $categoryId = "", $keyword = "", $fields = array())
+    public function loadAll($filters = [], $paging = [], $sorting = [], $fields = [], $returnType = 1)
     {
+        //print_r($filters);
+        //die();
+        //set paging variables
+        if (empty($paging)) {
+            $paging = self::$paging;
+        }
+        $perPage = $paging['perPage'];
+        $page = $paging['page'];
+
+
+        //set sorting variables
+        if (empty($sorting)) {
+            $sorting = self::$sorting;
+        }
+        $sortField = $sorting['field'];
+        $sortDirection = $sorting['direction'];
+
         if (!$fields) {
             $fields = self::$defaultFields;
         }
@@ -107,6 +131,8 @@ class Course
         $offset = ($page - 1) * $perPage;
 
         $builder = (new QueryBuilder('courses'))
+        ->setVariable('order', 'CourseFieldOrder', false)
+         ->setArgument('order', '$order')
         ->setArgument('first', $first)
         ->setArgument('offset', $offset)
         ->setVariable('filters', '[CourseFieldFilter]', true)
@@ -125,24 +151,35 @@ class Course
         $gqlQuery = $builder->getQuery();
 
         $variablesArray = array(
-            "filters" => array()
+            "filters" => array(),
+            "order" => ''
         );
 
-        if ($categoryId != "") {
+        if (isset($filters['categoryId']) && $filters['categoryId'] != "") {
             array_push($variablesArray['filters'], array(
                 "field" => "categoryId",
                 "operation" => "eq",
-                "value" => $categoryId
+                "value" => $filters['categoryId']
             ));
         }
-        if ($keyword != "") {
+        if (isset($filters['keyword']) && $filters['keyword'] != "") {
             array_push($variablesArray['filters'], array(
                 "field" => "name",
                 "operation" => "like",
-                "value" => "%$keyword%"
+                "value" => "%".$filters['keyword']."%"
             ));
         }
-        $result = Client::sendSecureCallJson($this, $gqlQuery, $variablesArray);
-        return $result;
+
+        if (!empty($sorting)) {
+            $sortingObject = new Class{
+            };
+            $sortingObject->field = $sortField;
+            $sortingObject->direction = $sortDirection;
+            //$sortingObject = new RawObject('{"field": "'.$sortField.'", "direction": "'.$sortDirection.'"}');
+            $variablesArray['order'] = $sortingObject;
+        }
+        
+        $result = Client::sendSecureCall($this, $gqlQuery, $variablesArray);
+        return Client::toType($returnType, $result);
     }
 }

@@ -12,6 +12,13 @@ use Administrate\PhpSdk\Course;
 // $weblinkActivationParams Set this value in config.php
 
 $courseClass = new Course($weblinkActivationParams);
-$course = $courseClass->load($courseId);
 
-echo $course;
+$filters = [
+    'id' => $courseId
+];
+$fields = [];
+$returnType = 3; //1 for default PHP Array, 2 for PHP statndard object, 3 for JSON
+
+$course = $courseClass->load($filters, $fields, $returnType);
+
+print_r($course);
