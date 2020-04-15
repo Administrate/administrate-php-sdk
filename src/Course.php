@@ -14,7 +14,7 @@ use Administrate\PhpSdk\GraphQL\Client;
  */
 class Course
 {
-    public $weblinkParams;
+    public $params;
     private static $defaultFields = array('id', 'code', 'name', 'description', 'category', 'imageUrl');
 
     /**
@@ -26,7 +26,7 @@ class Course
      */
     public function __construct($params = array())
     {
-        $this->setWeblinkParams($params);
+        $this->setParams($params);
     }
 
     /**
@@ -35,9 +35,9 @@ class Course
      *
      * @return void
      */
-    public function setWeblinkParams($params)
+    public function setParams($params)
     {
-        $this->weblinkParams = $params;
+        $this->params = $params;
     }
 
     /**

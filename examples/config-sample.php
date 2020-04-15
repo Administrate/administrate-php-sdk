@@ -28,7 +28,7 @@ $coreApiActivationParams = array(
 //Weblink2 API Params
 $weblinkActivationParams = array(
     'oauthServer' => '',
-    'uri' => '',
+    'apiUri' => '',
     'portal' => '',
-    'weblinkAccessToken' => ''
+    'portalToken' => ''
 );

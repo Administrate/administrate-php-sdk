@@ -15,7 +15,7 @@ use Administrate\PhpSdk\GraphQL\Client;
 class Category
 {
 
-    public $weblinkParams;
+    public $params;
     private static $defaultFields = array('id', 'name', 'shortDescription', 'parent');
 
     /**
@@ -27,7 +27,7 @@ class Category
      */
     public function __construct($params = array())
     {
-        $this->setWeblinkParams($params);
+        $this->setParams($params);
     }
 
     /**
@@ -36,9 +36,9 @@ class Category
      *
      * @return void
      */
-    public function setWeblinkParams($params)
+    public function setParams($params)
     {
-        $this->weblinkParams = $params;
+        $this->params = $params;
     }
 
     /**

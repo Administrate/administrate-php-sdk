@@ -7,38 +7,62 @@ require_once '../../vendor/autoload.php';
 use Administrate\PhpSdk\GraphQL\QueryBuilder as QueryBuilder;
 use Administrate\PhpSdk\GraphQL\Client;
 
-$contactFields = array( 'firstName','lastName','emailAddress');
+$fields = array(
+    'id',
+    'legacyId',
+    'lifecycleState',
+    'createdAt',
+    'isActive',
+    'isCancelled',
+    'expiresAt',
+    array(
+        'key' => 'event',
+        'fields' => array(
+            'id',
+            'legacyId',
+            'title',
+            'price'
+        ),
+    ),
+);
 
-$contact = (new QueryBuilder('contact'));
-foreach ($contactFields as $field) {
-    $contact->selectField($field);
+$node = (new QueryBuilder('node'));
+foreach ($fields as $fieldKey) {
+    if (is_array($fieldKey)) {
+        $subFields = $fieldKey;
+        $subFieldsQuery = (new QueryBuilder($subFields['key']));
+        foreach ($subFields['fields'] as $subfieldKey) {
+            $subFieldsQuery->selectField($subfieldKey);
+        }
+        $node->selectField($subFieldsQuery);
+    } else {
+       $node->selectField($fieldKey);
+    }
 }
 
-$onLearner = (new QueryBuilder('... on Learner'))
-    ->selectField($contact);
-
-$builder = (new QueryBuilder('node'))
-    ->setVariable('learnerId', 'ID', true)
-    ->setArgument('id', '$learnerId')
-    ->selectField($onLearner);
+$builder = (new QueryBuilder('learners'))
+    ->setVariable('filters', '[LearnerFieldGraphFilter]', true)
+    ->setArgument('filters', '$filters')
+    ->selectField(
+        (new QueryBuilder('edges'))
+            ->selectField($node)
+    );
 
 $gqlQuery = $builder->getQuery();
 
-$endpointUrl = $coreApiActivationParams['apiUri'];
-$accessToken = $coreApiActivationParams['accessToken'];
-// $accessToken is set in config.php
-$authorizationHeaders = Client::setHeaders(
-    array(
-        'accessToken' => $accessToken
-    ),
-    Client::$CORE_API
-);
-$httpOptions = Client::setArgs();
 $variablesArray = array(
-    'learnerId' => $learnerId // Set this value in config.php
+    "filters" => array(
+        0 => array(
+            "field" => "id",
+            "operation" => "eq",
+            "value" => $learnerId,
+        )
+    )
 );
 
-$client = new Client($endpointUrl, $authorizationHeaders);
+// $coreApiActivationParams Set this value in config.php
+$authorizationHeaders = Client::setHeaders($coreApiActivationParams);
+$client = new Client($coreApiActivationParams['apiUri'], $authorizationHeaders);
 $results = $client->runQuery($gqlQuery, true, $variablesArray);
 
 echo json_encode($results->getData());

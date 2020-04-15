@@ -11,6 +11,7 @@ use Administrate\PhpSdk\Course;
 // $weblinkActivationParams Set this value in config.php
 
 $courseClass = new Course($weblinkActivationParams);
-$allCourses = $courseClass->loadAll(1, 5, $categoryIds[0], "safe");
+$allCourses = $courseClass->loadAll();
+//$allCourses = $courseClass->loadAll(1, 5, $categoryIds[0], "safe");
 
 echo $allCourses;

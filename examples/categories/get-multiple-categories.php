@@ -10,6 +10,6 @@ use Administrate\PhpSdk\Category;
 // $weblinkActivationParams Set this value in config.php
 
 $categoryClass = new Category($weblinkActivationParams);
-$allCategories = $categoryClass->loadAll(3);
+$allCategories = $categoryClass->loadAll();
 
 echo($allCategories);
