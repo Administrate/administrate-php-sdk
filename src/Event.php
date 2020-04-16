@@ -67,7 +67,11 @@ class Event
     }
 
     /**
-     * Method to Get Event Info.
+     * Method to Get Events Info.
+     * @param array $filters
+     * @param array $fields //defaults defined in class constant $defaultFields
+     * @param string $returnType //json, array, obj default: array
+     * @return based on returnType
      */
     public function load($filters = [], $fields = [], $returnType = 'array')
     {
@@ -120,7 +124,12 @@ class Event
 
     /**
      * Method to get all Events
-     * @return String JSON Object Array Of Events
+     * @param array $filters
+     * @param array $paging ['page' => '', 'perPage' => '']
+     * @param array $sorting ['field' => '', 'direction' => '']
+     * @param array $fields //defaults defined in class constant $defaultFields
+     * @param string $returnType //json, array, obj default: array
+     * @return based on returnType
      */
     public function loadAll($filters = [], $paging = [], $sorting = [], $fields = [], $returnType = 'array')
     {
@@ -206,8 +215,12 @@ class Event
 
     /**
      * Method to get all Events related to a single course
-     * @param String course Code, Array fields
-     * @return String JSON Object Array Of Events
+     * @param array $filters
+     * @param array $paging ['page' => '', 'perPage' => '']
+     * @param array $sorting ['field' => '', 'direction' => '']
+     * @param array $fields //defaults defined in class constant $defaultFields
+     * @param string $returnType //json, array, obj default: array
+     * @return based on returnType
      */
     public function loadByCourseCode($filters = [], $paging = [], $sorting = [], $fields = [], $returnType = 'array')
     {

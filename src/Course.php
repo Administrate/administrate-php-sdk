@@ -59,6 +59,10 @@ class Course
 
     /**
      * Method to get course Info.
+     * @param array $filters
+     * @param array $fields //defaults array('id', 'name', 'shortDescription', 'parent')
+     * @param string $returnType //json, array, obj default: array
+     * @return based on returnType
      */
     public function load($filters = [], $fields = [], $returnType = 'array')
     {
@@ -104,7 +108,12 @@ class Course
 
     /**
      * Method to get all Courses
-     * @return String JSON Object Array Of Courses
+     * @param array $filters
+     * @param array $paging ['page' => '', 'perPage' => '']
+     * @param array $sorting ['field' => '', 'direction' => '']
+     * @param array $fields //defaults ['id', 'name', 'shortDescription', 'parent']
+     * @param string $returnType //json, array, obj default: array
+     * @return based on returnType
      */
     public function loadAll($filters = [], $paging = [], $sorting = [], $fields = [], $returnType = 'array')
     {

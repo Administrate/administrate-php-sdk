@@ -60,6 +60,10 @@ class Category
 
     /**
      * Method to Get category Info.
+     * @param array $filters
+     * @param array $fields //defaults array('id', 'name', 'shortDescription', 'parent')
+     * @param string $returnType //json, array, obj default: array
+     * @return based on returnType
      */
     public function load($filters = [], $fields = [], $returnType = 'array')
     {
@@ -112,15 +116,18 @@ class Category
 
     /**
      * Method to get all Categories
-     * @return String JSON Object Array Of Categories
+     * @param array $filters
+     * @param array $fields //defaults array('id', 'name', 'shortDescription', 'parent')
+     * @param string $returnType //json, array, obj default: array
+     * @return based on returnType
      */
     public function loadAll(
         $filters = [],
         $paging = [],
         $sorting = [],
         $fields = [],
-        $returnType = 'array')
-    {
+        $returnType = 'array'
+    ) {
 
         //set paging variables
         if (empty($paging)) {
