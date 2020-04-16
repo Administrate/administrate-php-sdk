@@ -10,13 +10,10 @@ use Administrate\PhpSdk\Event;
 // $eventId Set this value in config.php
 // $weblinkActivationParams Set this value in config.php
 // $return type defined in client Class 'array' -> PHP array, 'obj' -> PHP Object and 'json' -> JSON
-$filters = [
-    'id' => $eventId
-];
 $fields = [];
-$returnType = 'obj'; //array, obj, json
+$returnType = 'json'; //array, obj, json
 
 $eventObj = new Event($weblinkActivationParams);
-$event = $eventObj->load($filters, $fields, $returnType);
+$event = $eventObj->loadById($eventId, $fields, $returnType);
 
 print_r($event);

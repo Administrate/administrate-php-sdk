@@ -49,6 +49,17 @@ class Course
      *
      * @return String       JSON Object
      */
+    public function loadById($courseId, $fields = [], $returnType = 'array')
+    {
+        $filters = [
+            'id' => $courseId
+        ];
+        return self::load($filters, $fields, $returnType);
+    }
+
+    /**
+     * Method to get course Info.
+     */
     public function load($filters = [], $fields = [], $returnType = 'array')
     {
         if (!$fields) {

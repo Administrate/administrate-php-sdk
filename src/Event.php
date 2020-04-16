@@ -15,9 +15,18 @@ use Administrate\PhpSdk\GraphQL\Client;
 class Event
 {
     public $params;
-    private static $defaultFields = array('id', 'name', 'start', 'end', 'location' => array('name'));
     private static $paging = array('page' => 1, 'perPage' => 25);
     private static $sorting = array('field' => 'title', 'direction' => 'DESC');
+    private static $defaultFields = array(
+        'id',
+        'name',
+        'start',
+        'end',
+        'deliveryMethod',
+        'price' => array('amount'),
+        'location' => array('id', 'name'),
+        'course' => array('id'),
+    );
 
     /**
      * Default constructor.
@@ -43,10 +52,22 @@ class Event
     }
 
     /**
-     * Method to Get a single Event Info from ID.
+     * Method to Get a single event Info from ID.
      *
-     * @param  string $id   LMS Event ID
-     * @return String       JSON Object
+     * @param  string $id LMS Category ID
+     *
+     * @return String JSON Object
+     */
+    public function loadById($eventId, $fields = [], $returnType = 'array')
+    {
+        $filters = [
+            'id' => $eventId
+        ];
+        return self::load($filters, $fields, $returnType);
+    }
+
+    /**
+     * Method to Get Event Info.
      */
     public function load($filters = [], $fields = [], $returnType = 'array')
     {

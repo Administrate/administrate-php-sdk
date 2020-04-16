@@ -50,6 +50,17 @@ class Category
      *
      * @return String JSON Object
      */
+    public function loadById($categoryId, $fields = [], $returnType = 'array')
+    {
+        $filters = [
+            'id' => $categoryId
+        ];
+        return self::load($filters, $fields, $returnType);
+    }
+
+    /**
+     * Method to Get category Info.
+     */
     public function load($filters = [], $fields = [], $returnType = 'array')
     {
         if (!$fields) {
@@ -103,7 +114,12 @@ class Category
      * Method to get all Categories
      * @return String JSON Object Array Of Categories
      */
-    public function loadAll($filters = [], $paging = [], $sorting = [], $fields = [], $returnType = 'array')
+    public function loadAll(
+        $filters = [],
+        $paging = [],
+        $sorting = [],
+        $fields = [],
+        $returnType = 'array')
     {
 
         //set paging variables
