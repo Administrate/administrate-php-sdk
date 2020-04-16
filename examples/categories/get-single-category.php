@@ -14,7 +14,7 @@ $filters = [
     'id' => $categoryIds[0]
 ];
 $fields = [];
-$returnType = 'json'; //1 for default PHP Array, 2 for PHP statndard object, 3 for JSON
+$returnType = 'json'; //array, obj, json
 
 $category = $categoryClass->load($filters, $fields, $returnType);
 

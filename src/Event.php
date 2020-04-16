@@ -48,7 +48,7 @@ class Event
      * @param  string $id   LMS Event ID
      * @return String       JSON Object
      */
-    public function load($filters = [], $fields = [], $returnType = 1)
+    public function load($filters = [], $fields = [], $returnType = 'array')
     {
         if (!$fields) {
             $fields = self::$defaultFields;
@@ -87,7 +87,7 @@ class Event
             "field" => $key,
             "operation" => "eq",
             "value" => $value
-                
+
             );
             array_push($variablesArray['filters'], $filter);
         };
@@ -101,7 +101,7 @@ class Event
      * Method to get all Events
      * @return String JSON Object Array Of Events
      */
-    public function loadAll($filters = [], $paging = [], $sorting = [], $fields = [], $returnType = 1)
+    public function loadAll($filters = [], $paging = [], $sorting = [], $fields = [], $returnType = 'array')
     {
 
         //set paging variables
@@ -188,7 +188,7 @@ class Event
      * @param String course Code, Array fields
      * @return String JSON Object Array Of Events
      */
-    public function loadByCourseCode($filters = [], $paging = [], $sorting = [], $fields = [], $returnType = 1)
+    public function loadByCourseCode($filters = [], $paging = [], $sorting = [], $fields = [], $returnType = 'array')
     {
         //set paging variables
         if (empty($paging)) {

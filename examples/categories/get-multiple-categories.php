@@ -12,7 +12,7 @@ use Administrate\PhpSdk\Category;
 $categoryClass = new Category($weblinkActivationParams);
 
 $fields = [];
-$returnType = 'json'; //1 for default PHP Array, 2 for PHP statndard object, 3 for JSON
+$returnType = 'json'; //array, obj, json
 $paging = ['page' => 1, 'perPage' => 25];
 $sorting = ['field' => 'name', 'direction' => 'asc'];
 $filters = [];

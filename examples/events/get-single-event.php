@@ -14,7 +14,7 @@ $filters = [
     'id' => $eventId
 ];
 $fields = [];
-$returnType = 'obj'; //1 for default PHP Array, 2 for PHP statndard object, 3 for JSON
+$returnType = 'obj'; //array, obj, json
 
 $eventObj = new Event($weblinkActivationParams);
 $event = $eventObj->load($filters, $fields, $returnType);

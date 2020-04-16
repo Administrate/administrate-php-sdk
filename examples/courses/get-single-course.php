@@ -17,7 +17,7 @@ $filters = [
     'id' => $courseId
 ];
 $fields = [];
-$returnType = 'json'; //1 for default PHP Array, 2 for PHP statndard object, 3 for JSON
+$returnType = 'json'; //array, obj, json
 
 $course = $courseClass->load($filters, $fields, $returnType);
 

@@ -50,7 +50,7 @@ class Category
      *
      * @return String JSON Object
      */
-    public function load($filters = [], $fields = [], $returnType = 1)
+    public function load($filters = [], $fields = [], $returnType = 'array')
     {
         if (!$fields) {
             $fields = self::$defaultFields;
@@ -103,7 +103,7 @@ class Category
      * Method to get all Categories
      * @return String JSON Object Array Of Categories
      */
-    public function loadAll($filters = [], $paging = [], $sorting = [], $fields = [], $returnType = 1)
+    public function loadAll($filters = [], $paging = [], $sorting = [], $fields = [], $returnType = 'array')
     {
 
         //set paging variables

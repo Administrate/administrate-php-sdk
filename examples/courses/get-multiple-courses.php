@@ -15,7 +15,7 @@ $courseClass = new Course($weblinkActivationParams);
 
 $keyword = "safe";
 $fields = [];
-$returnType = 'array'; //1 for default PHP Array, 2 for PHP statndard object, 3 for JSON
+$returnType = 'array'; //array, obj, json
 $paging = ['page' => 1, 'perPage' => 25];
 $sorting = ['field' => 'name', 'direction' => 'asc'];
 $filters = ['categoryId' => $categoryIds[0], 'keyword' => $keyword];

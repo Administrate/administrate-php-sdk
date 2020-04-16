@@ -49,7 +49,7 @@ class Course
      *
      * @return String       JSON Object
      */
-    public function load($filters = [], $fields = [], $returnType = 1)
+    public function load($filters = [], $fields = [], $returnType = 'array')
     {
         if (!$fields) {
             $fields = self::$defaultFields;
@@ -95,7 +95,7 @@ class Course
      * Method to get all Courses
      * @return String JSON Object Array Of Courses
      */
-    public function loadAll($filters = [], $paging = [], $sorting = [], $fields = [], $returnType = 1)
+    public function loadAll($filters = [], $paging = [], $sorting = [], $fields = [], $returnType = 'array')
     {
         //set paging variables
         if (empty($paging)) {
@@ -176,7 +176,7 @@ class Course
             //$sortingObject = new RawObject('{"field": "'.$sortField.'", "direction": "'.$sortDirection.'"}');
             $variablesArray['order'] = $sortingObject;
         }
-        
+
         $result = Client::sendSecureCall($this, $gqlQuery, $variablesArray);
         return Client::toType($returnType, $result);
     }
