@@ -5,16 +5,17 @@ header('Content-Type: application/json');
 require_once '../config.php';
 require_once '../../vendor/autoload.php';
 
-use Administrate\PhpSdk\Category;
+use Administrate\PhpSdk\Course;
 
-// $categoryIds Set this value in config.php
+// $courseId defined in config.php
+// $categoryId Set this value in config.php
 // $weblinkActivationParams Set this value in config.php
 // $return type defined in client Class 'array' -> PHP array, 'obj' -> PHP Object and 'json' -> JSON
-$categoryClass = new Category($weblinkActivationParams);
+$courseClass = new Course($weblinkActivationParams);
 
 $fields = [];
 $returnType = 'json'; //array, obj, json
 
-$category = $categoryClass->loadById($categoryIds[0], $fields, $returnType);
+$course = $courseClass->loadById($courseId, $fields, $returnType);
 
-print_r($category);
+print_r($course);

@@ -7,18 +7,18 @@ require_once '../../vendor/autoload.php';
 
 use Administrate\PhpSdk\Course;
 
-// $categoryIds Set this value in config.php
+// $categoryId Set this value in config.php
 // $weblinkActivationParams Set this value in config.php
 // $return type defined in client Class 'array' -> PHP array, 'obj' -> PHP Object and 'json' -> JSON
 
 $courseClass = new Course($weblinkActivationParams);
 
-$keyword = "safe";
+$keyword = "";
 $fields = [];
-$returnType = 'array'; //array, obj, json
+$returnType = 'json'; //array, obj, json
 $paging = ['page' => 1, 'perPage' => 25];
 $sorting = ['field' => 'name', 'direction' => 'asc'];
-$filters = ['categoryId' => $categoryIds[0], 'keyword' => $keyword];
+$filters = ['categoryId' => $categoryId, 'keyword' => $keyword];
 
 $allCourses = $courseClass->loadAll($filters, $paging, $sorting, $fields, $returnType);
 
