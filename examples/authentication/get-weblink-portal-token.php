@@ -14,5 +14,5 @@ $response = $activate->getWeblinkPortalToken();
 
 if ($response) {
     $portalToken = $response['body']->portal_token;
-    echo json_encode(array('portal_token' => $portalToken));
+    echo $portalToken;
 }

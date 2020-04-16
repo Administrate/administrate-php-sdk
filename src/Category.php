@@ -4,6 +4,7 @@ namespace Administrate\PhpSdk;
 
 use Administrate\PhpSdk\GraphQl\QueryBuilder as QueryBuilder;
 use Administrate\PhpSdk\GraphQL\Client;
+use GraphQL\RawObject;
 
 /**
  * Category
@@ -14,9 +15,10 @@ use Administrate\PhpSdk\GraphQL\Client;
  */
 class Category
 {
-
     public $params;
     private static $defaultFields = array('id', 'name', 'shortDescription', 'parent');
+    private static $paging = array('page' => 1, 'perPage' => 25);
+    private static $sorting = array('field' => 'name', 'direction' => 'ASC');
 
     /**
      * Default constructor.
@@ -48,7 +50,22 @@ class Category
      *
      * @return String JSON Object
      */
-    public function load($id, $fields = array())
+    public function loadById($categoryId, $fields = [], $returnType = 'array')
+    {
+        $filters = [
+            'id' => $categoryId
+        ];
+        return self::load($filters, $fields, $returnType);
+    }
+
+    /**
+     * Method to Get category Info.
+     * @param array $filters
+     * @param array $fields //defaults array('id', 'name', 'shortDescription', 'parent')
+     * @param string $returnType //json, array, obj default: array
+     * @return based on returnType
+     */
+    public function load($filters = [], $fields = [], $returnType = 'array')
     {
         if (!$fields) {
             $fields = self::$defaultFields;
@@ -78,26 +95,57 @@ class Category
 
         $variablesArray = array(
             "filters" => array(
-                0 => array(
-                    "field" => "id",
-                    "operation" => "eq",
-                    "value" => $id,
-                )
             )
         );
 
+        foreach ($filters as $key => $value) {
+            $filter = array(
+                    "field" => $key,
+                    "operation" => "eq",
+                    "value" => $value
+
+            );
+            array_push($variablesArray['filters'], $filter);
+        };
+
         $result = Client::sendSecureCall($this, $gqlQuery, $variablesArray);
         if (isset($result['categories']['edges'][0]['node']) && !empty($result['categories']['edges'][0]['node'])) {
-            return json_encode($result['categories']['edges'][0]['node']);
+            return Client::toType($returnType, $result['categories']['edges'][0]['node']);
         }
     }
 
     /**
      * Method to get all Categories
-     * @return String JSON Object Array Of Categories
+     * @param array $filters
+     * @param array $fields //defaults array('id', 'name', 'shortDescription', 'parent')
+     * @param string $returnType //json, array, obj default: array
+     * @return based on returnType
      */
-    public function loadAll($page = 1, $perPage = 5, $fields = array())
-    {
+    public function loadAll(
+        $filters = [],
+        $paging = [],
+        $sorting = [],
+        $fields = [],
+        $returnType = 'array'
+    ) {
+
+        //set paging variables
+        if (empty($paging)) {
+            $paging = self::$paging;
+        }
+        $perPage = $paging['perPage'];
+        $page = $paging['page'];
+
+
+        //set sorting variables
+        if (empty($sorting)) {
+            $sorting = self::$sorting;
+        }
+        $sortField = $sorting['field'];
+        $sortDirection = $sorting['direction'];
+
+
+
         if (!$fields) {
             $fields = self::$defaultFields;
         }
@@ -120,23 +168,50 @@ class Category
         }
         $offset = ($page - 1) * $perPage;
 
-        $builder = (new QueryBuilder('categories'))
-            ->setArgument('first', $first)
-            ->setArgument('offset', $offset)
-            ->selectField(
-                (new QueryBuilder('pageInfo'))
-                ->selectField('startCursor')
-                ->selectField('endCursor')
-                ->selectField('totalRecords')
-            )
-            ->selectField(
-                (new QueryBuilder('edges'))
-                    ->selectField($node)
-            );
+        $builder =  (new QueryBuilder('categories'))
+        ->setVariable('order', 'CategoryFieldOrder', false)
+                        ->setArgument('first', $first)
+                        ->setArgument('offset', $offset)
+                        ->setArgument('order', '$order')
+                        ->selectField(
+                            (new QueryBuilder('pageInfo'))
+                                ->selectField('startCursor')
+                                ->selectField('endCursor')
+                                ->selectField('totalRecords')
+                        )
+                        ->selectField(
+                            (new QueryBuilder('edges'))
+                                ->selectField($node)
+                        );
 
         $gqlQuery = $builder->getQuery();
 
-        $result = Client::sendSecureCallJson($this, $gqlQuery);
-        return $result;
+        $variablesArray = array(
+            'filters"=' => array(),
+            'order' => ''
+        );
+
+        foreach ($filters as $key => $value) {
+            $filter = array(
+                    "field" => $key,
+                    "operation" => "eq",
+                    "value" => $value
+
+            );
+            array_push($variablesArray['filters'], $filter);
+        };
+
+
+        if (!empty($sorting)) {
+            $sortingObject = new Class{
+            };
+            $sortingObject->field = $sortField;
+            $sortingObject->direction = $sortDirection;
+            //$sortingObject = new RawObject('{"field": "'.$sortField.'", "direction": "'.$sortDirection.'"}');
+            $variablesArray['order'] = $sortingObject;
+        }
+
+        $result = Client::sendSecureCall($this, $gqlQuery, $variablesArray);
+        return Client::toType($returnType, $result);
     }
 }
