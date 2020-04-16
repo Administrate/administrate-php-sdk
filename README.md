@@ -147,7 +147,7 @@ use Administrate\PhpSdk\Oauth\Activator;
 
 $activationParams = [
     'oauthServer' => 'https://portal-auth.administratehq.com', // Administrate weblink authorization endpoint
-    'uri' => 'https://weblink-api.administratehq.com/graphql', // Administrate Weblink endpoint
+    'apiUri' => 'https://weblink-api.administratehq.com/graphql', // Administrate Weblink endpoint
     'portal' => 'APPNAME.administrateweblink.com',
 ];
 
@@ -156,12 +156,9 @@ $activationObj = new Activator($activationParams));
 
 $response = $activationObj->getWeblinkCode();
 
-// Response JSON Text:
-{
-    "portal_token": "Tcdg...DIY9o"
-}
+// this method willreturn the portal token as a string
 ```
-*Check [get-weblink-code.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/authentication/get-weblink-code.php) in examples folder*
+*Check [get-weblink-portal-token.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/authentication/get-weblink-portal-token.php) in examples folder*
 
 ### Categories Management
 
@@ -175,9 +172,9 @@ use Administrate\PhpSdk\Category;
 
 $params = [
     'oauthServer' => 'https://portal-auth.administratehq.com', // Administrate weblink authorization endpoint
-    'uri' => 'https://weblink-api.administratehq.com/graphql', // Administrate Weblink endpoint
+    'apiUri' => 'https://weblink-api.administratehq.com/graphql', // Administrate Weblink endpoint
     'portal' => 'APPNAME.administrateweblink.com',
-    'weblinkAccessToken' => 'Tcdg...DIY9o',
+    'portalToken' => 'Tcdg...DIY9o',
 ];
 
 $categoryObj = new Category($params);
@@ -189,21 +186,26 @@ $defaultFields = [
     'parent'
 ];
 
-$categoryId = "TGVh....YeTox";
-
-//Get Single Category
-$category = $categoryObj->load($categoryId, $defaultFields);
-
-//Get all categories
 $page = 1;
 $perPage = 5;
-$categories = $categoryObj->loadAll($page, $perPage, $defaultFields);
+$returnType = 'json'; //array, obj, json
+$categoryId = "TGVh....YeTox";
+$fields = []; // defaults to $defaultFields defined in Category Class
+$paging = ['page' => $page, 'perPage' => $perPage]; //defaults to ['page' => 1, 'perPage' => 25]
+$sorting = ['field' => 'id', 'direction' => 'desc']; //defaults to ['field' => 'name', 'direction' => 'asc']
+$filters = [];
+
+//Get Single Category
+$category = $categoryObj->loadById($categoryId, $fields, $returnType);
+
+//Get all categories
+$categories = $categoryObj->loadAll($filters, $paging, $sorting, $fields, $returnType);
 
 #The parameter "defaultFields" is optional only pass it if you want to change the fields
 ```
-*Check [get-single-category.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/categories/get-single-category.php)
+*Check [get-single.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/categories/get-single.php)
 and
-[get-multiple-categories.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/categories/get-multiple-categories.php) in examples folder*
+[get-multiple.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/categories/get-multiple.php) in examples folder*
 
 ### Courses Management
 ### List Courses
@@ -214,9 +216,9 @@ use Administrate\PhpSdk\Course;
 
 $params = [
     'oauthServer' => 'https://portal-auth.administratehq.com', // Administrate weblink authorization endpoint
-    'uri' => 'https://weblink-api.administratehq.com/graphql',
+    'apiUri' => 'https://weblink-api.administratehq.com/graphql',
     'portal' => 'APPNAME.administrateweblink.com',
-    'weblinkAccessToken' => 'Tcdg...DIY9o',
+    'portalToken' => 'Tcdg...DIY9o',
 ];
 
 $CourseObj = new Course($params);
@@ -228,22 +230,26 @@ $defaultFields = [
     'category',
     'imageUrl'
 ];
+$categoryId = "TGVh......eTox"; //optional
+$keyword = "test_keyword_here"; //optional
+
 $courseId = "TGVh......eTox";
+$returnType = 'json'; //array, obj, json
+$fields = []; // defaults to $defaultFields defined in Course Class
+$paging = ['page' => 1, 'perPage' => 30]; //defaults to ['page' => 1, 'perPage' => 25]
+$sorting = ['field' => 'id', 'direction' => 'desc']; //defaults to ['field' => 'name', 'direction' => 'asc']
+$filters = ['categoryId' => $categoryId, 'keyword' => $keyword];
 
 //Get single course
-$course = $CourseObj->load($courseId, $defaultFields);
+$course = $CourseObj->loadById($courseId, $defaultFields);
 
 //get Courses with filters
-$page = 1; //optional
-$perPage = 6; //optional
-$categoryId = "TGVh......eTox"; //optional
-$searchKeyword = "test_keyword_here"; //optional
-$categories = $courseObj->loadAll($page, $perPage, $categoryId, $searchkeyword, $defaultFields);
+$categories = $courseObj->loadAll($filters, $paging, $sorting, $fields, $returnType);
 
 ```
-*Check [get-single-course.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/courses/get-single-course.php) 
-and 
-[get-multiple-courses.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/courses/get-multiple-courses.php) in examples folder*
+*Check [get-single.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/courses/get-single.php)
+and
+[get-multiple.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/courses/get-multiple.php) in examples folder*
 
 ### Events Management
 ### List Events
@@ -254,9 +260,9 @@ use Administrate\PhpSdk\Event;
 
 $params = [
     'oauthServer' => 'https://portal-auth.administratehq.com', // Administrate weblink authorization endpoint
-    'uri' => 'https://weblink-api.administratehq.com/graphql',
+    'apiUri' => 'https://weblink-api.administratehq.com/graphql',
     'portal' => 'APPNAME.administrateweblink.com',
-    'weblinkAccessToken' => 'Tcdg...DIY9o',
+    'portalToken' => 'Tcdg...DIY9o',
 ];
 
 $EventObj = new Event($params);
@@ -273,20 +279,22 @@ $defaultFields = [
 $eventId = "TGVh......eTox";
 $courseCode = "Tls6....c99na";
 
+$returnType = 'json'; //array, obj, json
+$fields = []; // defaults to $defaultFields defined in Event Class
+$paging = ['page' => 1, 'perPage' => 30]; //defaults to ['page' => 1, 'perPage' => 25]
+$sorting = ['field' => 'id', 'direction' => 'desc']; //defaults to ['field' => 'title', 'direction' => 'asc']
+
 //Get single event
-$event = $eventObj->load($eventId, $defaultFields);
+$event = $eventObj->loadById($eventId, $fields, $returnType);
 
 //get all events
-$page = 1; //optional
-$perPage = 6; //optional
-$events = $eventObj->loadAll($page, $perPage, $defaultFields);
+$events = $eventObj->loadAll($filters, $paging, $sorting, $fields, $returnType);
 
 //get all events for a single course
-$page = 1; //optional
-$perPage = 6; //optional
-$events = $eventObj->loadByCourseCode($page, $perPage, $courseCode);
+$filters = ['courseCode' => $courseCode];
+$events = $eventObj->loadByCourseCode($filters, $paging, $sorting, $fields, $returnType);
 ```
-*Check [get-single-event.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/events/get-single-event.php), [get-multiple-events.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/events/get-multiple-events.php) and [get-events-by-course.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/events/get-events-by-courset.php) in examples folder*
+*Check [get-single.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/events/get-single.php), [get-multiple.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/events/get-multiple.php) and [get-events-by-course.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/events/get-events-by-courset.php) in examples folder*
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 

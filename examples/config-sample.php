@@ -3,11 +3,11 @@
 define('BASE_URL', '');
 
 // Used In Examples (can be removed if not used)
-$categoriesIds = array();
+$categoryId = '';
 $learnerId = '';
 $courseId = '';
-$courseCode = "";
-$eventId = "";
+$courseCode = '';
+$eventId = '';
 
 
 //Authorzation code
@@ -28,7 +28,7 @@ $coreApiActivationParams = array(
 //Weblink2 API Params
 $weblinkActivationParams = array(
     'oauthServer' => '',
-    'uri' => '',
+    'apiUri' => '',
     'portal' => '',
-    'weblinkAccessToken' => ''
+    'portalToken' => ''
 );

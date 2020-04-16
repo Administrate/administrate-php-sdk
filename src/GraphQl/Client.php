@@ -6,37 +6,34 @@ use GraphQL\Client as GqlClient;
 
 class Client extends GqlClient
 {
-    public static $CORE_API = 1;
-    public static $WEBLINK2_API = 2;
+    //Response Types
+    public const RESPONSE_PHP_ARRAY = 'array';
+    public const RESPONSE_OBJECT = 'obj';
+    public const RESPOPNSE_JSON = 'json';
+
     /**
     * Function to build the API call headers
     * @return $headers, array API Call Header configuration.
     */
-    public static function setHeaders($params = array(), $API = 2)
+    public static function setHeaders($params = array())
     {
 
         $headers = array();
 
-        if ($API == self::$CORE_API) {
-            if (isset($params['accessToken']) && !empty($params['accessToken'])) {
-                $headers = array(
-                    'Authorization' => 'Bearer ' . $params['accessToken'],
-                );
-            }
+        if (isset($params['accessToken']) && !empty($params['accessToken'])) {
+            $headers = array(
+                'Authorization' => 'Bearer ' . $params['accessToken'],
+            );
         }
 
-        if ($API == self::$WEBLINK2_API) {
-            if (isset($params['weblinkPortalToken']) && !empty($params['weblinkPortalToken'])) {
-                $headers = array(
-                    'Authorization' => 'Bearer ' . $params['weblinkPortalToken'],
-                );
-            }
+        if (isset($params['portalToken']) && !empty($params['portalToken'])) {
+            $headers = array(
+                'Authorization' => 'Bearer ' . $params['portalToken'],
+            );
         }
 
-        foreach ($params as $key => $value) {
-            if ('portal' === $key) {
-                $headers['weblink-portal'] = $value;
-            }
+        if (isset($params['portal']) && !empty($params['portal'])) {
+            $headers['weblink-portal'] = $params['portal'];
         }
 
         return $headers;
@@ -64,9 +61,8 @@ class Client extends GqlClient
 
     public static function sendSecureCall($obj, $query, $variables = [])
     {
-        $authorizationHeaders = self::setHeaders($obj->weblinkParams);
-        $httpOptions = self::setArgs();
-        $client = new Client($obj->weblinkParams['uri'], $authorizationHeaders);
+        $authorizationHeaders = self::setHeaders($obj->params);
+        $client = new Client($obj->params['apiUri'], $authorizationHeaders);
         $results = $client->runQuery($query, true, $variables);
         return $results->getData();
     }
@@ -74,8 +70,44 @@ class Client extends GqlClient
 
     public static function sendSecureCallJson($class, $query, $variables = [])
     {
-        return json_encode(
-            self::sendSecureCall($class, $query, $variables)
-        );
+        $res = self::sendSecureCall($class, $query, $variables);
+        return self::toType(RESPOPNSE_JSON, $res);
+    }
+
+    public static function sendSecureCallObj($class, $query, $variables = [])
+    {
+        $res = self::sendSecureCall($class, $query, $variables);
+        return self::toType(RESPONSE_OBJECT, $res);
+    }
+
+    public static function toType($type, $res)
+    {
+        if ($type == self::RESPONSE_PHP_ARRAY) {
+            return $res;
+        } elseif ($type == self::RESPONSE_OBJECT) {
+            return self::toObject($res);
+        } elseif ($type == self::RESPOPNSE_JSON) {
+            return json_encode($res);
+        }
+    }
+    /**
+    *Function to convert array into stdClass object
+    * @param array
+    * @return stdClass Object
+    */
+    public static function toObject($Array)
+    {
+        // Create new stdClass object
+        $object = new class{};
+
+        // Use loop to convert array into
+        // stdClass object
+        foreach ($Array as $key => $value) {
+            if (is_array($value)) {
+                $value = self::ToObject($value);
+            }
+            $object->$key = $value;
+        }
+        return $object;
     }
 }
