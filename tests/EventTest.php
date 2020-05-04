@@ -116,27 +116,36 @@ final class EventTest extends TestCase
 
     public function testPagination(): void
     {
-            $weblinkActivationParams = array(
-            'oauthServer' => 'https://portal-auth.administratehq.com',
-            'apiUri' => 'https://weblink-api.administratehq.com/graphql/',
-            'portal' => $_GET['portal'],
-            'portalToken' => ''.$_GET['portalToken'].''
-            );
-                $fields = [];
-                $event = new Event();
+        $weblinkActivationParams = array(
+        'oauthServer' => 'https://portal-auth.administratehq.com',
+        'apiUri' => 'https://weblink-api.administratehq.com/graphql/',
+        'portal' => $_GET['portal'],
+        'portalToken' => ''.$_GET['portalToken'].''
+        );
         
-                $fields = [];
-                $paging = ['page' => 1, 'perPage' => 25];
-                $sorting = ['field' => 'title', 'direction' => 'asc'];
-                $filters = [];
+        $fields = [];
+        $paging = ['page' => 1, 'perPage' => 25];
+        $sorting = ['field' => 'title', 'direction' => 'asc'];
+        $filters = [];
 
-                $eventObj = new Event($weblinkActivationParams);
-                $events = $eventObj->loadAll($filters, $paging, $sorting, $fields, $returnType);
+        $eventObj = new Event($weblinkActivationParams);
 
-                $resultArray = $eventObj->loadAll($filters, $paging, $sorting, $fields, 'array');
+        $resultArray = $eventObj->loadAll($filters, $paging, $sorting, $fields, 'array');
 
-                //check if pagination returns the requested number of results
-                $this->assertEquals(25, count($resultArray['events']['edges']), 'Error in pagination results');
+        //check if pagination returns the requested number of results
+        if ($resultArray['events']['pageInfo']['totalRecords'] >= $paging['perPage']) {
+            $this->assertEquals(25, count($resultArray['events']['edges']), 'Error in pagination results');
+        } else {
+            $perPage = intval(ceil($resultArray['events']['pageInfo']['totalRecords']/2));
+            $resultArray = $eventObj->loadAll(
+                $filters,
+                $paging = ['page' => 1, 'perPage' => $perPage],
+                $sorting,
+                $fields,
+                'array'
+            );
+             $this->assertEquals($perPage, count($resultArray['events']['edges']), 'Error in pagination results');
+        }
     }
 
     public function is_json($str)
