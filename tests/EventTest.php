@@ -12,144 +12,144 @@ use Administrate\PhpSdk\Event;
  */
 final class EventTest extends TestCase
 {
-    // public function testLoadSingleEvent(): void
-    // {
-    //     $weblinkActivationParams = array(
-    //         'oauthServer' => 'https://portal-auth.administratehq.com',
-    //         'apiUri' => 'https://weblink-api.administratehq.com/graphql/',
-    //         'portal' => $_GET['portal'],
-    //         'portalToken' => ''.$_GET['portalToken'].''
-    //     );
-    //     $fields = [];
-    //     $returnType = 'array'; //array, obj, json
-    //     $event = new Event();
-    //     $eventObj = new Event($weblinkActivationParams);
-    //     $eventArray = $eventObj->loadById($_GET['eventId'], $fields, 'array');
-    //     $eventJson = $eventObj->loadById($_GET['eventId'], $fields, 'json');
-    //     $eventObj = $eventObj->loadById($_GET['eventId'], $fields, 'obj');
+    public function testLoadSingleEvent(): void
+    {
+        $weblinkActivationParams = array(
+            'oauthServer' => 'https://portal-auth.administratehq.com',
+            'apiUri' => 'https://weblink-api.administratehq.com/graphql/',
+            'portal' => $_GET['portal'],
+            'portalToken' => ''.$_GET['portalToken'].''
+        );
+        $fields = [];
+        $returnType = 'array'; //array, obj, json
+        $event = new Event();
+        $eventObj = new Event($weblinkActivationParams);
+        $eventArray = $eventObj->loadById($_GET['eventId'], $fields, 'array');
+        $eventJson = $eventObj->loadById($_GET['eventId'], $fields, 'json');
+        $eventObj = $eventObj->loadById($_GET['eventId'], $fields, 'obj');
 
-    //     //check response is a php array
-    //     $this->assertisArray($eventArray);
-    //     //check response is in json format
-    //     $this->assertTrue($this->is_json($eventJson));
-    //     //check response is a pHP object
-    //     $this->assertisObject($eventObj);
+        //check response is a php array
+        $this->assertisArray($eventArray);
+        //check response is in json format
+        $this->assertTrue($this->is_json($eventJson));
+        //check response is a pHP object
+        $this->assertisObject($eventObj);
         
-    //     $this->assertArrayHasKey('id', json_decode($eventJson, true), 'The returned json has invalid format');
-    //     $this->assertArrayHasKey('name', json_decode($eventJson, true), 'The returned json has invalid format');
-    //     $this->assertArrayHasKey('id', $eventArray, 'The returned array has invalid format');
-    //     $this->assertArrayHasKey('name', $eventArray, 'The returned array has invalid format');
-    //     $this->assertObjectHasAttribute('id', $eventObj, 'The returned object has invalid format');
-    //     $this->assertObjectHasAttribute('name', $eventObj, 'The returned object has invalid format');
-    // }
+        $this->assertArrayHasKey('id', json_decode($eventJson, true), 'The returned json has invalid format');
+        $this->assertArrayHasKey('name', json_decode($eventJson, true), 'The returned json has invalid format');
+        $this->assertArrayHasKey('id', $eventArray, 'The returned array has invalid format');
+        $this->assertArrayHasKey('name', $eventArray, 'The returned array has invalid format');
+        $this->assertObjectHasAttribute('id', $eventObj, 'The returned object has invalid format');
+        $this->assertObjectHasAttribute('name', $eventObj, 'The returned object has invalid format');
+    }
 
-    // public function testLoadMultipleEvent(): void
-    // {
-    //     $weblinkActivationParams = array(
-    //         'oauthServer' => 'https://portal-auth.administratehq.com',
-    //         'apiUri' => 'https://weblink-api.administratehq.com/graphql/',
-    //         'portal' => $_GET['portal'],
-    //         'portalToken' => ''.$_GET['portalToken'].''
-    //     );
+    public function testLoadMultipleEvent(): void
+    {
+        $weblinkActivationParams = array(
+            'oauthServer' => 'https://portal-auth.administratehq.com',
+            'apiUri' => 'https://weblink-api.administratehq.com/graphql/',
+            'portal' => $_GET['portal'],
+            'portalToken' => ''.$_GET['portalToken'].''
+        );
         
-    //     $fields = [];
-    //     $paging = ['page' => 1, 'perPage' => 25];
-    //     $sorting = ['field' => 'title', 'direction' => 'asc'];
-    //     $filters = [];
+        $fields = [];
+        $paging = ['page' => 1, 'perPage' => 25];
+        $sorting = ['field' => 'title', 'direction' => 'asc'];
+        $filters = [];
 
-    //     $eventObj = new Event($weblinkActivationParams);
-    //     $resultArray = $eventObj->loadAll($filters, $paging, $sorting, $fields, 'array');
-    //     $resultJson = $eventObj->loadAll($filters, $paging, $sorting, $fields, 'json');
-    //     $resultObject = $eventObj->loadAll($filters, $paging, $sorting, $fields, 'obj');
+        $eventObj = new Event($weblinkActivationParams);
+        $resultArray = $eventObj->loadAll($filters, $paging, $sorting, $fields, 'array');
+        $resultJson = $eventObj->loadAll($filters, $paging, $sorting, $fields, 'json');
+        $resultObject = $eventObj->loadAll($filters, $paging, $sorting, $fields, 'obj');
 
-    //     //check response is a php array
-    //     $this->assertisArray($resultArray);
-    //     //check response is in json format
-    //     $this->assertTrue($this->is_json($resultJson));
-    //     //check response is a pHP object
-    //     $this->assertisObject($resultObject);
+        //check response is a php array
+        $this->assertisArray($resultArray);
+        //check response is in json format
+        $this->assertTrue($this->is_json($resultJson));
+        //check response is a pHP object
+        $this->assertisObject($resultObject);
 
-    //     $jsonToArray  = json_decode($resultJson, true);
-    //     $this->assertArrayHasKey('edges', $jsonToArray['events'], 'The returned json has invalid format');
-    //     $this->assertArrayHasKey('pageInfo', $jsonToArray['events'], 'The returned json has invalid format');
-    //     $this->assertArrayHasKey('edges', $resultArray['events'], 'The returned array has invalid format');
-    //     $this->assertArrayHasKey('pageInfo', $resultArray['events'], 'The returned array has invalid format');
-    //     $this->assertObjectHasAttribute('edges', $resultObject->events, 'The returned object has invalid format');
-    //     $this->assertObjectHasAttribute('pageInfo', $resultObject->events, 'The returned object has invalid format');
-    // }
+        $jsonToArray  = json_decode($resultJson, true);
+        $this->assertArrayHasKey('edges', $jsonToArray['events'], 'The returned json has invalid format');
+        $this->assertArrayHasKey('pageInfo', $jsonToArray['events'], 'The returned json has invalid format');
+        $this->assertArrayHasKey('edges', $resultArray['events'], 'The returned array has invalid format');
+        $this->assertArrayHasKey('pageInfo', $resultArray['events'], 'The returned array has invalid format');
+        $this->assertObjectHasAttribute('edges', $resultObject->events, 'The returned object has invalid format');
+        $this->assertObjectHasAttribute('pageInfo', $resultObject->events, 'The returned object has invalid format');
+    }
 
-    // public function testLoadEventsbyCourseCode(): void
-    // {
-    //     $weblinkActivationParams = array(
-    //         'oauthServer' => 'https://portal-auth.administratehq.com',
-    //         'apiUri' => 'https://weblink-api.administratehq.com/graphql/',
-    //         'portal' => $_GET['portal'],
-    //         'portalToken' => ''.$_GET['portalToken'].''
-    //     );
+    public function testLoadEventsbyCourseCode(): void
+    {
+        $weblinkActivationParams = array(
+            'oauthServer' => 'https://portal-auth.administratehq.com',
+            'apiUri' => 'https://weblink-api.administratehq.com/graphql/',
+            'portal' => $_GET['portal'],
+            'portalToken' => ''.$_GET['portalToken'].''
+        );
         
-    //     $fields = [];
-    //     $paging = ['page' => 1, 'perPage' => 25];
-    //     $sorting = ['field' => 'title', 'direction' => 'asc'];
-    //     $filters = ['courseCode' => $courseCode];
+        $fields = [];
+        $paging = ['page' => 1, 'perPage' => 25];
+        $sorting = ['field' => 'title', 'direction' => 'asc'];
+        $filters = ['courseCode' => $courseCode];
 
-    //     $eventObj = new Event($weblinkActivationParams);
+        $eventObj = new Event($weblinkActivationParams);
 
-    //     $resultArray = $eventObj->loadByCourseCode($filters, $paging, $sorting, $fields, 'array');
-    //     $resultJson = $eventObj->loadByCourseCode($filters, $paging, $sorting, $fields, 'json');
-    //     $resultObject = $eventObj->loadByCourseCode($filters, $paging, $sorting, $fields, 'obj');
+        $resultArray = $eventObj->loadByCourseCode($filters, $paging, $sorting, $fields, 'array');
+        $resultJson = $eventObj->loadByCourseCode($filters, $paging, $sorting, $fields, 'json');
+        $resultObject = $eventObj->loadByCourseCode($filters, $paging, $sorting, $fields, 'obj');
 
-    //     //check response is a php array
-    //     $this->assertisArray($resultArray);
-    //     //check response is in json format
-    //     $this->assertTrue($this->is_json($resultJson));
-    //     //check response is a pHP object
-    //     $this->assertisObject($resultObject);
+        //check response is a php array
+        $this->assertisArray($resultArray);
+        //check response is in json format
+        $this->assertTrue($this->is_json($resultJson));
+        //check response is a pHP object
+        $this->assertisObject($resultObject);
 
-    //     $jsonToArray  = json_decode($resultJson, true);
-    //     $this->assertArrayHasKey('edges', $jsonToArray['events'], 'The returned json has invalid format');
-    //     $this->assertArrayHasKey('pageInfo', $jsonToArray['events'], 'The returned json has invalid format');
-    //     $this->assertArrayHasKey('edges', $resultArray['events'], 'The returned array has invalid format');
-    //     $this->assertArrayHasKey('pageInfo', $resultArray['events'], 'The returned array has invalid format');
-    //     $this->assertObjectHasAttribute('edges', $resultObject->events, 'The returned object has invalid format');
-    //     $this->assertObjectHasAttribute('pageInfo', $resultObject->events, 'The returned object has invalid format');
-    // }
+        $jsonToArray  = json_decode($resultJson, true);
+        $this->assertArrayHasKey('edges', $jsonToArray['events'], 'The returned json has invalid format');
+        $this->assertArrayHasKey('pageInfo', $jsonToArray['events'], 'The returned json has invalid format');
+        $this->assertArrayHasKey('edges', $resultArray['events'], 'The returned array has invalid format');
+        $this->assertArrayHasKey('pageInfo', $resultArray['events'], 'The returned array has invalid format');
+        $this->assertObjectHasAttribute('edges', $resultObject->events, 'The returned object has invalid format');
+        $this->assertObjectHasAttribute('pageInfo', $resultObject->events, 'The returned object has invalid format');
+    }
 
-    // public function testPagination(): void
-    // {
-    //     $weblinkActivationParams = array(
-    //     'oauthServer' => 'https://portal-auth.administratehq.com',
-    //     'apiUri' => 'https://weblink-api.administratehq.com/graphql/',
-    //     'portal' => $_GET['portal'],
-    //     'portalToken' => ''.$_GET['portalToken'].''
-    //     );
+    public function testPagination(): void
+    {
+        $weblinkActivationParams = array(
+        'oauthServer' => 'https://portal-auth.administratehq.com',
+        'apiUri' => 'https://weblink-api.administratehq.com/graphql/',
+        'portal' => $_GET['portal'],
+        'portalToken' => ''.$_GET['portalToken'].''
+        );
         
-    //     $fields = [];
-    //     $paging = ['page' => 1, 'perPage' => 25];
-    //     $sorting = ['field' => 'title', 'direction' => 'asc'];
-    //     $filters = [];
+        $fields = [];
+        $paging = ['page' => 1, 'perPage' => 25];
+        $sorting = ['field' => 'title', 'direction' => 'asc'];
+        $filters = [];
 
-    //     $eventObj = new Event($weblinkActivationParams);
+        $eventObj = new Event($weblinkActivationParams);
 
-    //     $resultArray = $eventObj->loadAll($filters, $paging, $sorting, $fields, 'array');
+        $resultArray = $eventObj->loadAll($filters, $paging, $sorting, $fields, 'array');
 
-    //     //check if pagination returns the requested number of results
-    //     if ($resultArray['events']['pageInfo']['totalRecords'] >= $paging['perPage']) {
-    //         $this->assertEquals(25, count($resultArray['events']['edges']), 'Error in pagination results');
-    //     } else {
-    //         $perPage = intval(ceil($resultArray['events']['pageInfo']['totalRecords']/2));
-    //         $resultArray = $eventObj->loadAll(
-    //             $filters,
-    //             $paging = ['page' => 1, 'perPage' => $perPage],
-    //             $sorting,
-    //             $fields,
-    //             'array'
-    //         );
-    //          $this->assertEquals($perPage, count($resultArray['events']['edges']), 'Error in pagination results');
-    //     }
-    // }
+        //check if pagination returns the requested number of results
+        if ($resultArray['events']['pageInfo']['totalRecords'] >= $paging['perPage']) {
+            $this->assertEquals(25, count($resultArray['events']['edges']), 'Error in pagination results');
+        } else {
+            $perPage = intval(ceil($resultArray['events']['pageInfo']['totalRecords']/2));
+            $resultArray = $eventObj->loadAll(
+                $filters,
+                $paging = ['page' => 1, 'perPage' => $perPage],
+                $sorting,
+                $fields,
+                'array'
+            );
+             $this->assertEquals($perPage, count($resultArray['events']['edges']), 'Error in pagination results');
+        }
+    }
 
-    // public function is_json($str)
-    // {
-    //     return json_decode($str) != null;
-    // }
+    public function is_json($str)
+    {
+        return json_decode($str) != null;
+    }
 }
