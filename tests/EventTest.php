@@ -3,6 +3,13 @@
 use PHPUnit\Framework\TestCase;
 use Administrate\PhpSdk\Event;
 
+/**
+ * EventTest
+ *
+ * @package Administrate\PhpSdk
+ * @author Ali Habib <ahh@administrate.co>
+ * @author Jad Khater <jck@administrate.co>
+ */
 final class EventTest extends TestCase
 {
     public function testLoadSingleEvent(): void
@@ -10,7 +17,7 @@ final class EventTest extends TestCase
         $weblinkActivationParams = array(
             'oauthServer' => 'https://portal-auth.administratehq.com',
             'apiUri' => 'https://weblink-api.administratehq.com/graphql/',
-            'portal' => 'mdbcwl-kfmc.administrateweblink.com',
+            'portal' => $_GET['portal'],
             'portalToken' => ''.$_GET['portalToken'].''
         );
         $fields = [];
@@ -27,6 +34,13 @@ final class EventTest extends TestCase
         $this->assertTrue($this->is_json($eventJson));
         //check response is a pHP object
         $this->assertisObject($eventObj);
+        
+        $this->assertArrayHasKey('id', json_decode($eventJson, true), 'The returned json has invalid format');
+        $this->assertArrayHasKey('name', json_decode($eventJson, true), 'The returned json has invalid format');
+        $this->assertArrayHasKey('id', $eventArray, 'The returned array has invalid format');
+        $this->assertArrayHasKey('name', $eventArray, 'The returned array has invalid format');
+        $this->assertObjectHasAttribute('id', $eventObj, 'The returned object has invalid format');
+        $this->assertObjectHasAttribute('name', $eventObj, 'The returned object has invalid format');
     }
 
     public function testLoadMultipleEvent(): void
@@ -34,11 +48,9 @@ final class EventTest extends TestCase
         $weblinkActivationParams = array(
             'oauthServer' => 'https://portal-auth.administratehq.com',
             'apiUri' => 'https://weblink-api.administratehq.com/graphql/',
-            'portal' => 'mdbcwl-kfmc.administrateweblink.com',
+            'portal' => $_GET['portal'],
             'portalToken' => ''.$_GET['portalToken'].''
         );
-        $fields = [];
-        $event = new Event();
         
         $fields = [];
         $paging = ['page' => 1, 'perPage' => 25];
@@ -56,6 +68,14 @@ final class EventTest extends TestCase
         $this->assertTrue($this->is_json($resultJson));
         //check response is a pHP object
         $this->assertisObject($resultObject);
+
+        $jsonToArray  = json_decode($resultJson, true);
+        $this->assertArrayHasKey('edges', $jsonToArray['events'], 'The returned json has invalid format');
+        $this->assertArrayHasKey('pageInfo', $jsonToArray['events'], 'The returned json has invalid format');
+        $this->assertArrayHasKey('edges', $resultArray['events'], 'The returned array has invalid format');
+        $this->assertArrayHasKey('pageInfo', $resultArray['events'], 'The returned array has invalid format');
+        $this->assertObjectHasAttribute('edges', $resultObject->events, 'The returned object has invalid format');
+        $this->assertObjectHasAttribute('pageInfo', $resultObject->events, 'The returned object has invalid format');
     }
 
     public function testLoadEventsbyCourseCode(): void
@@ -63,11 +83,9 @@ final class EventTest extends TestCase
         $weblinkActivationParams = array(
             'oauthServer' => 'https://portal-auth.administratehq.com',
             'apiUri' => 'https://weblink-api.administratehq.com/graphql/',
-            'portal' => 'mdbcwl-kfmc.administrateweblink.com',
+            'portal' => $_GET['portal'],
             'portalToken' => ''.$_GET['portalToken'].''
         );
-        $fields = [];
-        $event = new Event();
         
         $fields = [];
         $paging = ['page' => 1, 'perPage' => 25];
@@ -75,11 +93,10 @@ final class EventTest extends TestCase
         $filters = ['courseCode' => $courseCode];
 
         $eventObj = new Event($weblinkActivationParams);
-        $events = $eventObj->loadByCourseCode($filters, $paging, $sorting, $fields, $returnType);
 
-        $resultArray = $eventObj->loadAll($filters, $paging, $sorting, $fields, 'array');
-        $resultJson = $eventObj->loadAll($filters, $paging, $sorting, $fields, 'json');
-        $resultObject = $eventObj->loadAll($filters, $paging, $sorting, $fields, 'obj');
+        $resultArray = $eventObj->loadByCourseCode($filters, $paging, $sorting, $fields, 'array');
+        $resultJson = $eventObj->loadByCourseCode($filters, $paging, $sorting, $fields, 'json');
+        $resultObject = $eventObj->loadByCourseCode($filters, $paging, $sorting, $fields, 'obj');
 
         //check response is a php array
         $this->assertisArray($resultArray);
@@ -87,6 +104,14 @@ final class EventTest extends TestCase
         $this->assertTrue($this->is_json($resultJson));
         //check response is a pHP object
         $this->assertisObject($resultObject);
+
+        $jsonToArray  = json_decode($resultJson, true);
+        $this->assertArrayHasKey('edges', $jsonToArray['events'], 'The returned json has invalid format');
+        $this->assertArrayHasKey('pageInfo', $jsonToArray['events'], 'The returned json has invalid format');
+        $this->assertArrayHasKey('edges', $resultArray['events'], 'The returned array has invalid format');
+        $this->assertArrayHasKey('pageInfo', $resultArray['events'], 'The returned array has invalid format');
+        $this->assertObjectHasAttribute('edges', $resultObject->events, 'The returned object has invalid format');
+        $this->assertObjectHasAttribute('pageInfo', $resultObject->events, 'The returned object has invalid format');
     }
 
     public function testPagination(): void
@@ -94,7 +119,7 @@ final class EventTest extends TestCase
             $weblinkActivationParams = array(
             'oauthServer' => 'https://portal-auth.administratehq.com',
             'apiUri' => 'https://weblink-api.administratehq.com/graphql/',
-            'portal' => 'mdbcwl-kfmc.administrateweblink.com',
+            'portal' => $_GET['portal'],
             'portalToken' => ''.$_GET['portalToken'].''
             );
                 $fields = [];
@@ -109,8 +134,9 @@ final class EventTest extends TestCase
                 $events = $eventObj->loadAll($filters, $paging, $sorting, $fields, $returnType);
 
                 $resultArray = $eventObj->loadAll($filters, $paging, $sorting, $fields, 'array');
+
                 //check if pagination returns the requested number of results
-                $this->assertEquals(27, count($resultArray['events']['edges']), 'Error in pagination results');
+                $this->assertEquals(25, count($resultArray['events']['edges']), 'Error in pagination results');
     }
 
     public function is_json($str)

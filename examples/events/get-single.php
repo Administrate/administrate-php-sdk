@@ -11,9 +11,9 @@ use Administrate\PhpSdk\Event;
 // $weblinkActivationParams Set this value in config.php
 // $return type defined in client Class 'array' -> PHP array, 'obj' -> PHP Object and 'json' -> JSON
 $fields = [];
-$returnType = 'array'; //array, obj, json
+$returnType = 'json'; //array, obj, json
 
 $eventObj = new Event($weblinkActivationParams);
 $event = $eventObj->loadById($eventId, $fields, $returnType);
 
-print_r($event);
+print_r(json_decode($event, true));
