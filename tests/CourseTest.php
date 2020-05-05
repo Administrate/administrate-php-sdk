@@ -15,8 +15,8 @@ final class CourseTest extends TestCase
     public function testLoadSingleCourse(): void
     {
         $weblinkActivationParams = array(
-            'oauthServer' => 'https://portal-auth.administratehq.com',
-            'apiUri' => 'https://weblink-api.administratehq.com/graphql/',
+            'oauthServer' => $_GET['weblinkOauthServer'],
+            'apiUri' => $_GET['weblinkApiUri'],
             'portal' => $_GET['portal'],
             'portalToken' => ''.$_GET['portalToken'].''
         );
@@ -46,8 +46,8 @@ final class CourseTest extends TestCase
     public function testLoadMultipleCourses(): void
     {
         $weblinkActivationParams = array(
-            'oauthServer' => 'https://portal-auth.administratehq.com',
-            'apiUri' => 'https://weblink-api.administratehq.com/graphql/',
+            'oauthServer' => $_GET['weblinkOauthServer'],
+            'apiUri' => $_GET['weblinkApiUri'],
             'portal' => $_GET['portal'],
             'portalToken' => ''.$_GET['portalToken'].''
         );
@@ -81,10 +81,10 @@ final class CourseTest extends TestCase
     public function testPagination(): void
     {
         $weblinkActivationParams = array(
-        'oauthServer' => 'https://portal-auth.administratehq.com',
-        'apiUri' => 'https://weblink-api.administratehq.com/graphql/',
-        'portal' => $_GET['portal'],
-        'portalToken' => ''.$_GET['portalToken'].''
+            'oauthServer' => $_GET['weblinkOauthServer'],
+            'apiUri' => $_GET['weblinkApiUri'],
+            'portal' => $_GET['portal'],
+            'portalToken' => ''.$_GET['portalToken'].''
         );
 
         $fields = [];
@@ -94,7 +94,6 @@ final class CourseTest extends TestCase
 
         $courseObj = new Course($weblinkActivationParams);
         $resultArray = $courseObj->loadAll($filters, $paging, $sorting, $fields, 'array');
-        //print_r($resultArray['pageInfo']['totalRecords']);
         //check if pagination returns the requested number of results
         if ($resultArray['courses']['pageInfo']['totalRecords'] >= $paging['perPage']) {
             $this->assertEquals(25, count($resultArray['courses']['edges']), 'Error in pagination results');

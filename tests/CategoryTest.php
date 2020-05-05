@@ -15,8 +15,8 @@ final class CategoryTest extends TestCase
     public function testLoadSingleCategory(): void
     {
         $weblinkActivationParams = array(
-            'oauthServer' => 'https://portal-auth.administratehq.com',
-            'apiUri' => 'https://weblink-api.administratehq.com/graphql/',
+            'oauthServer' => $_GET['weblinkOauthServer'],
+            'apiUri' => $_GET['weblinkApiUri'],
             'portal' => $_GET['portal'],
             'portalToken' => ''.$_GET['portalToken'].''
         );
@@ -46,8 +46,8 @@ final class CategoryTest extends TestCase
     public function testLoadMultipleCourses(): void
     {
         $weblinkActivationParams = array(
-            'oauthServer' => 'https://portal-auth.administratehq.com',
-            'apiUri' => 'https://weblink-api.administratehq.com/graphql/',
+            'oauthServer' => $_GET['weblinkOauthServer'],
+            'apiUri' => $_GET['weblinkApiUri'],
             'portal' => $_GET['portal'],
             'portalToken' => ''.$_GET['portalToken'].''
         );
@@ -81,10 +81,10 @@ final class CategoryTest extends TestCase
     public function testPagination(): void
     {
         $weblinkActivationParams = array(
-        'oauthServer' => 'https://portal-auth.administratehq.com',
-        'apiUri' => 'https://weblink-api.administratehq.com/graphql/',
-        'portal' => $_GET['portal'],
-        'portalToken' => ''.$_GET['portalToken'].''
+            'oauthServer' => $_GET['weblinkOauthServer'],
+            'apiUri' => $_GET['weblinkApiUri'],
+            'portal' => $_GET['portal'],
+            'portalToken' => ''.$_GET['portalToken'].''
         );
 
         $fields = [];

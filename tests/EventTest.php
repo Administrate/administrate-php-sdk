@@ -15,8 +15,8 @@ final class EventTest extends TestCase
     public function testLoadSingleEvent(): void
     {
         $weblinkActivationParams = array(
-            'oauthServer' => 'https://portal-auth.administratehq.com',
-            'apiUri' => 'https://weblink-api.administratehq.com/graphql/',
+            'oauthServer' => $_GET['weblinkOauthServer'],
+            'apiUri' => $_GET['weblinkApiUri'],
             'portal' => $_GET['portal'],
             'portalToken' => ''.$_GET['portalToken'].''
         );
@@ -46,8 +46,8 @@ final class EventTest extends TestCase
     public function testLoadMultipleEvent(): void
     {
         $weblinkActivationParams = array(
-            'oauthServer' => 'https://portal-auth.administratehq.com',
-            'apiUri' => 'https://weblink-api.administratehq.com/graphql/',
+            'oauthServer' => $_GET['weblinkOauthServer'],
+            'apiUri' => $_GET['weblinkApiUri'],
             'portal' => $_GET['portal'],
             'portalToken' => ''.$_GET['portalToken'].''
         );
@@ -81,8 +81,8 @@ final class EventTest extends TestCase
     public function testLoadEventsbyCourseCode(): void
     {
         $weblinkActivationParams = array(
-            'oauthServer' => 'https://portal-auth.administratehq.com',
-            'apiUri' => 'https://weblink-api.administratehq.com/graphql/',
+            'oauthServer' => $_GET['weblinkOauthServer'],
+            'apiUri' => $_GET['weblinkApiUri'],
             'portal' => $_GET['portal'],
             'portalToken' => ''.$_GET['portalToken'].''
         );
@@ -90,7 +90,7 @@ final class EventTest extends TestCase
         $fields = [];
         $paging = ['page' => 1, 'perPage' => 25];
         $sorting = ['field' => 'title', 'direction' => 'asc'];
-        $filters = ['courseCode' => $courseCode];
+        $filters = ['courseCode' => $_GET['courseCode']];
 
         $eventObj = new Event($weblinkActivationParams);
 
@@ -117,10 +117,10 @@ final class EventTest extends TestCase
     public function testPagination(): void
     {
         $weblinkActivationParams = array(
-        'oauthServer' => 'https://portal-auth.administratehq.com',
-        'apiUri' => 'https://weblink-api.administratehq.com/graphql/',
-        'portal' => $_GET['portal'],
-        'portalToken' => ''.$_GET['portalToken'].''
+            'oauthServer' => $_GET['weblinkOauthServer'],
+            'apiUri' => $_GET['weblinkApiUri'],
+            'portal' => $_GET['portal'],
+            'portalToken' => ''.$_GET['portalToken'].''
         );
         
         $fields = [];

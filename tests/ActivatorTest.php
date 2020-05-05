@@ -25,7 +25,7 @@ final class ActivatorTest extends TestCase
          $this->assertTrue($response['body']->portal_token != "");
     }
 
-    public function testhandleAuthorizeCallback(): void
+    public function testHandleAuthorizeCallback(): void
     {
         $baseURL = $_GET['baseURL'];
         //Authorzation code
@@ -36,8 +36,8 @@ final class ActivatorTest extends TestCase
             'clientId' => $_GET['clientId'],
             'clientSecret' => $_GET['clientSecret'],
             'instance' => $_GET['instance'],
-            'oauthServer' => 'https://auth.getadministrate.com/oauth',
-            'apiUri' => 'https://api.administrateapp.com/graphql',
+            'oauthServer' => $_GET['coreOauthServer'],
+            'apiUri' => $_GET['coreApiUri'],
             'redirectUri' => $baseURL . '/examples/authentication/oauth-callback.php',
             'accessToken' => $_GET['accessToken'],
             'refreshToken' => $_GET['refreshToken'],
@@ -60,8 +60,8 @@ final class ActivatorTest extends TestCase
             'clientId' => $_GET['clientId'],
             'clientSecret' => $_GET['clientSecret'],
             'instance' => $_GET['instance'],
-            'oauthServer' => 'https://auth.getadministrate.com/oauth',
-            'apiUri' => 'https://api.administrateapp.com/graphql',
+            'oauthServer' => $_GET['coreOauthServer'],
+            'apiUri' => $_GET['coreApiUri'],
             'redirectUri' => $baseURL . '/examples/authentication/oauth-callback.php',
             'accessToken' => $_GET['accessToken'],
             'refreshToken' => $_GET['refreshToken'],
