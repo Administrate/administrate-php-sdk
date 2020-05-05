@@ -14,12 +14,8 @@ final class EventTest extends TestCase
 {
     public function testLoadSingleEvent(): void
     {
-        $weblinkActivationParams = array(
-            'oauthServer' => $_GET['weblinkOauthServer'],
-            'apiUri' => $_GET['weblinkApiUri'],
-            'portal' => $_GET['portal'],
-            'portalToken' => ''.$_GET['portalToken'].''
-        );
+        $weblinkActivationParams = getWeblinkActivationParams();
+        
         $fields = [];
         $returnType = 'array'; //array, obj, json
         $event = new Event();
@@ -45,12 +41,7 @@ final class EventTest extends TestCase
 
     public function testLoadMultipleEvent(): void
     {
-        $weblinkActivationParams = array(
-            'oauthServer' => $_GET['weblinkOauthServer'],
-            'apiUri' => $_GET['weblinkApiUri'],
-            'portal' => $_GET['portal'],
-            'portalToken' => ''.$_GET['portalToken'].''
-        );
+        $weblinkActivationParams = getWeblinkActivationParams();
         
         $fields = [];
         $paging = ['page' => 1, 'perPage' => 25];
@@ -80,12 +71,7 @@ final class EventTest extends TestCase
 
     public function testLoadEventsbyCourseCode(): void
     {
-        $weblinkActivationParams = array(
-            'oauthServer' => $_GET['weblinkOauthServer'],
-            'apiUri' => $_GET['weblinkApiUri'],
-            'portal' => $_GET['portal'],
-            'portalToken' => ''.$_GET['portalToken'].''
-        );
+        $weblinkActivationParams = getWeblinkActivationParams();
         
         $fields = [];
         $paging = ['page' => 1, 'perPage' => 25];
@@ -116,12 +102,7 @@ final class EventTest extends TestCase
 
     public function testPagination(): void
     {
-        $weblinkActivationParams = array(
-            'oauthServer' => $_GET['weblinkOauthServer'],
-            'apiUri' => $_GET['weblinkApiUri'],
-            'portal' => $_GET['portal'],
-            'portalToken' => ''.$_GET['portalToken'].''
-        );
+        $weblinkActivationParams = getWeblinkActivationParams();
         
         $fields = [];
         $paging = ['page' => 1, 'perPage' => 25];
@@ -151,5 +132,15 @@ final class EventTest extends TestCase
     public function is_json($str)
     {
         return json_decode($str) != null;
+    }
+    
+    public function getWeblinkActivationParams()
+    {
+        array(
+            'oauthServer' => $_GET['weblinkOauthServer'],
+            'apiUri' => $_GET['weblinkApiUri'],
+            'portal' => $_GET['portal'],
+            'portalToken' => ''.$_GET['portalToken'].''
+        );
     }
 }

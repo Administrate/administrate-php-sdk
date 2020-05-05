@@ -14,12 +14,8 @@ final class CourseTest extends TestCase
 {
     public function testLoadSingleCourse(): void
     {
-        $weblinkActivationParams = array(
-            'oauthServer' => $_GET['weblinkOauthServer'],
-            'apiUri' => $_GET['weblinkApiUri'],
-            'portal' => $_GET['portal'],
-            'portalToken' => ''.$_GET['portalToken'].''
-        );
+        $weblinkActivationParams = getWeblinkActivationParams();
+        
         $fields = [];
         $returnType = 'array'; //array, obj, json
         $course = new Course();
@@ -45,12 +41,7 @@ final class CourseTest extends TestCase
 
     public function testLoadMultipleCourses(): void
     {
-        $weblinkActivationParams = array(
-            'oauthServer' => $_GET['weblinkOauthServer'],
-            'apiUri' => $_GET['weblinkApiUri'],
-            'portal' => $_GET['portal'],
-            'portalToken' => ''.$_GET['portalToken'].''
-        );
+        $weblinkActivationParams = getWeblinkActivationParams();
         
         $fields = [];
         $paging = ['page' => 1, 'perPage' => 25];
@@ -80,12 +71,7 @@ final class CourseTest extends TestCase
 
     public function testPagination(): void
     {
-        $weblinkActivationParams = array(
-            'oauthServer' => $_GET['weblinkOauthServer'],
-            'apiUri' => $_GET['weblinkApiUri'],
-            'portal' => $_GET['portal'],
-            'portalToken' => ''.$_GET['portalToken'].''
-        );
+        $weblinkActivationParams = getWeblinkActivationParams();
 
         $fields = [];
         $paging = ['page' => 1, 'perPage' => 25];
@@ -113,5 +99,14 @@ final class CourseTest extends TestCase
     public function is_json($str)
     {
         return json_decode($str) != null;
+    }
+    public function getWeblinkActivationParams()
+    {
+        array(
+        'oauthServer' => $_GET['weblinkOauthServer'],
+        'apiUri' => $_GET['weblinkApiUri'],
+        'portal' => $_GET['portal'],
+        'portalToken' => ''.$_GET['portalToken'].''
+        );
     }
 }
