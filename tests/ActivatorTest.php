@@ -39,8 +39,8 @@ final class ActivatorTest extends TestCase
             'oauthServer' => 'https://auth.getadministrate.com/oauth',
             'apiUri' => 'https://api.administrateapp.com/graphql',
             'redirectUri' => $baseURL . '/examples/authentication/oauth-callback.php',
-            'accessToken' => $_GET[''],
-            'refreshToken' => $_GET[''],
+            'accessToken' => $_GET['accessToken'],
+            'refreshToken' => $_GET['refreshToken'],
         );
         
         $activationObj = new Activator($coreApiActivationParams);
@@ -51,9 +51,28 @@ final class ActivatorTest extends TestCase
         $this->assertTrue($response['body']->access_token != "");
         $this->assertTrue($response['body']->refresh_token != "");
     }
-    public function testRefreshToke(): void
+    public function testRefreshToken(): void
     {
-        //test the refresh tokens method
-        $this->assertTrue(true);
+        $baseURL = $_GET['baseURL'];
+
+        // Core API Params
+        $coreApiActivationParams = array(
+            'clientId' => $_GET['clientId'],
+            'clientSecret' => $_GET['clientSecret'],
+            'instance' => $_GET['instance'],
+            'oauthServer' => 'https://auth.getadministrate.com/oauth',
+            'apiUri' => 'https://api.administrateapp.com/graphql',
+            'redirectUri' => $baseURL . '/examples/authentication/oauth-callback.php',
+            'accessToken' => $_GET['accessToken'],
+            'refreshToken' => $_GET['refreshToken'],
+        );
+        
+        $activationObj = new Activator($coreApiActivationParams);
+        $response = $activationObj->refreshTokens($coreApiActivationParams['refreshToken']);
+
+        $this->assertObjectHasAttribute('access_token', $response['body'], 'The returned object does not have access_token attribute');
+        $this->assertObjectHasAttribute('refresh_token', $response['body'], 'The returned object does not have refresh_token attribute');
+        $this->assertTrue($response['body']->access_token != "");
+        $this->assertTrue($response['body']->refresh_token != "");
     }
 }
