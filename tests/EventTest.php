@@ -14,8 +14,8 @@ final class EventTest extends TestCase
 {
     public function testLoadSingleEvent(): void
     {
-        $weblinkActivationParams = getWeblinkActivationParams();
-        
+        $weblinkActivationParams = $this->getWeblinkActivationParams();
+
         $fields = [];
         $returnType = 'array'; //array, obj, json
         $event = new Event();
@@ -41,7 +41,7 @@ final class EventTest extends TestCase
 
     public function testLoadMultipleEvent(): void
     {
-        $weblinkActivationParams = getWeblinkActivationParams();
+        $weblinkActivationParams = $this->getWeblinkActivationParams();
         
         $fields = [];
         $paging = ['page' => 1, 'perPage' => 25];
@@ -71,7 +71,7 @@ final class EventTest extends TestCase
 
     public function testLoadEventsbyCourseCode(): void
     {
-        $weblinkActivationParams = getWeblinkActivationParams();
+        $weblinkActivationParams = $this->getWeblinkActivationParams();
         
         $fields = [];
         $paging = ['page' => 1, 'perPage' => 25];
@@ -102,7 +102,7 @@ final class EventTest extends TestCase
 
     public function testPagination(): void
     {
-        $weblinkActivationParams = getWeblinkActivationParams();
+        $weblinkActivationParams = $this->getWeblinkActivationParams();
         
         $fields = [];
         $paging = ['page' => 1, 'perPage' => 25];
@@ -136,7 +136,7 @@ final class EventTest extends TestCase
     
     public function getWeblinkActivationParams()
     {
-        array(
+        return array(
             'oauthServer' => $_GET['weblinkOauthServer'],
             'apiUri' => $_GET['weblinkApiUri'],
             'portal' => $_GET['portal'],

@@ -16,8 +16,6 @@ final class QueryTest extends TestCase
 
     public function testQueryBuilder(): void
     {
-        $baseURL = $_GET['baseURL'];
-
         // Core API Params
         $coreApiActivationParams = array(
             'clientId' => $_GET['clientId'],
@@ -25,7 +23,7 @@ final class QueryTest extends TestCase
             'instance' => $_GET['instance'],
             'oauthServer' => $_GET['coreOauthServer'],
             'apiUri' => $_GET['coreApiUri'],
-            'redirectUri' => $baseURL . '/examples/authentication/oauth-callback.php',
+            'redirectUri' => $_GET['baseURL'] . '/examples/authentication/oauth-callback.php',
             'accessToken' => $_GET['accessToken'],
             'refreshToken' => $_GET['refreshToken'],
         );

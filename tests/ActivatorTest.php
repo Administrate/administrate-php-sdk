@@ -14,8 +14,8 @@ final class ActivatorTest extends TestCase
 {
     public function testGetWeblinkPortalToken(): void
     {
-         $weblinkActivationParams = getWeblinkActivationParams();
-         
+         $weblinkActivationParams = $this->getWeblinkActivationParams();
+
          $activate = new Activator($weblinkActivationParams);
          $response = $activate->getWeblinkPortalToken();
          $this->assertObjectHasAttribute('portal_token', $response['body'], 'The returned object does not have portal_token attribute');
@@ -24,12 +24,11 @@ final class ActivatorTest extends TestCase
 
     public function testHandleAuthorizeCallback(): void
     {
-        $baseURL = $_GET['baseURL'];
         //Authorzation code
         $authorizationCode = $_GET['authorizationCode'];
 
         // Core API Params
-        $coreApiActivationParams = getCoreApiActivationParams();
+        $coreApiActivationParams = $this->getCoreApiActivationParams();
         
         $activationObj = new Activator($coreApiActivationParams);
         $response = $activationObj->handleAuthorizeCallback(array( 'code' => $authorizationCode ));
@@ -41,10 +40,8 @@ final class ActivatorTest extends TestCase
     }
     public function testRefreshToken(): void
     {
-        $baseURL = $_GET['baseURL'];
-
         // Core API Params
-        $coreApiActivationParams = getCoreApiActivationParams();
+        $coreApiActivationParams = $this->getCoreApiActivationParams();
         
         $activationObj = new Activator($coreApiActivationParams);
         $response = $activationObj->refreshTokens($coreApiActivationParams['refreshToken']);
@@ -57,24 +54,24 @@ final class ActivatorTest extends TestCase
 
     public function getCoreApiActivationParams()
     {
-        array(
+        return array(
             'clientId' => $_GET['clientId'],
             'clientSecret' => $_GET['clientSecret'],
             'instance' => $_GET['instance'],
             'oauthServer' => $_GET['coreOauthServer'],
             'apiUri' => $_GET['coreApiUri'],
-            'redirectUri' => $baseURL . '/examples/authentication/oauth-callback.php',
+            'redirectUri' => $_GET['baseURL'] . '/examples/authentication/oauth-callback.php',
             'accessToken' => $_GET['accessToken'],
             'refreshToken' => $_GET['refreshToken'],
         );
     }
     public function getWeblinkActivationParams()
     {
-        array(
-        'oauthServer' => $_GET['weblinkOauthServer'],
-        'apiUri' => $_GET['weblinkApiUri'],
-        'portal' => $_GET['portal'],
-        'portalToken' => ''.$_GET['portalToken'].''
+        return array(
+            'oauthServer' => $_GET['weblinkOauthServer'],
+            'apiUri' => $_GET['weblinkApiUri'],
+            'portal' => $_GET['portal'],
+            'portalToken' => ''.$_GET['portalToken'].''
         );
     }
 }

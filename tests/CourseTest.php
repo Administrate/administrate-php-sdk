@@ -14,8 +14,8 @@ final class CourseTest extends TestCase
 {
     public function testLoadSingleCourse(): void
     {
-        $weblinkActivationParams = getWeblinkActivationParams();
-        
+        $weblinkActivationParams = $this->getWeblinkActivationParams();
+
         $fields = [];
         $returnType = 'array'; //array, obj, json
         $course = new Course();
@@ -41,7 +41,7 @@ final class CourseTest extends TestCase
 
     public function testLoadMultipleCourses(): void
     {
-        $weblinkActivationParams = getWeblinkActivationParams();
+        $weblinkActivationParams = $this->getWeblinkActivationParams();
         
         $fields = [];
         $paging = ['page' => 1, 'perPage' => 25];
@@ -71,7 +71,7 @@ final class CourseTest extends TestCase
 
     public function testPagination(): void
     {
-        $weblinkActivationParams = getWeblinkActivationParams();
+        $weblinkActivationParams = $this->getWeblinkActivationParams();
 
         $fields = [];
         $paging = ['page' => 1, 'perPage' => 25];
@@ -102,7 +102,7 @@ final class CourseTest extends TestCase
     }
     public function getWeblinkActivationParams()
     {
-        array(
+        return array(
         'oauthServer' => $_GET['weblinkOauthServer'],
         'apiUri' => $_GET['weblinkApiUri'],
         'portal' => $_GET['portal'],
