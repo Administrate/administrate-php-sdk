@@ -16,4 +16,4 @@ $returnType = 'json'; //array, obj, json
 $eventObj = new Event($weblinkActivationParams);
 $event = $eventObj->loadById($eventId, $fields, $returnType);
 
-print_r(json_decode($event, true));
+print_r($event);
