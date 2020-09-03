@@ -7,16 +7,16 @@ require_once '../../vendor/autoload.php';
 
 use Administrate\PhpSdk\Category;
 
-// $weblinkActivationParams Set this value in config.php
+// $coreApiActivationParams Set this value in config.php
 // $return type defined in client Class 'array' -> PHP array, 'obj' -> PHP Object and 'json' -> JSON
-$categoryClass = new Category($weblinkActivationParams);
+$categoryClass = new Category($coreApiActivationParams);
 
 $args = array(
     'filters' => array(
         // array(
         //     'field' => 'name',
         //     'operation' => 'eq',
-        //     'value' => 'Example Category 5',
+        //     'value' => 'Example Category 1',
         // )
     ),
     'paging' => array(
@@ -32,6 +32,7 @@ $args = array(
     //     'id',
     //     'name'
     // ),
+    'coreApi' => true,
 );
 
 $allCategories = $categoryClass->loadAll($args);
