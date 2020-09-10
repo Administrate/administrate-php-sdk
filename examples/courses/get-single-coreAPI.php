@@ -5,12 +5,13 @@ header('Content-Type: application/json');
 require_once '../config.php';
 require_once '../../vendor/autoload.php';
 
-use Administrate\PhpSdk\Category;
+use Administrate\PhpSdk\Course;
 
+// $courseId defined in config.php
 // $categoryId Set this value in config.php
 // $coreApiActivationParams Set this value in config.php
 // $return type defined in client Class 'array' -> PHP array, 'obj' -> PHP Object and 'json' -> JSON
-$categoryClass = new Category($coreApiActivationParams);
+$courseClass = new Course($coreApiActivationParams);
 
 $args = array(
     //'returnType' => 'json', //array, obj, json
@@ -18,6 +19,6 @@ $args = array(
     'coreApi' => true,
 );
 
-$category = $categoryClass->loadById($categoryId, $args);
+$course = $courseClass->loadById($courseId, $args);
 
-print_r($category);
+print_r($course);
