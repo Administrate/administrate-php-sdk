@@ -16,13 +16,19 @@ final class CategoryTest extends TestCase
     {
         $weblinkActivationParams = $this->getWeblinkActivationParams();
 
-        $fields = [];
-        $returnType = 'array'; //array, obj, json
+        $args = array(
+            'returnType' => 'array', //array, obj, json
+            'fields' => array(),
+        );
 
         $categoryObj = new Category($weblinkActivationParams);
-        $categoryArray = $categoryObj->loadById($_GET['categoryId'], $fields, 'array');
-        $categoryJson = $categoryObj->loadById($_GET['categoryId'], $fields, 'json');
-        $categoryObj = $categoryObj->loadById($_GET['categoryId'], $fields, 'obj');
+        $categoryArray = $categoryObj->loadById($_GET['categoryId'], $args);
+
+        $args['returnType'] = 'json';
+        $categoryJson = $categoryObj->loadById($_GET['categoryId'], $args);
+
+        $args['returnType'] = 'obj';
+        $categoryObj = $categoryObj->loadById($_GET['categoryId'], $args);
 
         //check response is a php array
         $this->assertisArray($categoryArray);
@@ -30,7 +36,7 @@ final class CategoryTest extends TestCase
         $this->assertTrue($this->is_json($categoryJson));
         //check response is a pHP object
         $this->assertisObject($categoryObj);
-        
+
         $this->assertArrayHasKey('id', json_decode($categoryJson, true), 'The returned json has invalid format');
         $this->assertArrayHasKey('name', json_decode($categoryJson, true), 'The returned json has invalid format');
         $this->assertArrayHasKey('id', $categoryArray, 'The returned array has invalid format');
@@ -42,16 +48,31 @@ final class CategoryTest extends TestCase
     public function testLoadMultipleCourses(): void
     {
         $weblinkActivationParams = $this->getWeblinkActivationParams();
-        
-        $fields = [];
-        $paging = ['page' => 1, 'perPage' => 25];
-        $sorting = ['field' => 'name', 'direction' => 'asc'];
-        $filters = [];
+
+        $args = array(
+            'filters' => array(),
+            'paging' => array(
+                'page' => 1,
+                'perPage' => 25
+            ),
+            'sorting' => array(
+                'field' => 'name',
+                'direction' => 'asc'
+            ),
+            'returnType' => 'json', //array, obj, json
+            'fields' => array(),
+        );
 
         $categoryObj = new Category($weblinkActivationParams);
-        $resultArray = $categoryObj->loadAll($filters, $paging, $sorting, $fields, 'array');
-        $resultJson = $categoryObj->loadAll($filters, $paging, $sorting, $fields, 'json');
-        $resultObject = $categoryObj->loadAll($filters, $paging, $sorting, $fields, 'obj');
+
+        $args['returnType'] = 'array';
+        $resultArray = $categoryObj->loadAll($args);
+
+        $args['returnType'] = 'json';
+        $resultJson = $categoryObj->loadAll($args);
+
+        $args['returnType'] = 'obj';
+        $resultObject = $categoryObj->loadAll($args);
 
         //check response is a php array
         $this->assertisArray($resultArray);
@@ -73,13 +94,22 @@ final class CategoryTest extends TestCase
     {
         $weblinkActivationParams = $this->getWeblinkActivationParams();
 
-        $fields = [];
-        $paging = ['page' => 1, 'perPage' => 25];
-        $sorting = ['field' => 'name', 'direction' => 'asc'];
-        $filters = [];
+        $args = array(
+            'filters' => array(),
+            'paging' => array(
+                'page' => 1,
+                'perPage' => 25
+            ),
+            'sorting' => array(
+                'field' => 'name',
+                'direction' => 'asc'
+            ),
+            'returnType' => 'array', //array, obj, json
+            'fields' => array(),
+        );
 
         $categoryObj = new Category($weblinkActivationParams);
-        $resultArray = $categoryObj->loadAll($filters, $paging, $sorting, $fields, 'array');
+        $resultArray = $categoryObj->loadAll($args);
 
         //check if pagination returns the requested number of results
         if ($resultArray['categories']['pageInfo']['totalRecords'] >= $paging['perPage']) {
