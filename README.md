@@ -186,26 +186,39 @@ $defaultFields = [
     'parent'
 ];
 
-$page = 1;
-$perPage = 5;
-$returnType = 'json'; //array, obj, json
 $categoryId = "TGVh....YeTox";
-$fields = []; // defaults to $defaultFields defined in Category Class
-$paging = ['page' => $page, 'perPage' => $perPage]; //defaults to ['page' => 1, 'perPage' => 25]
-$sorting = ['field' => 'id', 'direction' => 'desc']; //defaults to ['field' => 'name', 'direction' => 'asc']
 $filters = [];
+$args = [
+    'filters' => [
+        [
+            'field' => 'name',
+            'operation' => 'eq',
+            'value' => 'Example Category 5',
+        ]
+    ],
+    'paging' => [
+        'page' => 1,
+        'perPage' => 2
+    ],
+    'sorting' => [
+        'field' => 'name',
+        'direction' => 'asc'
+    ],
+    'returnType' => 'json', //array, obj, json,
+    'fields' => [
+        'id',
+        'name',
+    ],
+];
 
-//Get Single Category
-$category = $categoryObj->loadById($categoryId, $fields, $returnType);
+// Get Single Category
+$category = $categoryObj->loadById($categoryId, $args);
 
-//Get all categories
-$categories = $categoryObj->loadAll($filters, $paging, $sorting, $fields, $returnType);
+// Get all categories
+$categories = $categoryObj->loadAll($args);
 
-#The parameter "defaultFields" is optional only pass it if you want to change the fields
 ```
-*Check [get-single.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/categories/get-single.php)
-and
-[get-multiple.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/categories/get-multiple.php) in examples folder*
+*Check [get-single.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/categories/get-single.php) and [get-multiple.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/categories/get-multiple.php) in examples folder*
 
 ### Courses Management
 ### List Courses
