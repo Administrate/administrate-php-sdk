@@ -16,16 +16,18 @@ class QueryBuilder extends GqlQueryBuilder
                     $subNode = (new QueryBuilder('' . $fieldKey . ''));
                     $edgesNode = (new QueryBuilder('edges'));
                     $innerNode = (new QueryBuilder('node'));
-                    foreach ($fields as $subFieldKey) {
-                        $innerNode->selectField($subFieldKey);
+                    foreach ($fields as $subFieldKey => $subFielfieldVal) {
+                        if (is_array($subFielfieldVal)) {
+                            $subInnerNode = self::buildSubNode($subFieldKey, $subFielfieldVal);
+                            $innerNode->selectField($subInnerNode);
+                        } else {
+                            $innerNode->selectField($subFielfieldVal);
+                        }
                     }
                     $edgesNode->selectField($innerNode);
                     $subNode->selectField($edgesNode);
                 } else {
-                    $subNode = (new QueryBuilder('' . $fieldKey . ''));
-                    foreach ($fieldVal as $subFieldKey) {
-                        $subNode->selectField($subFieldKey);
-                    }
+                    $subNode = self::buildSubNode($fieldKey, $fieldVal);
                 }
                 $node->selectField($subNode);
             } else {
@@ -33,5 +35,18 @@ class QueryBuilder extends GqlQueryBuilder
             }
         }
         return $node;
+    }
+
+    static function buildSubNode($subFieldKey, $subFielfieldVal)
+    {
+        $subInnerNode = (new QueryBuilder('' . $subFieldKey . ''));
+        foreach ($subFielfieldVal as $fieldKey => $fieldVal) {
+            if (is_array($fieldVal)) {
+                $subInnerNode->selectField(self::buildSubNode($fieldKey, $fieldVal));
+            } else {
+                $subInnerNode->selectField($fieldVal);
+            }
+        }
+        return $subInnerNode;
     }
 }
