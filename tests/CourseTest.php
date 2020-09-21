@@ -16,13 +16,20 @@ final class CourseTest extends TestCase
     {
         $weblinkActivationParams = $this->getWeblinkActivationParams();
 
-        $fields = [];
-        $returnType = 'array'; //array, obj, json
+        $args = array(
+            'returnType' => 'array', //array, obj, json
+            'fields' => array(),
+        );
+
         $course = new Course();
         $courseObj = new Course($weblinkActivationParams);
-        $courseArray = $courseObj->loadById($_GET['courseId'], $fields, 'array');
-        $courseJson = $courseObj->loadById($_GET['courseId'], $fields, 'json');
-        $courseObj = $courseObj->loadById($_GET['courseId'], $fields, 'obj');
+        $courseArray = $courseObj->loadById($_GET['courseId'], $args);
+
+        $args['returnType'] = 'json';
+        $courseJson = $courseObj->loadById($_GET['courseId'], $args);
+
+        $args['returnType'] = 'obj';
+        $courseObj = $courseObj->loadById($_GET['courseId'], $args);
 
         //check response is a php array
         $this->assertisArray($courseArray);
@@ -30,7 +37,7 @@ final class CourseTest extends TestCase
         $this->assertTrue($this->is_json($courseJson));
         //check response is a pHP object
         $this->assertisObject($courseObj);
-        
+
         $this->assertArrayHasKey('id', json_decode($courseJson, true), 'The returned json has invalid format');
         $this->assertArrayHasKey('name', json_decode($courseJson, true), 'The returned json has invalid format');
         $this->assertArrayHasKey('id', $courseArray, 'The returned array has invalid format');
@@ -42,16 +49,31 @@ final class CourseTest extends TestCase
     public function testLoadMultipleCourses(): void
     {
         $weblinkActivationParams = $this->getWeblinkActivationParams();
-        
-        $fields = [];
-        $paging = ['page' => 1, 'perPage' => 25];
-        $sorting = ['field' => 'name', 'direction' => 'asc'];
-        $filters = [];
+
+        $args = array(
+            'filters' => array(),
+            'paging' => array(
+                'page' => 1,
+                'perPage' => 25
+            ),
+            'sorting' => array(
+                'field' => 'name',
+                'direction' => 'asc'
+            ),
+            'returnType' => 'json', //array, obj, json
+            'fields' => array(),
+        );
 
         $courseObj = new Course($weblinkActivationParams);
-        $resultArray = $courseObj->loadAll($filters, $paging, $sorting, $fields, 'array');
-        $resultJson = $courseObj->loadAll($filters, $paging, $sorting, $fields, 'json');
-        $resultObject = $courseObj->loadAll($filters, $paging, $sorting, $fields, 'obj');
+
+        $args['returnType'] = 'array';
+        $resultArray = $courseObj->loadAll($args);
+
+        $args['returnType'] = 'json';
+        $resultJson = $courseObj->loadAll($args);
+
+        $args['returnType'] = 'obj';
+        $resultObject = $courseObj->loadAll($args);
 
         //check response is a php array
         $this->assertisArray($resultArray);
@@ -73,13 +95,22 @@ final class CourseTest extends TestCase
     {
         $weblinkActivationParams = $this->getWeblinkActivationParams();
 
-        $fields = [];
-        $paging = ['page' => 1, 'perPage' => 25];
-        $sorting = ['field' => 'name', 'direction' => 'asc'];
-        $filters = [];
+        $args = array(
+            'filters' => array(),
+            'paging' => array(
+                'page' => 1,
+                'perPage' => 25
+            ),
+            'sorting' => array(
+                'field' => 'name',
+                'direction' => 'asc'
+            ),
+            'returnType' => 'array', //array, obj, json
+            'fields' => array(),
+        );
 
         $courseObj = new Course($weblinkActivationParams);
-        $resultArray = $courseObj->loadAll($filters, $paging, $sorting, $fields, 'array');
+        $resultArray = $courseObj->loadAll($args);
         //check if pagination returns the requested number of results
         if ($resultArray['courses']['pageInfo']['totalRecords'] >= $paging['perPage']) {
             $this->assertEquals(25, count($resultArray['courses']['edges']), 'Error in pagination results');
