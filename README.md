@@ -264,6 +264,62 @@ $categories = $courseObj->loadAll($filters, $paging, $sorting, $fields, $returnT
 and
 [get-multiple.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/courses/get-multiple.php) in examples folder*
 
+### Learning Paths Management
+#### List Learning Paths
+```php
+require_once '/vendor/autoload.php';
+
+use Administrate\PhpSdk\LearningPath;
+
+$params = [
+    'oauthServer' => 'https://portal-auth.administratehq.com', // Administrate weblink authorization endpoint
+    'apiUri' => 'https://weblink-api.administratehq.com/graphql', // Administrate Weblink endpoint
+    'portal' => 'APPNAME.administrateweblink.com',
+    'portalToken' => 'Tcdg...DIY9o',
+];
+
+$learningPathObj = new LearningPath($params);
+
+$defaultFields = [
+    'id',
+    'name',
+    'shortDescription',
+    'parent'
+];
+
+$learningPathId = "TGVh....YeTox";
+$args = [
+    'filters' => [
+        [
+            'field' => 'name',
+            'operation' => 'eq',
+            'value' => 'Learning path test',
+        ]
+    ],
+    'paging' => [
+        'page' => 1,
+        'perPage' => 2
+    ],
+    'sorting' => [
+        'field' => 'name',
+        'direction' => 'asc'
+    ],
+    'returnType' => 'json', //array, obj, json,
+    'fields' => [
+        'id',
+        'name',
+    ],
+];
+
+// Get Single Learning Path
+$learningPath = $learningPathObj->loadById($learningPathId, $args);
+
+// Get all Learning paths
+$learningPaths = $learningPathObj->loadAll($args);
+
+```
+*Check [get-single.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/learning-path/get-single.php) and [get-multiple.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/learning-path/get-multiple.php) in examples folder*
+
 ### Events Management
 ### List Events
 ```php
