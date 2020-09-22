@@ -22,12 +22,23 @@ class LearningPath
     private static $defaultFields = array(
         'id',
         'name',
+        'description',
+        'lifecycleState',
+        'category',
+        'price' => array(
+            'amount',
+        ),
     );
 
     private static $defaultCoreFields = array(
         'id',
         'name',
         'description',
+        'learningObjectives' => array(
+            'pageInfo' => array(
+                'totalRecords'
+            )
+        ),
     );
 
     /**
@@ -125,7 +136,7 @@ class LearningPath
         );
 
         $nodeType = 'learningPaths';
-        $nodeFilters = 'LearningPathFieldGraphFilter';
+        $nodeFilters = 'LearningPathFieldFilter!';
 
         if (isset($args['coreApi']) && $args['coreApi']) {
             $defaultArgs['fields'] = self::$defaultCoreFields;
@@ -143,13 +154,7 @@ class LearningPath
             ->selectField(
                 (new QueryBuilder('edges'))
                     ->selectField(
-                        $node->selectField(
-                            (new QueryBuilder('learningObjectives'))
-                                ->selectField(
-                                    (new QueryBuilder('pageInfo'))
-                                        ->selectField('totalRecords')
-                                )
-                        )
+                        $node
                     )
             );
 
@@ -207,8 +212,8 @@ class LearningPath
         );
 
         $nodeType = 'learningPaths';
-        $nodeOrder = 'CategoryFieldOrder';
-        $nodeFilters = 'CategoryFieldFilter';
+        $nodeOrder = 'LearningPathFieldOrder';
+        $nodeFilters = 'LearningPathFieldFilter!';
 
         if (isset($args['coreApi']) && $args['coreApi']) {
             $defaultArgs['fields'] = self::$defaultCoreFields;
@@ -249,15 +254,7 @@ class LearningPath
             )
             ->selectField(
                 (new QueryBuilder('edges'))
-                ->selectField(
-                    $node->selectField(
-                        (new QueryBuilder('learningObjectives'))
-                            ->selectField(
-                                (new QueryBuilder('pageInfo'))
-                                    ->selectField('totalRecords')
-                            )
-                    )
-                )
+                ->selectField($node)
             );
 
         $gqlQuery = $builder->getQuery();
