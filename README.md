@@ -179,22 +179,14 @@ $params = [
 
 $categoryObj = new Category($params);
 
-$defaultFields = [
-    'id',
-    'name',
-    'shortDescription',
-    'parent'
-];
-
 $categoryId = "TGVh....YeTox";
-$filters = [];
 $args = [
     'filters' => [
-        [
-            'field' => 'name',
-            'operation' => 'eq',
-            'value' => 'Example Category 5',
-        ]
+        // [
+        //     'field' => 'name',
+        //     'operation' => 'eq',
+        //     'value' => 'Example Category 5',
+        // ]
     ],
     'paging' => [
         'page' => 1,
@@ -219,6 +211,7 @@ $categories = $categoryObj->loadAll($args);
 
 ```
 *Check [get-single.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/categories/get-single.php) and [get-multiple.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/categories/get-multiple.php) in examples folder*
+*Check [get-single-coreAPI.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/categories/get-single-coreAPI.php) and [get-multiple-coreAPI.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/categories/get-multiple-coreAPI.php) in examples folder*
 
 ### Courses Management
 ### List Courses
@@ -236,33 +229,54 @@ $params = [
 
 $CourseObj = new Course($params);
 
-$defaultFields = [
-    'id',
-    'name',
-    'description',
-    'category',
-    'imageUrl'
-];
 $categoryId = "TGVh......eTox"; //optional
 $keyword = "test_keyword_here"; //optional
-
 $courseId = "TGVh......eTox";
-$returnType = 'json'; //array, obj, json
-$fields = []; // defaults to $defaultFields defined in Course Class
-$paging = ['page' => 1, 'perPage' => 30]; //defaults to ['page' => 1, 'perPage' => 25]
-$sorting = ['field' => 'id', 'direction' => 'desc']; //defaults to ['field' => 'name', 'direction' => 'asc']
-$filters = ['categoryId' => $categoryId, 'keyword' => $keyword];
+
+$keyword = "Template 3";
+
+$args = [
+    'filters' => [
+        // [
+        //     "field" => "learningCategoryId",
+        //     "operation" => "eq",
+        //     "value" => $categoryId
+        // ],
+        // [
+        //     "field" => "name",
+        //     "operation" => "like",
+        //     "value" => "%".$keyword."%"
+        // ]
+    ],
+    'paging' => [
+        'page' => 1,
+        'perPage' => 2
+    ],
+    'sorting' => [
+        'field' => 'name',
+        'direction' => 'asc'
+    ],
+    'returnType' => 'json', //array, obj, json
+    // 'fields' => [
+    //     'id',
+    //     'name'
+    // ],
+    'coreApi' => false, //boolean to specify if call is a weblink or a core API call.
+);
 
 //Get single course
-$course = $CourseObj->loadById($courseId, $defaultFields);
+$course = $CourseObj->loadById($courseId, $args);
 
 //get Courses with filters
-$categories = $courseObj->loadAll($filters, $paging, $sorting, $fields, $returnType);
+$categories = $courseObj->loadAll($args);
 
 ```
 *Check [get-single.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/courses/get-single.php)
 and
 [get-multiple.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/courses/get-multiple.php) in examples folder*
+*Check [get-single-coreAPI.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/courses/get-single-coreAPI.php)
+and
+[get-multiple-coreAPI.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/courses/get-multiple-coreAPI.php) in examples folder*
 
 ### Learning Paths Management
 #### List Learning Paths
@@ -280,21 +294,14 @@ $params = [
 
 $learningPathObj = new LearningPath($params);
 
-$defaultFields = [
-    'id',
-    'name',
-    'shortDescription',
-    'parent'
-];
-
 $learningPathId = "TGVh....YeTox";
 $args = [
     'filters' => [
-        [
-            'field' => 'name',
-            'operation' => 'eq',
-            'value' => 'Learning path test',
-        ]
+        // [
+        //     'field' => 'name',
+        //     'operation' => 'eq',
+        //     'value' => 'Learning path test',
+        // ]
     ],
     'paging' => [
         'page' => 1,
@@ -319,6 +326,7 @@ $learningPaths = $learningPathObj->loadAll($args);
 
 ```
 *Check [get-single.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/learning-path/get-single.php) and [get-multiple.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/learning-path/get-multiple.php) in examples folder*
+*Check [get-single-coreAPI.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/learning-path/get-single-coreAPI.php) and [get-multiple-coreAPI.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/learning-path/get-multiple-coreAPI.php) in examples folder*
 
 ### Events Management
 ### List Events
