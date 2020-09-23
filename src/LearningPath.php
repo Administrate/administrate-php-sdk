@@ -259,7 +259,6 @@ class LearningPath
 
         $gqlQuery = $builder->getQuery();
 
-
         $variablesArray = array(
             'filters' => $filters,
             'order' => Helper::toObject($sorting),
