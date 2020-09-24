@@ -344,34 +344,44 @@ $params = [
 
 $EventObj = new Event($params);
 
-$defaultFields = [
-    'id',
-    'name',
-    'start',
-    'end',
-    'location' => [
-        'name'
-    ]
-];
 $eventId = "TGVh......eTox";
 $courseCode = "Tls6....c99na";
 
-$returnType = 'json'; //array, obj, json
-$fields = []; // defaults to $defaultFields defined in Event Class
-$paging = ['page' => 1, 'perPage' => 30]; //defaults to ['page' => 1, 'perPage' => 25]
-$sorting = ['field' => 'id', 'direction' => 'desc']; //defaults to ['field' => 'title', 'direction' => 'asc']
+$args = [
+    'filters' => [
+        // [
+        //     'field' => 'name',
+        //     'operation' => 'eq',
+        //     'value' => 'Learning path test',
+        // ]
+    ],
+    'paging' => [
+        'page' => 1,
+        'perPage' => 2
+    ],
+    'sorting' => [
+        'field' => 'name',
+        'direction' => 'asc'
+    ],
+    'returnType' => 'json', //array, obj, json,
+    'fields' => [
+        'id',
+        'name',
+    ],
+    'courseCode' => "&GKJy...@ejlkge^",
+];
 
 //Get single event
-$event = $eventObj->loadById($eventId, $fields, $returnType);
+$event = $eventObj->loadById($eventId, $args);
 
 //get all events
-$events = $eventObj->loadAll($filters, $paging, $sorting, $fields, $returnType);
+$events = $eventObj->loadAll($args);
 
 //get all events for a single course
-$filters = ['courseCode' => $courseCode];
-$events = $eventObj->loadByCourseCode($filters, $paging, $sorting, $fields, $returnType);
+$events = $eventObj->loadByCourseCode($args);
 ```
 *Check [get-single.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/events/get-single.php), [get-multiple.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/events/get-multiple.php) and [get-events-by-course.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/events/get-events-by-courset.php) in examples folder*
+*Check [get-single-coreAPI.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/events/get-single-coreAPI.php), [get-multiple-coreAPI.php](https://github.com/Administrate/administrate-php-sdk/blob/trunk/examples/events/get-multiple-coreAPI.php) in examples folder*
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
