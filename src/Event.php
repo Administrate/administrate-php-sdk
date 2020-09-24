@@ -100,7 +100,14 @@ class Event
      * Method to Get a single event Info from ID.
      *
      * @param  string $id LMS Category ID
+     * @param  array $args associative array to pass return type and fields
      *
+     * Example $args:
+     * $args = array(
+     *     'returnType' => 'json', //array, obj, json
+     *     'fields' => array('id','name'),
+     *     'coreApi' => false, //boolean to specify if call is a weblink or a core API call.
+     * );
      * @return String JSON Object
      */
     public function loadById($eventId, $args)
@@ -119,9 +126,31 @@ class Event
 
     /**
      * Method to Get Events Info.
-     * @param array $filters
-     * @param array $fields //defaults defined in class constant $defaultFields
-     * @param string $returnType //json, array, obj default: array
+     * @param  array $args associative array to pass return type and fields
+     *
+     * Example $args:
+     * $args = array(
+     *     'filters' => array(
+     *          array(
+     *               'field' => 'name',
+     *               'operation' => 'eq',
+     *               'value' => 'Example 1',
+     *          ),
+     *     ),
+     *     'paging' => array(
+     *           'page' => 1,
+     *           'perPage' => 2
+     *     ),
+     *     'sorting' => array(
+     *           'field' => 'name',
+     *           'direction' => 'asc'
+     *      ),
+     *      'returnType' => 'json', //array, obj, json
+     *      'fields' => array(
+     *            'id',
+     *            'name'
+     *      )
+     *      'coreApi' => false, //boolean to specify if call is a weblink or a core API call.lt: array
      * @return based on returnType
      */
     public function load($args)
@@ -169,11 +198,31 @@ class Event
 
     /**
      * Method to get all Events
-     * @param array $filters
-     * @param array $paging ['page' => '', 'perPage' => '']
-     * @param array $sorting ['field' => '', 'direction' => '']
-     * @param array $fields //defaults defined in class constant $defaultFields
-     * @param string $returnType //json, array, obj default: array
+     * @param  array $args associative array to pass return type and fields
+     *
+     * Example $args:
+     * $args = array(
+     *     'filters' => array(
+     *          array(
+     *               'field' => 'name',
+     *               'operation' => 'eq',
+     *               'value' => 'Example 1',
+     *          ),
+     *     ),
+     *     'paging' => array(
+     *           'page' => 1,
+     *           'perPage' => 2
+     *     ),
+     *     'sorting' => array(
+     *           'field' => 'name',
+     *           'direction' => 'asc'
+     *      ),
+     *      'returnType' => 'json', //array, obj, json
+     *      'fields' => array(
+     *            'id',
+     *            'name'
+     *      )
+     *      'coreApi' => false, //boolean to specify if call is a weblink or a core API call.
      * @return based on returnType
      */
     public function loadAll($args)
@@ -247,94 +296,109 @@ class Event
 
     /**
      * Method to get all Events related to a single course
-     * @param array $filters
-     * @param array $paging ['page' => '', 'perPage' => '']
-     * @param array $sorting ['field' => '', 'direction' => '']
-     * @param array $fields //defaults defined in class constant $defaultFields
-     * @param string $returnType //json, array, obj default: array
+     * @param  array $args associative array to pass return type and fields
+     *
+     * Example $args:
+     * $args = array(
+     *     'filters' => array(
+     *          array(
+     *               'field' => 'name',
+     *               'operation' => 'eq',
+     *               'value' => 'Example 1',
+     *          ),
+     *     ),
+     *     'paging' => array(
+     *           'page' => 1,
+     *           'perPage' => 2
+     *     ),
+     *     'sorting' => array(
+     *           'field' => 'name',
+     *           'direction' => 'asc'
+     *      ),
+     *      'returnType' => 'json', //array, obj, json
+     *      'fields' => array(
+     *            'id',
+     *            'name'
+     *      )
+     *      'coreApi' => false, //boolean to specify if call is a weblink or a core API call.
+     *      'courseCode' => '&gjlVS...HJBgsyst'    
      * @return based on returnType
      */
-    public function loadByCourseCode($filters = [], $paging = [], $sorting = [], $fields = [], $returnType = 'array')
+    public function loadByCourseCode($args)
     {
-        //set paging variables
-        if (empty($paging)) {
-            $paging = self::$paging;
+        $defaultArgs = array(
+            'filters' => array(),
+            'paging' => self::$paging,
+            'sorting' => self::$sorting,
+            'fields' => self::$defaultFields,
+            'returnType' => 'json', //array, obj, json,
+            'coreApi' => false,
+            'courseCode' => "",
+        );
+
+        $nodeType = 'events';
+        $nodeOrder = 'EventFieldOrder';
+        $nodeFilters = 'EventFieldFilter!';
+
+        if (isset($args['coreApi']) && $args['coreApi']) {
+            $defaultArgs['fields'] = self::$defaultCoreFields;
+            $nodeType = 'events';
+            $nodeOrder = 'EventFieldGraphOrder';
+            $nodeFilters = 'EventFieldGraphFilter';
         }
+        
+        if (isset($args['courseCode']) && $args['courseCode']) {
+            $defaultArgs['courseCode'] = $args['courseCode'];
+        }
+
+        $args = Helper::setArgs($defaultArgs, $args);
+        extract($args);
+
+        //set paging variables
         $perPage = $paging['perPage'];
         $page = $paging['page'];
 
-
-        //set sorting variables
-        if (empty($sorting)) {
-            $sorting = self::$sorting;
-        }
-        $sortField = $sorting['field'];
-        $sortDirection = $sorting['direction'];
-
-        if (!$fields) {
-            $fields = self::$defaultFields;
-        }
-
-        $node = (new QueryBuilder('node'));
-        foreach ($fields as $fieldKey => $fieldVal) {
-            if (is_array($fieldVal)) {
-                $subNode = (new QueryBuilder('' . $fieldKey . ''));
-                foreach ($fieldVal as $subFieldKey) {
-                    $subNode->selectField($subFieldKey);
-                }
-                $node->selectField($subNode);
-            } else {
-                $node->selectField($fieldVal);
-            }
-        }
+        $node = QueryBuilder::buildNode($fields);
 
         $first = $perPage;
         if ($page <= 0) {
             $page = 1;
         }
-
         $offset = ($page - 1) * $perPage;
 
-        $builder = (new QueryBuilder('events'))
-        ->setVariable('order', 'EventFieldOrder', false)
-        ->setArgument('order', '$order')
-        ->setArgument('first', $first)
-        ->setArgument('offset', $offset)
-        ->setVariable('filters', '[EventFieldFilter]', true)
-        ->setArgument('filters', '$filters')
-        ->selectField(
-            (new QueryBuilder('pageInfo'))
-                ->selectField('startCursor')
-                ->selectField('endCursor')
-                ->selectField('totalRecords')
-        )
-        ->selectField(
-            (new QueryBuilder('edges'))
+        $builder = (new QueryBuilder($nodeType))
+            ->setVariable('order', $nodeOrder, false)
+                ->setArgument('first', $first)
+                ->setArgument('offset', $offset)
+                ->setArgument('order', '$order')
+            ->setVariable('filters', "[$nodeFilters]", true)
+                ->setArgument('filters', '$filters')
+            ->selectField(
+                (new QueryBuilder('pageInfo'))
+                    ->selectField('startCursor')
+                    ->selectField('endCursor')
+                    ->selectField('totalRecords')
+                    ->selectField('hasNextPage')
+                    ->selectField('hasPreviousPage')
+            )
+            ->selectField(
+                (new QueryBuilder('edges'))
                 ->selectField($node)
-        );
+            );
 
         $gqlQuery = $builder->getQuery();
 
         $variablesArray = array(
             "filters" => array(),
-            "order" => ''
+            'order' => Helper::toObject($sorting),
         );
 
-        if (isset($filters['courseCode']) && $filters['courseCode'] != "") {
+        if (isset($args['courseCode']) && $args['courseCode'] != "") {
             array_push($variablesArray['filters'], array(
                 "field" => "courseCode",
                 "operation" => "eq",
-                "value" => $filters['courseCode']
+                "value" => $args['courseCode']
             ));
-        }
-
-        if (!empty($sorting)) {
-            $sortingObject = new Class{
-            };
-            $sortingObject->field = $sortField;
-            $sortingObject->direction = $sortDirection;
-            //$sortingObject = new RawObject('{"field": "'.$sortField.'", "direction": "'.$sortDirection.'"}');
-            $variablesArray['order'] = $sortingObject;
         }
 
         $result = Client::sendSecureCall($this, $gqlQuery, $variablesArray);
