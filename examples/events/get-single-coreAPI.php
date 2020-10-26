@@ -5,18 +5,18 @@ header('Content-Type: application/json');
 require_once '../config.php';
 require_once '../../vendor/autoload.php';
 
-use Administrate\PhpSdk\Category;
+use Administrate\PhpSdk\Event;
 
-// $categoryId Set this value in config.php
-// $weblinkActivationParams Set this value in config.php
+// $eventId Set this value in config.php
+// $coreApiActivationParams Set this value in config.php
 // $return type defined in client Class 'array' -> PHP array, 'obj' -> PHP Object and 'json' -> JSON
-$categoryClass = new Category($weblinkActivationParams);
-
 $args = array(
     //'returnType' => 'json', //array, obj, json
     //'fields' => array('id','name'),
+    'coreApi' => true,
 );
 
-$category = $categoryClass->loadById($categoryId, $args);
+$eventObj = new Event($coreApiActivationParams);
+$event = $eventObj->loadById($eventId, $args);
 
-print_r($category);
+print_r($event);

@@ -4,15 +4,16 @@ namespace Administrate\PhpSdk;
 
 use Administrate\PhpSdk\GraphQl\QueryBuilder as QueryBuilder;
 use Administrate\PhpSdk\GraphQL\Client;
+use GraphQL\RawObject;
 
 /**
- * Course
+ * LearningPath
  *
  * @package Administrate\PhpSdk
- * @author Ali Habib <ahh@administrate.co>
  * @author Jad Khater <jck@administrate.co>
+ * @author Ali Habib <ahh@administrate.co>
  */
-class Course
+class LearningPath
 {
     public $params;
     private static $paging = array('page' => 1, 'perPage' => 25);
@@ -20,52 +21,23 @@ class Course
 
     private static $defaultFields = array(
         'id',
-        'code',
         'name',
         'description',
+        'lifecycleState',
         'category',
-        'imageUrl'
+        'price' => array(
+            'amount',
+        ),
     );
 
     private static $defaultCoreFields = array(
         'id',
-        'legacyId',
-        'lifecycleState',
-        'code',
-        'title',
-        'image' => array(
-            'id',
-            'name',
-            'description',
-            'folder' => array('id', 'name')
-        ),
-        'imageGallery' => array(
-            'type' => 'edges',
-            'fields' => array('id', 'name', 'description')
-        ),
-        'learningCategories' => array(
-            'type' => 'edges',
-            'fields' => array('id', 'legacyId', 'name'),
-        ),
-        'publicPrices' => array(
-            'type' => 'edges',
-            'fields' => array(
-                'id',
-                'amount',
-                'priceLevel' => array('id', 'legacyId', 'name'),
-                'financialUnit' => array('name', '__typename'),
-                'region' => array(
-                    'id',
-                    'name',
-                    'code',
-                    'company' => array('id', 'name'),
-                ),
-            ),
-        ),
-        'customFieldValues' => array(
-            'definitionKey',
-            'definitionLocator',
-            'value'
+        'name',
+        'description',
+        'learningObjectives' => array(
+            'pageInfo' => array(
+                'totalRecords'
+            )
         ),
     );
 
@@ -93,27 +65,30 @@ class Course
     }
 
     /**
-     * Method to Get a single course Info from ID.
-     * @param  string $id LMS Course ID
-     * @param  array $args associative array to pass return type and fields
+     * Method to Get a single Learning Path  from ID.
+     *
+     * @param  string $id learning path ID
+     * @param  array $args associative array to pass return type and fields and sorting and paging 
      *
      * Example $args:
      * $args = array(
      *     'returnType' => 'json', //array, obj, json
      *     'fields' => array('id','name'),
+     *     'sorting' => array(),
+     *     'paging' => array(),
      *     'coreApi' => false, //boolean to specify if call is a weblink or a core API call.
      * );
      *
      * @return based on returnType
      */
-    public function loadById($courseId, $args)
+    public function loadById($id, $args)
     {
-        if ($courseId) {
+        if ($id) {
             $args['filters'] = array(
                 array(
                     'field' => 'id',
                     'operation' => 'eq',
-                    'value' => $courseId,
+                    'value' => $id,
                 )
             );
         }
@@ -121,7 +96,7 @@ class Course
     }
 
     /**
-     * Method to get course Info.
+     * Method to get learning path info.
      * @param  array $args associative array to pass return type and fields
      *
      * Example $args:
@@ -130,7 +105,7 @@ class Course
      *          array(
      *               'field' => 'name',
      *               'operation' => 'eq',
-     *               'value' => 'Example 1',
+     *               'value' => 'Example Category 1',
      *          ),
      *     ),
      *     'paging' => array(
@@ -160,25 +135,27 @@ class Course
             'coreApi' => false,
         );
 
-        $courses = 'courses';
-        $coursesFilters = 'CourseFieldFilter';
+        $nodeType = 'learningPaths';
+        $nodeFilters = 'LearningPathFieldFilter!';
 
         if (isset($args['coreApi']) && $args['coreApi']) {
             $defaultArgs['fields'] = self::$defaultCoreFields;
-            $courses = 'courseTemplates';
-            $coursesFilters = 'CourseTemplateFieldGraphFilter';
+            $nodeType = 'learningPaths';
+            $nodeFilters = 'LearningPathFieldGraphFilter';
         }
         $args = Helper::setArgs($defaultArgs, $args);
         extract($args);
 
         $node = QueryBuilder::buildNode($fields);
 
-        $builder = (new QueryBuilder($courses))
-            ->setVariable('filters', "[$coursesFilters]", true)
+        $builder = (new QueryBuilder($nodeType))
+            ->setVariable('filters', "[$nodeFilters]", true)
             ->setArgument('filters', '$filters')
             ->selectField(
                 (new QueryBuilder('edges'))
-                    ->selectField($node)
+                    ->selectField(
+                        $node
+                    )
             );
 
         $gqlQuery = $builder->getQuery();
@@ -187,13 +164,13 @@ class Course
 
         $result = Client::sendSecureCall($this, $gqlQuery, $variablesArray);
 
-        if (isset($result[$courses]['edges'][0]['node']) && !empty($result[$courses]['edges'][0]['node'])) {
-            return Client::toType($returnType, $result[$courses]['edges'][0]['node']);
+        if (isset($result[$nodeType]['edges'][0]['node']) && !empty($result[$nodeType]['edges'][0]['node'])) {
+            return Client::toType($returnType, $result[$nodeType]['edges'][0]['node']);
         }
     }
 
     /**
-     * Method to get all Courses
+     * Method to get all Learning Paths
      * @param  array $args associative array to pass return type and fields
      *
      * Example $args:
@@ -202,7 +179,7 @@ class Course
      *          array(
      *               'field' => 'name',
      *               'operation' => 'eq',
-     *               'value' => 'Example 1',
+     *               'value' => 'Example Category 1',
      *          ),
      *     ),
      *     'paging' => array(
@@ -234,20 +211,21 @@ class Course
             'coreApi' => false,
         );
 
-        $courses = 'courses';
-        $coursesOrders = 'CourseFieldOrder';
-        $coursesFilters = 'CourseFieldFilter';
+        $nodeType = 'learningPaths';
+        $nodeOrder = 'LearningPathFieldOrder';
+        $nodeFilters = 'LearningPathFieldFilter!';
 
         if (isset($args['coreApi']) && $args['coreApi']) {
             $defaultArgs['fields'] = self::$defaultCoreFields;
-            $courses = 'courseTemplates';
-            $coursesOrders = 'CourseTemplateFieldGraphOrder';
-            $coursesFilters = 'CourseTemplateFieldGraphFilter';
+            $nodeType = 'learningPaths';
+            $nodeOrder = 'LearningPathFieldGraphOrder';
+            $nodeFilters = 'LearningPathFieldGraphFilter';
         }
 
         $args = Helper::setArgs($defaultArgs, $args);
         extract($args);
 
+        //set paging variables
         $perPage = $paging['perPage'];
         $page = $paging['page'];
 
@@ -257,26 +235,27 @@ class Course
         if ($page <= 0) {
             $page = 1;
         }
-
         $offset = ($page - 1) * $perPage;
 
-        $builder = (new QueryBuilder($courses))
-        ->setVariable('order', $coursesOrders, false)
-         ->setArgument('order', '$order')
-        ->setArgument('first', $first)
-        ->setArgument('offset', $offset)
-        ->setVariable('filters', "[$coursesFilters]", true)
-        ->setArgument('filters', '$filters')
-        ->selectField(
-            (new QueryBuilder('pageInfo'))
-                ->selectField('startCursor')
-                ->selectField('endCursor')
-                ->selectField('totalRecords')
-        )
-        ->selectField(
-            (new QueryBuilder('edges'))
+        $builder = (new QueryBuilder($nodeType))
+            ->setVariable('order', $nodeOrder, false)
+                ->setArgument('first', $first)
+                ->setArgument('offset', $offset)
+                ->setArgument('order', '$order')
+            ->setVariable('filters', "[$nodeFilters]", true)
+                ->setArgument('filters', '$filters')
+            ->selectField(
+                (new QueryBuilder('pageInfo'))
+                    ->selectField('startCursor')
+                    ->selectField('endCursor')
+                    ->selectField('totalRecords')
+                    ->selectField('hasNextPage')
+                    ->selectField('hasPreviousPage')
+            )
+            ->selectField(
+                (new QueryBuilder('edges'))
                 ->selectField($node)
-        );
+            );
 
         $gqlQuery = $builder->getQuery();
 

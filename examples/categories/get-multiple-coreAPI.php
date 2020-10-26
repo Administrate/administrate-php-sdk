@@ -5,27 +5,18 @@ header('Content-Type: application/json');
 require_once '../config.php';
 require_once '../../vendor/autoload.php';
 
-use Administrate\PhpSdk\Course;
+use Administrate\PhpSdk\Category;
 
-// $categoryId Set this value in config.php
-// $weblinkActivationParams Set this value in config.php
+// $coreApiActivationParams Set this value in config.php
 // $return type defined in client Class 'array' -> PHP array, 'obj' -> PHP Object and 'json' -> JSON
-
-$courseClass = new Course($weblinkActivationParams);
-
-$keyword = "Template 3";
+$categoryClass = new Category($coreApiActivationParams);
 
 $args = array(
     'filters' => array(
         // array(
-        //     "field" => "categoryId",
-        //     "operation" => "eq",
-        //     "value" => $categoryId
-        // ),
-        // array(
-        //     "field" => "name",
-        //     "operation" => "like",
-        //     "value" => "%".$keyword."%"
+        //     'field' => 'name',
+        //     'operation' => 'eq',
+        //     'value' => 'Example Category 1',
         // )
     ),
     'paging' => array(
@@ -41,8 +32,9 @@ $args = array(
     //     'id',
     //     'name'
     // ),
+    'coreApi' => true,
 );
 
-$allCourses = $courseClass->loadAll($args);
+$allCategories = $categoryClass->loadAll($args);
 
-print_r($allCourses);
+print_r($allCategories);

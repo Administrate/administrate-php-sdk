@@ -1,31 +1,21 @@
 <?php
-
 header('Content-Type: application/json');
 
 require_once '../config.php';
 require_once '../../vendor/autoload.php';
 
-use Administrate\PhpSdk\Course;
+use Administrate\PhpSdk\LearningPath;
 
-// $categoryId Set this value in config.php
 // $weblinkActivationParams Set this value in config.php
 // $return type defined in client Class 'array' -> PHP array, 'obj' -> PHP Object and 'json' -> JSON
-
-$courseClass = new Course($weblinkActivationParams);
-
-$keyword = "Template 3";
+$learningPathObj = new LearningPath($weblinkActivationParams);
 
 $args = array(
     'filters' => array(
         // array(
-        //     "field" => "categoryId",
-        //     "operation" => "eq",
-        //     "value" => $categoryId
-        // ),
-        // array(
-        //     "field" => "name",
-        //     "operation" => "like",
-        //     "value" => "%".$keyword."%"
+        //     'field' => 'name',
+        //     'operation' => 'eq',
+        //     'value' => 'Example Category 5',
         // )
     ),
     'paging' => array(
@@ -43,6 +33,6 @@ $args = array(
     // ),
 );
 
-$allCourses = $courseClass->loadAll($args);
+$learningPaths = $learningPathObj->loadAll($args);
 
-print_r($allCourses);
+print_r($learningPaths);

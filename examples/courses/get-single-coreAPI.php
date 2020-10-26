@@ -5,18 +5,19 @@ header('Content-Type: application/json');
 require_once '../config.php';
 require_once '../../vendor/autoload.php';
 
-use Administrate\PhpSdk\Category;
+use Administrate\PhpSdk\Course;
 
-// $categoryId Set this value in config.php
-// $weblinkActivationParams Set this value in config.php
+// $courseId defined in config.php
+// $coreApiActivationParams Set this value in config.php
 // $return type defined in client Class 'array' -> PHP array, 'obj' -> PHP Object and 'json' -> JSON
-$categoryClass = new Category($weblinkActivationParams);
+$courseClass = new Course($coreApiActivationParams);
 
 $args = array(
     //'returnType' => 'json', //array, obj, json
     //'fields' => array('id','name'),
+    'coreApi' => true,
 );
 
-$category = $categoryClass->loadById($categoryId, $args);
+$course = $courseClass->loadById($courseId, $args);
 
-print_r($category);
+print_r($course);
