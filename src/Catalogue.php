@@ -152,6 +152,7 @@ use Administrate\PhpSdk\GraphQl\Client;
 
         $defaultArgs = array(
             'filters' => array(),
+            'customFieldFilters' => array(),
             'paging' => self::$paging,
             'sorting' => self::$sorting,
             'fields' => self::$defaultFields,
@@ -161,11 +162,13 @@ use Administrate\PhpSdk\GraphQl\Client;
 
         $nodeOrder = 'CatalogueFieldOrder';
         $nodeFilters = 'CatalogueFieldFilter';
+        $nodeCustomFieldFilters = 'CustomFieldFilterInput!';
 
         if (isset($args['coreApi']) && $args['coreApi']) {
             $defaultArgs['fields'] = self::$defaultCoreFields;
             $nodeOrder = 'CatalogueItemFieldGraphOrder';
             $nodeFilters = 'CatalogueItemFieldGraphFilter';
+            $nodeCustomFieldFilters = 'CustomFieldFilter';
         }
 
         $args = Helper::setArgs($defaultArgs, $args);
@@ -190,6 +193,8 @@ use Administrate\PhpSdk\GraphQl\Client;
         ->setArgument('offset', $offset)
         ->setVariable('filters', "[$nodeFilters]", true)
         ->setArgument('filters', '$filters')
+        ->setVariable('customFieldFilters', "[$nodeCustomFieldFilters]", true)
+        ->setArgument('customFieldFilters', '$customFieldFilters')
         ->selectField(
             (new QueryBuilder('pageInfo'))
                 ->selectField('startCursor')
@@ -207,12 +212,11 @@ use Administrate\PhpSdk\GraphQl\Client;
 
         $variablesArray = array(
             'filters' => $filters,
+            'customFieldFilters' => $customFieldFilters,
             'order' => Helper::toObject($sorting),
         );
 
         $result = Client::sendSecureCall($this, $gqlQuery, $variablesArray);
         return Client::toType($returnType, $result);
     }
-    
 }
-
