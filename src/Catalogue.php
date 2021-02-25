@@ -12,83 +12,84 @@ use Administrate\PhpSdk\GraphQl\Client;
  * @author Jad Khater <jck@administrate.co>
  * @author Omaya Noureddine <orn@administrate.co>
  */
- class Catalogue {
+class Catalogue
+{
     public $params;
     private static $paging = array('page' => 1, 'perPage' => 25);
     private static $sorting = array('field' => 'name', 'direction' => 'asc');
 
 
     private static $defaultFields = array(
-        '__typename',
-        '... on Course' => array(
-            'id',
-            'code',
-            'name',
-            'description',
-            'category',
-            'imageUrl'
-        ),
-        '... on LearningPath' => array(
-            'id',
-            'name',
-            'description',
-            'lifecycleState',
-            'category',
-            'price' => array(
-                'amount',
-            ),
-        ),
-        
+       '__typename',
+       '... on Course' => array(
+           'id',
+           'code',
+           'name',
+           'description',
+           'category',
+           'imageUrl'
+       ),
+       '... on LearningPath' => array(
+           'id',
+           'name',
+           'description',
+           'lifecycleState',
+           'category',
+           'price' => array(
+               'amount',
+           ),
+       ),
+
     );
 
     private static $defaultCoreFields = array(
-        '__typename',
-        '... on CourseTemplate' => array(
-            'id',
-            'legacyId',
-            'lifecycleState',
-            'code',
-            'title',
-            'image' => array(
-                'id',
-                'name',
-                'description',
-                'folder' => array('id', 'name')
-            ),
-            'imageGallery' => array(
-                'type' => 'edges',
-                'fields' => array('id', 'name', 'description')
-            ),
-            'learningCategories' => array(
-                'type' => 'edges',
-                'fields' => array('id', 'legacyId', 'name'),
-            ),
-            'publicPrices' => array(
-                'type' => 'edges',
-                'fields' => array(
-                    'id',
-                    'amount',
-                    'priceLevel' => array('id', 'legacyId', 'name'),
-                    'financialUnit' => array('name', '__typename'),
-                    'region' => array(
-                        'id',
-                        'name',
-                        'code',
-                        'company' => array('id', 'name'),
-                    ),
-                ),
-            ),
-        ),
-        '... on LearningPath' => array(
-            'id',
-            'name',
-            'description',
-            'learningObjectives' => array(
-                'pageInfo' => array(
-                    'totalRecords'
-                )
-            ),
-        )
+       '__typename',
+       '... on CourseTemplate' => array(
+           'id',
+           'legacyId',
+           'lifecycleState',
+           'code',
+           'title',
+           'image' => array(
+               'id',
+               'name',
+               'description',
+               'folder' => array('id', 'name')
+           ),
+           'imageGallery' => array(
+               'type' => 'edges',
+               'fields' => array('id', 'name', 'description')
+           ),
+           'learningCategories' => array(
+               'type' => 'edges',
+               'fields' => array('id', 'legacyId', 'name'),
+           ),
+           'publicPrices' => array(
+               'type' => 'edges',
+               'fields' => array(
+                   'id',
+                   'amount',
+                   'priceLevel' => array('id', 'legacyId', 'name'),
+                   'financialUnit' => array('name', '__typename'),
+                   'region' => array(
+                       'id',
+                       'name',
+                       'code',
+                       'company' => array('id', 'name'),
+                   ),
+               ),
+           ),
+       ),
+       '... on LearningPath' => array(
+           'id',
+           'name',
+           'description',
+           'learningObjectives' => array(
+               'pageInfo' => array(
+                   'totalRecords'
+               )
+           ),
+       )
     );
 
     /**
